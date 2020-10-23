@@ -8,6 +8,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - Github OAuth account
 - `npm install axios`
+- install React Bootstrap
 
 - Create a Github repo for this app
 - Connect Amplify to the Github repo

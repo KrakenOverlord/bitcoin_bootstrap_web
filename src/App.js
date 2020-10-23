@@ -1,14 +1,18 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
 import axios from 'axios';
-import './App.css';
+import AuthenticationController from './authentication_controller.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-
+      username: null
     };
+
+    this.signout = this.signout.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -18,36 +22,50 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    console.log("username = " + this.state.username);
+
     const parsedUrl = new URL(window.location.href);
     const code = parsedUrl.searchParams.get("code");
 
-    if (code !== null) {
+    if (this.state.username === null && code !== null) {
       console.log("Code = " + code);
 
       axios.post(this.api_url + "/authenticate?code=" + code)
         .then((response) => {
-          console.log(response);
-          // var users = response.data;
-          // users.sort((a, b) => (a.email > b.email) ? 1 : -1)
-          //
-          // this.setState({
-          //   isLoaded: true,
-          //   users: users
-          // });
+          var username = response.data.username;
+          console.log("Username from backend call: " + username);
+
+          this.setState({
+            username: username
+          });
+
+          if (username === null) {
+            alert("Could not sign you in.");
+          }
         })
         .catch((error) => {
           console.log(error);
-          // this.setState({
-          //   isLoaded: true,
-          //   error
-          // });
         });
       }
   }
 
+  signout() {
+    this.setState({
+      username: null
+    })
+  }
+
   render() {
     return (
-      <a href="https://github.com/login/oauth/authorize?client_id=249829dba927c98cb3c8&allow_signup=false">Signin</a>
+      <Container>
+        <Navbar bg="light" expand="md">
+          <Navbar.Brand href="#home">Bitcoin Bootstrap</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse className="justify-content-end">
+          <AuthenticationController username={this.state.username} signout={this.signout} />
+          </Navbar.Collapse>
+        </Navbar>
+      </Container>
     );
   }
 }
