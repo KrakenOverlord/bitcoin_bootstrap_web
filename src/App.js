@@ -34,6 +34,7 @@ class App extends React.Component {
           var user = response.data;
           console.log("Signed in username: " + user.username);
           console.log("Signed in session_id: " + user.session_id);
+          console.log("Signed in avatar_url: " + user.avatar_url);
 
           this.setState({
             user: user
@@ -54,8 +55,6 @@ class App extends React.Component {
 
     axios.post(this.api_url + "/signout?session_id=" + this.state.user.session_id)
       .then((response) => {
-        console.log("Signout Response: " + response.data);
-
         this.setState({
           user: null
         });
@@ -69,7 +68,16 @@ class App extends React.Component {
     return (
       <Container>
         <Navbar bg="light" expand="md">
-          <Navbar.Brand href="#home">Bitcoin Bootstrap</Navbar.Brand>
+          <Navbar.Brand href="#home">
+           <img
+             alt=""
+             src="/bitcoin.png"
+             width="30"
+             height="30"
+             className="d-inline-block align-top"
+           />{' '}
+           Bootstrap
+         </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">
           <AuthenticationController user={this.state.user} signout={this.signout} />

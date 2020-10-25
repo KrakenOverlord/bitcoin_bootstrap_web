@@ -1,17 +1,31 @@
 import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function AuthenticationController(props) {
   if (props.user === null) {
     return (
-      <Nav.Link href="https://github.com/login/oauth/authorize?client_id=249829dba927c98cb3c8&allow_signup=false">Signin</Nav.Link>
+      <Nav.Link href="https://github.com/login/oauth/authorize?client_id=249829dba927c98cb3c8&allow_signup=false">
+      Sign in with Github
+      <img
+        src="/github.png"
+        alt=""
+        height="25"
+        width="45"
+      />
+      </Nav.Link>
     );
   } else {
     return (
       <>
-        <Navbar.Text>Signed in as: {props.user.username}</Navbar.Text>
-        <Nav.Link onClick={props.signout} href="">Signout</Nav.Link>
+        <NavDropdown title={
+          <>
+            <img src={props.user.avatar_url} alt="" height="25" width="25" />
+            {props.user.username}
+          </>
+        }>
+          <NavDropdown.Item onClick={props.signout}>Sign out</NavDropdown.Item>
+        </NavDropdown>
       </>
     );
   }
