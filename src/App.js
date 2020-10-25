@@ -9,7 +9,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      username: null
+      user: null
     };
 
     this.signout = this.signout.bind(this);
@@ -22,25 +22,25 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log("username = " + this.state.username);
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    window.history.pushState({}, null, 'home');
 
-    const parsedUrl = new URL(window.location.href);
-    const code = parsedUrl.searchParams.get("code");
+    if (this.state.user === null && code !== null) {
+      console.log("Signing in with code = " + code);
 
-    if (this.state.username === null && code !== null) {
-      console.log("Code = " + code);
-
-      axios.post(this.api_url + "/authenticate?code=" + code)
+      axios.post(this.api_url + "/signin?code=" + code)
         .then((response) => {
-          var username = response.data.username;
-          console.log("Username from backend call: " + username);
+          var user = response.data;
+          console.log("Signed in username: " + user.username);
+          console.log("Signed in session_id: " + user.session_id);
 
           this.setState({
-            username: username
+            user: user
           });
 
-          if (username === null) {
-            alert("Could not sign you in.");
+          if (user === null) {
+            alert("You need to be a contributor to vote.");
           }
         })
         .catch((error) => {
@@ -50,9 +50,19 @@ class App extends React.Component {
   }
 
   signout() {
-    this.setState({
-      username: null
-    })
+    console.log("Signing out session_id " + this.state.user.session_id);
+
+    axios.post(this.api_url + "/signout?session_id=" + this.state.user.session_id)
+      .then((response) => {
+        console.log("Signout Response: " + response.data);
+
+        this.setState({
+          user: null
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -62,7 +72,7 @@ class App extends React.Component {
           <Navbar.Brand href="#home">Bitcoin Bootstrap</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">
-          <AuthenticationController username={this.state.username} signout={this.signout} />
+          <AuthenticationController user={this.state.user} signout={this.signout} />
           </Navbar.Collapse>
         </Navbar>
       </Container>
