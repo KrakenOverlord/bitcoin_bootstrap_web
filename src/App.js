@@ -3,13 +3,15 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import axios from 'axios';
 import AuthenticationController from './authentication_controller.js';
+import MainScreen from './main_screen.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: null
+      user: null,
+      contributors: []
     };
 
     this.signout = this.signout.bind(this);
@@ -48,6 +50,17 @@ class App extends React.Component {
           console.log(error);
         });
       }
+    else {
+      axios.post(this.api_url + "/get_contributors")
+        .then((response) => {
+          this.setState({
+            contributors: response.data
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   signout() {
@@ -83,6 +96,7 @@ class App extends React.Component {
           <AuthenticationController user={this.state.user} signout={this.signout} />
           </Navbar.Collapse>
         </Navbar>
+        <MainScreen contributors={this.state.contributors} />
       </Container>
     );
   }
