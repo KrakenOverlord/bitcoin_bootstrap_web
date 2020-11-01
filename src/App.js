@@ -1,9 +1,9 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
 import axios from 'axios';
-import AuthenticationController from './authentication_controller.js';
-import MainScreen from './main_screen.js';
+import Header from './header.js';
+import Introduction from './introduction.js';
+import CandidatesList from './candidates_list.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -126,23 +126,11 @@ console.log(user);
   render() {
     return (
       <Container>
-        <Navbar bg="light" expand="md">
-          <Navbar.Brand href="#home">
-           <img
-             alt=""
-             src="/bitcoin.png"
-             width="30"
-             height="30"
-             className="d-inline-block align-top"
-           />{' '}
-           Bootstrap
-         </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse className="justify-content-end">
-          <AuthenticationController user={this.state.user} signout={this.signout} />
-          </Navbar.Collapse>
-        </Navbar>
-        <MainScreen user={this.state.user} contributors={this.state.candidates} vote={this.vote} />
+        <Header user={this.state.user} signout={this.signout} />
+        {this.state.user === null &&
+          <Introduction />
+        }
+        <CandidatesList user={this.state.user} candidates={this.state.candidates} vote={this.vote} />
       </Container>
     );
   }
