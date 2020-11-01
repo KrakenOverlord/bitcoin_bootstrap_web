@@ -1,3 +1,9 @@
+**TODO**
+
+- don't expose voted_for in candidates data by bringing it in from server
+- disable login link after pressed
+- success stories list after fully funded
+
 **Create the App**
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -7,6 +7,10 @@ function MainScreen(props) {
     <Table responsive striped bordered hover size="sm">
       <thead>
       <tr>
+        {props.user !== null &&
+          <th>Vote</th>
+        }
+        <th>Votes</th>
         <th>Image</th>
         <th>Username</th>
         <th>Github Profile</th>
@@ -14,7 +18,7 @@ function MainScreen(props) {
       </tr>
       </thead>
       <tbody>
-        {props.contributors.map(contributor => (<ContributorListRow key={contributor.username} contributor={contributor} />))}
+        {props.contributors.map(contributor => (<ContributorListRow key={contributor.username} user={props.user} contributor={contributor} vote={props.vote} />))}
       </tbody>
     </Table>
   );

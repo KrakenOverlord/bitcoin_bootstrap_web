@@ -11,10 +11,12 @@ class App extends React.Component {
 
     this.state = {
       user: null,
-      contributors: []
+      candidates: []
     };
 
     this.signout = this.signout.bind(this);
+    this.vote = this.vote.bind(this);
+    this.setVotedFor = this.setVotedFor.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -23,27 +25,79 @@ class App extends React.Component {
     }
   }
 
+  loadCandidates() {
+    axios.post(this.api_url + "/get_candidates")
+      .then((response) => {
+        let candidates = response.data;
+
+        candidates.sort(function(a, b) { return b.votes - a.votes });
+
+        this.setState({
+          candidates: candidates
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  setVotedFor(username) {
+    var user = {...this.state.user};
+    user.voted_for = username;
+    this.setState({user});
+  }
+
+  changeCandidate(newCandidateUsername) {
+    let candidates = [...this.state.candidates];
+
+    // Decrement old candidate if the user previously voted
+    if (this.state.user.voted_for !== '') {
+      const index = this.state.candidates.findIndex(candidate => candidate.username === this.state.user.voted_for);
+      const oldCandidate = this.state.candidates[index];
+      oldCandidate.votes = oldCandidate.votes - 1;
+      candidates[index] = oldCandidate;
+    }
+
+    // Increment new candidate
+    const index = this.state.candidates.findIndex(candidate => candidate.username === newCandidateUsername);
+    const newCandidate = this.state.candidates[index];
+    newCandidate.votes = newCandidate.votes + 1;
+    candidates[index] = newCandidate;
+
+    candidates.sort(function(a, b) { return b.votes - a.votes });
+
+    this.setState({candidates});
+
+    this.setVotedFor(newCandidateUsername);
+  }
+
+  vote(new_candidate_username) {
+    axios.post(this.api_url + "/vote?session_id=" + this.state.user.session_id +"&vote=" + new_candidate_username)
+      .then((response) => {
+        this.changeCandidate(new_candidate_username);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   componentDidMount() {
     const url = new URL(window.location.href);
     const code = url.searchParams.get("code");
     window.history.pushState({}, null, 'home');
 
     if (this.state.user === null && code !== null) {
-      console.log("Signing in with code = " + code);
-
       axios.post(this.api_url + "/signin?code=" + code)
         .then((response) => {
           var user = response.data;
-          console.log("Signed in username: " + user.username);
-          console.log("Signed in session_id: " + user.session_id);
-          console.log("Signed in avatar_url: " + user.avatar_url);
-
-          this.setState({
-            user: user
-          });
-
+console.log(user);
           if (user === null) {
             alert("You need to be a contributor to vote.");
+          } else {
+            this.setState({
+              user: user
+            });
+            this.loadCandidates();
           }
         })
         .catch((error) => {
@@ -51,15 +105,7 @@ class App extends React.Component {
         });
       }
     else {
-      axios.post(this.api_url + "/get_contributors")
-        .then((response) => {
-          this.setState({
-            contributors: response.data
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.loadCandidates();
     }
   }
 
@@ -96,7 +142,7 @@ class App extends React.Component {
           <AuthenticationController user={this.state.user} signout={this.signout} />
           </Navbar.Collapse>
         </Navbar>
-        <MainScreen contributors={this.state.contributors} />
+        <MainScreen user={this.state.user} contributors={this.state.candidates} vote={this.vote} />
       </Container>
     );
   }
