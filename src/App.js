@@ -1,8 +1,11 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import axios from 'axios';
 import Header from './header.js';
 import Introduction from './introduction.js';
+import Enroll from './enroll.js';
 import CandidatesList from './candidates_list.js';
 
 class App extends React.Component {
@@ -124,15 +127,29 @@ console.log(user);
   }
 
   render() {
-    return (
-      <Container>
-        <Header user={this.state.user} signout={this.signout} />
-        {this.state.user === null &&
+    if (this.state.user === null) {
+      return (
+        <Container>
+          <Header user={this.state.user} signout={this.signout} />
           <Introduction />
-        }
-        <CandidatesList user={this.state.user} candidates={this.state.candidates} vote={this.vote} />
-      </Container>
-    );
+          <CandidatesList user={this.state.user} candidates={this.state.candidates} vote={this.vote} />
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          <Header user={this.state.user} signout={this.signout} />
+          <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+            <Tab eventKey="home" title="Vote">
+              <CandidatesList user={this.state.user} candidates={this.state.candidates} vote={this.vote} />
+            </Tab>
+            <Tab eventKey="profile" title="Register">
+              <Enroll user={this.state.user} />
+            </Tab>
+          </Tabs>
+        </Container>
+      );
+    }
   }
 }
 

@@ -3,7 +3,7 @@ import VoteButton from './vote_button.js'
 
 function CandidatesListRow(props) {
   return (
-    <li className="media mt-5">
+    <li className="media mt-3">
       <div className="img-with-text">
       <img
         src={props.candidate.avatar_url}

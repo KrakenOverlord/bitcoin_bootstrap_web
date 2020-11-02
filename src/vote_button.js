@@ -18,6 +18,9 @@ function VoteButton(props) {
       {(props.user !== null && props.user.voted_for !== props.candidate.username) &&
         <Button className='mt-3' size="m" onClick={() => props.vote(props.candidate.username)}>Vote for {props.candidate.username}</Button>
       }
+      {props.user === null &&
+        <a className='mt-3' href={props.candidate.html_url} target="_blank" rel="noopener noreferrer">{props.candidate.username}</a>
+      }
     </h5>
   );
 }
