@@ -5,7 +5,7 @@ import Tab from 'react-bootstrap/Tab';
 import axios from 'axios';
 import Header from './header.js';
 import Introduction from './introduction.js';
-import Enroll from './enroll.js';
+import Registration from './registration.js';
 import CandidatesList from './candidates_list.js';
 
 class App extends React.Component {
@@ -17,15 +17,21 @@ class App extends React.Component {
       candidates: []
     };
 
+    this.changedRegistration = this.changedRegistration.bind(this);
     this.signout = this.signout.bind(this);
     this.vote = this.vote.bind(this);
     this.setVotedFor = this.setVotedFor.bind(this);
+    this.loadCandidates = this.loadCandidates.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
     } else {
       this.api_url = 'https://bitcoinbootstrap.org';
     }
+  }
+
+  changedRegistration(user) {
+    this.setState({ user: user }, () => { this.loadCandidates(); });
   }
 
   loadCandidates() {
@@ -139,12 +145,12 @@ console.log(user);
       return (
         <Container>
           <Header user={this.state.user} signout={this.signout} />
-          <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
-            <Tab eventKey="home" title="Vote">
+          <Tabs>
+            <Tab eventKey="vote" title="Vote">
               <CandidatesList user={this.state.user} candidates={this.state.candidates} vote={this.vote} />
             </Tab>
-            <Tab eventKey="profile" title="Register">
-              <Enroll user={this.state.user} />
+            <Tab eventKey="register" title="Register">
+              <Registration user={this.state.user} changedRegistration={this.changedRegistration} />
             </Tab>
           </Tabs>
         </Container>

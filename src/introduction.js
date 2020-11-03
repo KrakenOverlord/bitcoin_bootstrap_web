@@ -4,7 +4,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron'
 function Introduction(props) {
   return (
     <Jumbotron>
-      <h3>A curated list of Bitcoin developers seeking financial support.</h3>
+      <h4>Bitcoin Bootstrap is a curated list of Bitcoin developers seeking financial support.</h4>
       <p className='mt-3'>
       Want to help fund a bitcoin developer but not sure who to help? Unless you are actively involved in Bitcoin development, it can be hard to figure out who is doing good work and deserves financial support. Who better to know who is doing good work and needs help than actual Bitcoin developers?
       </p>
@@ -13,8 +13,10 @@ function Introduction(props) {
       </p>
 
       <p>
-      Only people who have contributed to the <a href='https://github.com/bitcoin/bitcoin' target="_blank" rel="noopener noreferrer">Bitcoin Github repository</a> can be listed here. Only <a href='https://github.com/bitcoin/bitcoin/graphs/contributors' target="_blank" rel="noopener noreferrer">contributors</a> to the repository are allowed to vote.
+      Only contributors to the <a href='https://github.com/bitcoin/bitcoin' target="_blank" rel="noopener noreferrer">Bitcoin Github repository</a> are listed.
       </p>
+      Only <a href='https://github.com/bitcoin/bitcoin/graphs/contributors' target="_blank" rel="noopener noreferrer">contributors</a> can vote.
+
     </Jumbotron>
   );
 }
