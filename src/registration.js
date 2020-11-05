@@ -24,7 +24,7 @@ class Registration extends React.Component {
   }
 
   register() {
-    axios.post(this.api_url + "/register?session_id=" + this.props.user.session_id + "&blurb=" + this.state.blurb)
+    axios.post(this.api_url + "/register?session_id=" + this.props.contributor.session_id + "&blurb=" + this.state.blurb)
       .then((response) => {
         this.props.changedRegistration(response.data);
       })
@@ -34,7 +34,7 @@ class Registration extends React.Component {
   }
 
   unregister() {
-    axios.post(this.api_url + "/unregister?session_id=" + this.props.user.session_id)
+    axios.post(this.api_url + "/unregister?session_id=" + this.props.contributor.session_id)
       .then((response) => {
         this.props.changedRegistration(response.data);
         document.getElementById('blurb').value = '';
@@ -45,7 +45,7 @@ class Registration extends React.Component {
   }
 
   updateBlurb() {
-    axios.post(this.api_url + "/update_blurb?session_id=" + this.props.user.session_id +"&blurb=" + this.state.blurb)
+    axios.post(this.api_url + "/update_blurb?session_id=" + this.props.contributor.session_id +"&blurb=" + this.state.blurb)
       .then((response) => {
         this.props.changedRegistration(response.data);
       })
@@ -61,7 +61,7 @@ class Registration extends React.Component {
   }
 
   render() {
-    if (this.props.user.is_candidate === false) {
+    if (this.props.contributor.is_candidate === false) {
       return (
         <Form>
           <Form.Group controlId="blurb">
@@ -78,7 +78,7 @@ class Registration extends React.Component {
         <Form>
           <Form.Group controlId="blurb">
             <Form.Label>Why should you receive funding?</Form.Label>
-            <Form.Control name="blurb" as="textarea" rows={3} maxLength="200" onChange={this.handleBlurbChange} defaultValue={this.props.user.blurb} />
+            <Form.Control name="blurb" as="textarea" rows={3} maxLength="200" onChange={this.handleBlurbChange} defaultValue={this.props.contributor.blurb} />
           </Form.Group>
           <Button variant="primary" onClick={this.updateBlurb}>
             Update Blurb

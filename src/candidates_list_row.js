@@ -16,7 +16,7 @@ function CandidatesListRow(props) {
       </div>
 
       <div className="media-body ml-3">
-        <VoteButton user={props.user} candidate={props.candidate} vote={props.vote} />
+        <VoteButton contributor={props.contributor} candidate={props.candidate} vote={props.vote} />
         Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
       </div>
     </li>

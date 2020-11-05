@@ -4,7 +4,9 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 class AuthenticationController extends React.Component {
   render() {
-    if (this.props.user === null) {
+    console.log("---AuthenticationController");
+
+    if (this.props.contributor === null) {
       return (
         <Nav.Link href={"https://github.com/login/oauth/authorize?client_id=" + process.env.REACT_APP_GITHUB_CLIENT_ID + "&allow_signup=false"}>
         Sign in with Github
@@ -21,8 +23,8 @@ class AuthenticationController extends React.Component {
         <>
           <NavDropdown title={
             <>
-              <img src={this.props.user.avatar_url} alt="" height="25" width="25" />
-              {this.props.user.username}
+              <img src={this.props.contributor.avatar_url} alt="" height="25" width="25" />
+              {this.props.contributor.username}
             </>
           }>
             <NavDropdown.Item onClick={this.props.signout}>Sign out</NavDropdown.Item>

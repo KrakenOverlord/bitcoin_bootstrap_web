@@ -13,7 +13,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      user: null,
+      contributor: null,
       candidates: []
     };
 
@@ -30,17 +30,48 @@ class App extends React.Component {
     }
   }
 
-  changedRegistration(user) {
-    this.setState({ user: user }, () => { this.loadCandidates(); });
+  componentDidMount() {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    window.history.pushState({}, null, 'home');
+
+    const stringified_contributor = localStorage.getItem('contributor');
+    const contributor = JSON.parse(stringified_contributor);
+    console.log("localStorage contributor = " + JSON.stringify(contributor));
+    this.setState({
+      contributor: contributor
+    })
+
+    if (this.state.contributor === null && code !== null) {
+      console.log("Calling signin");
+      axios.post(this.api_url + "/signin?code=" + code)
+        .then((response) => {
+          var contributor = response.data;
+          console.log(contributor);
+          if (contributor === null) {
+            alert("You need to be a contributor to sign in.");
+          } else {
+            localStorage.setItem('contributor', JSON.stringify(contributor));
+            this.setState({
+              contributor: contributor
+            });
+            this.loadCandidates();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+    else {
+      this.loadCandidates();
+    }
   }
 
   loadCandidates() {
     axios.post(this.api_url + "/get_candidates")
       .then((response) => {
         let candidates = response.data;
-
         candidates.sort(function(a, b) { return b.votes - a.votes });
-
         this.setState({
           candidates: candidates
         });
@@ -50,18 +81,22 @@ class App extends React.Component {
       });
   }
 
+  changedRegistration(contributor) {
+    this.setState({ contributor: contributor }, () => { this.loadCandidates(); });
+  }
+
   setVotedFor(username) {
-    var user = {...this.state.user};
-    user.voted_for = username;
-    this.setState({user});
+    var contributor = {...this.state.contributor};
+    contributor.voted_for = username;
+    this.setState({contributor});
   }
 
   changeCandidate(newCandidateUsername) {
     let candidates = [...this.state.candidates];
 
-    // Decrement old candidate if the user previously voted
-    if (this.state.user.voted_for !== '') {
-      const index = this.state.candidates.findIndex(candidate => candidate.username === this.state.user.voted_for);
+    // Decrement old candidate if the contributor previously voted
+    if (this.state.contributor.voted_for !== '') {
+      const index = this.state.candidates.findIndex(candidate => candidate.username === this.state.contributor.voted_for);
       const oldCandidate = this.state.candidates[index];
       oldCandidate.votes = oldCandidate.votes - 1;
       candidates[index] = oldCandidate;
@@ -81,7 +116,7 @@ class App extends React.Component {
   }
 
   vote(new_candidate_username) {
-    axios.post(this.api_url + "/vote?session_id=" + this.state.user.session_id +"&vote=" + new_candidate_username)
+    axios.post(this.api_url + "/vote?session_id=" + this.state.contributor.session_id +"&vote=" + new_candidate_username)
       .then((response) => {
         this.changeCandidate(new_candidate_username);
       })
@@ -90,41 +125,13 @@ class App extends React.Component {
       });
   }
 
-  componentDidMount() {
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get("code");
-    window.history.pushState({}, null, 'home');
-
-    if (this.state.user === null && code !== null) {
-      axios.post(this.api_url + "/signin?code=" + code)
-        .then((response) => {
-          var user = response.data;
-console.log(user);
-          if (user === null) {
-            alert("You need to be a contributor to vote.");
-          } else {
-            this.setState({
-              user: user
-            });
-            this.loadCandidates();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      }
-    else {
-      this.loadCandidates();
-    }
-  }
-
   signout() {
-    console.log("Signing out session_id " + this.state.user.session_id);
+    console.log("Signing out session_id " + this.state.contributor.session_id);
 
-    axios.post(this.api_url + "/signout?session_id=" + this.state.user.session_id)
+    axios.post(this.api_url + "/signout?session_id=" + this.state.contributor.session_id)
       .then((response) => {
         this.setState({
-          user: null
+          contributor: null
         });
       })
       .catch((error) => {
@@ -133,24 +140,24 @@ console.log(user);
   }
 
   render() {
-    if (this.state.user === null) {
+    if (this.state.contributor === null) {
       return (
         <Container>
-          <Header user={this.state.user} signout={this.signout} />
+          <Header contributor={this.state.contributor} signout={this.signout} />
           <Introduction />
-          <CandidatesList user={this.state.user} candidates={this.state.candidates} vote={this.vote} />
+          <CandidatesList contributor={this.state.contributor} candidates={this.state.candidates} vote={this.vote} />
         </Container>
       );
     } else {
       return (
         <Container>
-          <Header user={this.state.user} signout={this.signout} />
+          <Header contributor={this.state.contributor} signout={this.signout} />
           <Tabs>
             <Tab eventKey="vote" title="Vote">
-              <CandidatesList user={this.state.user} candidates={this.state.candidates} vote={this.vote} />
+              <CandidatesList contributor={this.state.contributor} candidates={this.state.candidates} vote={this.vote} />
             </Tab>
             <Tab eventKey="register" title="Register">
-              <Registration user={this.state.user} changedRegistration={this.changedRegistration} />
+              <Registration contributor={this.state.contributor} changedRegistration={this.changedRegistration} />
             </Tab>
           </Tabs>
         </Container>
