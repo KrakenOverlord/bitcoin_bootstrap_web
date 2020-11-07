@@ -31,43 +31,62 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get("code");
-    window.history.pushState({}, null, 'home');
-
-    const stringified_contributor = localStorage.getItem('contributor');
-    const contributor = JSON.parse(stringified_contributor);
-    console.log("localStorage contributor = " + JSON.stringify(contributor));
-    this.setState({
-      contributor: contributor
-    })
-
-    if (this.state.contributor === null && code !== null) {
-      console.log("Calling signin");
-      axios.post(this.api_url + "/signin?code=" + code)
-        .then((response) => {
-          var contributor = response.data;
-          console.log(contributor);
-          if (contributor === null) {
-            alert("You need to be a contributor to sign in.");
+    // If there is an access_token then automatically sign them in.
+    const access_token = localStorage.getItem('access_token');
+    if (access_token !== null) {
+      console.log("Automatic sign in");
+      axios.post(this.api_url + "/signin_with_access_token?access_token=" + access_token)
+        .then((res) => {
+          var response = res.data;
+          console.log("signin_with_access_token response: " + JSON.stringify(response));
+          if (response.error !== undefined) {
+            localStorage.removeItem('access_token');
           } else {
-            localStorage.setItem('contributor', JSON.stringify(contributor));
             this.setState({
-              contributor: contributor
+              contributor: response.contributor,
+              candidates: response.candidates
             });
-            this.loadCandidates();
           }
         })
         .catch((error) => {
           console.log(error);
         });
-      }
-    else {
-      this.loadCandidates();
+    } else {
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get("code");
+      window.history.pushState({}, null, 'home');
+
+      // If they are signing in
+      if (code !== null) {
+        console.log("Manual sign in");
+        axios.post(this.api_url + "/signin_with_code?code=" + code)
+          .then((res) => {
+            var response = res.data;
+            console.log("signin_with_code response: " + JSON.stringify(response));
+
+            if (response.error !== undefined) {
+              if (response.error === 1) {
+                alert("You need to be a contributor to sign in.");
+              } else {
+                console.log("Problem signing in: " + response.error);
+              }
+            } else {
+              localStorage.setItem('access_token', response.contributor.access_token);
+              this.setState({
+                contributor: response.contributor,
+                candidates: response.candidates
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }
     }
   }
 
   loadCandidates() {
+    console.log("Loading candidates.");
     axios.post(this.api_url + "/get_candidates")
       .then((response) => {
         let candidates = response.data;

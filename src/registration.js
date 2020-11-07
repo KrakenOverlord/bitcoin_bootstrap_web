@@ -24,7 +24,7 @@ class Registration extends React.Component {
   }
 
   register() {
-    axios.post(this.api_url + "/register?session_id=" + this.props.contributor.session_id + "&blurb=" + this.state.blurb)
+    axios.post(this.api_url + "/register?access_token=" + this.props.contributor.access_token + "&blurb=" + this.state.blurb)
       .then((response) => {
         this.props.changedRegistration(response.data);
       })
@@ -34,10 +34,10 @@ class Registration extends React.Component {
   }
 
   unregister() {
-    axios.post(this.api_url + "/unregister?session_id=" + this.props.contributor.session_id)
+    axios.post(this.api_url + "/unregister?access_token=" + this.props.contributor.access_token)
       .then((response) => {
         this.props.changedRegistration(response.data);
-        document.getElementById('blurb').value = '';
+        // document.getElementById('blurb').value = '';
       })
       .catch((error) => {
         console.log(error);
@@ -45,7 +45,7 @@ class Registration extends React.Component {
   }
 
   updateBlurb() {
-    axios.post(this.api_url + "/update_blurb?session_id=" + this.props.contributor.session_id +"&blurb=" + this.state.blurb)
+    axios.post(this.api_url + "/update_blurb?access_token=" + this.props.contributor.access_token +"&blurb=" + this.state.blurb)
       .then((response) => {
         this.props.changedRegistration(response.data);
       })
@@ -66,9 +66,9 @@ class Registration extends React.Component {
         <Form>
           <Form.Group controlId="blurb">
             <Form.Label>Why should you receive funding?</Form.Label>
-            <Form.Control name="blurb" as="textarea" rows={3} maxLength="200" onChange={this.handleBlurbChange} defaultValue='' />
+            <Form.Control name="blurb" as="textarea" rows={3} maxLength="250" onChange={this.handleBlurbChange} value={this.state.blurb} />
           </Form.Group>
-          <Button variant="primary" onClick={this.register}>
+          <Button onClick={this.register}>
             Register
           </Button>
         </Form>
@@ -78,12 +78,12 @@ class Registration extends React.Component {
         <Form>
           <Form.Group controlId="blurb">
             <Form.Label>Why should you receive funding?</Form.Label>
-            <Form.Control name="blurb" as="textarea" rows={3} maxLength="200" onChange={this.handleBlurbChange} defaultValue={this.props.contributor.blurb} />
+            <Form.Control name="blurb" as="textarea" rows={3} maxLength="250" onChange={this.handleBlurbChange} value={this.state.blurb} />
           </Form.Group>
-          <Button variant="primary" onClick={this.updateBlurb}>
+          <Button onClick={this.updateBlurb}>
             Update Blurb
           </Button>
-          <Button variant="primary" onClick={this.unregister}>
+          <Button className="ml-2" onClick={this.unregister}>
             Unregister
           </Button>
         </Form>
