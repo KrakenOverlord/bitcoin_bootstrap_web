@@ -1,5 +1,6 @@
 **TODO**
 
+- what happens with a candidates votes when a candidate unregisters?
 - disable vote buttons after a vote
 - disable login link after pressed
 - success stories list after fully funded

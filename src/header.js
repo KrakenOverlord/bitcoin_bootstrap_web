@@ -1,24 +1,18 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
-import AuthenticationController from './authentication_controller.js';
+import Authentication from './authentication.js';
 
 function Header(props) {
-console.log("---Header");
+  console.log("---Header");
   return (
     <Navbar bg="light" expand="md">
       <Navbar.Brand href="#home">
-       <img
-         alt=""
-         src="/bitcoin.png"
-         width="30"
-         height="30"
-         className="d-inline-block align-top"
-       />{' '}
+       <img src="/bitcoin.png" alt="" width="30" height="30" className="d-inline-block align-top"/>{' '}
        Bootstrap
      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
-      <AuthenticationController contributor={props.contributor} signout={props.signout} />
+      <Authentication contributor={props.contributor} />
       </Navbar.Collapse>
     </Navbar>
   );

@@ -2,6 +2,8 @@ import React from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron'
 
 function Introduction(props) {
+  console.log("---Introduction");
+
   return (
     <Jumbotron>
       <h4>Bitcoin Bootstrap is a curated list of Bitcoin developers seeking financial support.</h4>
@@ -13,7 +15,7 @@ function Introduction(props) {
       </p>
 
       <p>
-      Only contributors to the <a href='https://github.com/bitcoin/bitcoin' target="_blank" rel="noopener noreferrer">Bitcoin Github repository</a> are listed.
+      Only contributors to the <a href='https://github.com/bitcoin/bitcoin' target="_blank" rel="noopener noreferrer">Bitcoin Github repository</a> can be listed.
       </p>
       Only <a href='https://github.com/bitcoin/bitcoin/graphs/contributors' target="_blank" rel="noopener noreferrer">contributors</a> can vote.
 
