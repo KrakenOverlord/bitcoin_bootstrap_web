@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
@@ -39,7 +40,7 @@ class Registration extends React.Component {
         if (response.error === true) {
           this.handleError(response);
         } else {
-          this.props.updateState(response.contributor, response.candidates);
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', title: 'You have successfully registered!', message: 'You can unregister at any time.' });
         }
       })
       .catch((error) => {
@@ -48,6 +49,7 @@ class Registration extends React.Component {
   }
 
   unregister() {
+    alert("Are you sure you want to unregister?");
     console.log("Calling unregister");
     axios.post(this.api_url + "/unregister?access_token=" + this.props.contributor.access_token)
       .then((res) => {
@@ -58,7 +60,7 @@ class Registration extends React.Component {
           this.handleError(response);
         } else {
           this.setState({ blurb: '' });
-          this.props.updateState(response.contributor, response.candidates);
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', title: 'You have successfully unregistered!', message: 'You can re-register at any time.' });
         }
       })
       .catch((error) => {
@@ -76,7 +78,7 @@ class Registration extends React.Component {
         if (response.error === true) {
           this.handleError(response);
         } else {
-          this.props.updateState(response.contributor, response.candidates);
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', title: 'You have successfully updated your description!', message: 'You can continue to update it at any time.' });
         }
       })
       .catch((error) => {
@@ -105,36 +107,44 @@ class Registration extends React.Component {
 
     return(
       <div className='mt-3'>
-      {this.props.contributor.is_candidate === false &&
-        <>
-        <b>To Register</b>
-        <p>Simply tell us why you should receive funding and press the "Register" button.</p>
-        <p />
-        <p>TIP - Include information on how people can get money to you either in the blurb below or on your GitHub profile page.</p>
-        <p />
-        <b>Once Registered</b>
-        <ul>
-        <li>You will be immediately added to the candidates list</li>
-        <li>Other contributors will be able to vote for you</li>
-        <li>You can unregister at any time and you will be immediately removed from the candidates list.</li>
-        <li>You can update your blurb at any time.</li>
-        <li>You can register and unregister as many times as you wish.</li>
-        <li>Once you are receiving enough funding to survive, unregister so that others can get the financial assistance they need.</li>
-        </ul>
-        </>
-      }
-      {this.props.contributor.is_candidate === true &&
-        <>
-        <span>You are registered as a candidate. You can either update your blurb or unregister.</span>
-        <p />
-        <b>Once Unregistered</b>
-        <ul>
-        <li>You will be immediately removed from the candidates list</li>
-        <li>You can reregister at any time.</li>
-        <li>You can register and unregister as many times as you wish.</li>
-        </ul>
-        </>
-      }
+        {this.props.contributor.is_candidate === false &&
+          <Card bg='secondary'>
+            <Card.Body>
+              <>
+              <b>To Register</b>
+              <p>Simply tell us why you should receive funding and press the "Register" button.</p>
+              <p />
+              <p>TIP - Include information on how people can get money to you either in the blurb below or on your GitHub profile page.</p>
+              <p />
+              <b>Once Registered</b>
+              <ul>
+              <li>You will be immediately added to the candidates list</li>
+              <li>Other contributors will be able to vote for you</li>
+              <li>You can unregister at any time and you will be immediately removed from the candidates list.</li>
+              <li>You can update your blurb at any time.</li>
+              <li>You can register and unregister as many times as you wish.</li>
+              <li>Once you are receiving enough funding to survive, unregister so that others can get the financial assistance they need.</li>
+              </ul>
+              </>
+            </Card.Body>
+          </Card>
+        }
+        {this.props.contributor.is_candidate === true &&
+          <Card bg='secondary'>
+            <Card.Body>
+              <>
+              <span>You are registered as a candidate. You can either update your blurb or unregister.</span>
+              <p />
+              <b>Once Unregistered</b>
+              <ul>
+              <li>You will be immediately removed from the candidates list</li>
+              <li>You can reregister at any time.</li>
+              <li>You can register and unregister as many times as you wish.</li>
+              </ul>
+              </>
+            </Card.Body>
+          </Card>
+        }
         <Form className='mt-3'>
           <Form.Group controlId="blurb">
             <Form.Label>Why should you receive funding? (250 characters max)</Form.Label>
@@ -145,7 +155,7 @@ class Registration extends React.Component {
           }
           {this.props.contributor.is_candidate === true &&
             <>
-            <Button onClick={this.updateBlurb}>Update Blurb</Button>
+            <Button onClick={this.updateBlurb}>Update</Button>
             <Button className="ml-2" onClick={this.unregister}>Unregister</Button>
             </>
           }

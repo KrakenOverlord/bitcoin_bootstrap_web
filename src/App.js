@@ -1,25 +1,26 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
 import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import Header from './header.js';
 import Introduction from './introduction.js';
-import Registration from './registration.js';
 import CandidatesList from './candidates_list.js';
+import AlertMessage from './alert_message.js';
+import ContributorPage from './contributor_page.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      alert: null,
       state: '',
       contributor: null,
       candidates: []
     };
 
     this.updateState = this.updateState.bind(this);
+    this.deleteAlert = this.deleteAlert.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -128,13 +129,18 @@ class App extends React.Component {
     }, this.landingPage);
   }
 
-  updateState(contributor, candidates) {
+  updateState(contributor, candidates, alert) {
     candidates.sort(function(a, b) { return b.votes - a.votes });
 
     this.setState({
+      alert: alert,
       contributor: contributor,
       candidates: candidates
     });
+  }
+
+  deleteAlert() {
+    this.setState({ alert: null });
   }
 
   render() {
@@ -152,14 +158,10 @@ class App extends React.Component {
       return (
         <Container>
           <Header contributor={this.state.contributor} />
-          <Tabs>
-            <Tab eventKey="vote" title="Vote">
-              <CandidatesList contributor={this.state.contributor} candidates={this.state.candidates} updateState={this.updateState} />
-            </Tab>
-            <Tab eventKey="register" title="Registration">
-              <Registration contributor={this.state.contributor} updateState={this.updateState} />
-            </Tab>
-          </Tabs>
+          {this.state.alert !== null &&
+            <AlertMessage alert={this.state.alert} deleteAlert={this.deleteAlert} />
+          }
+          <ContributorPage contributor={this.state.contributor} candidates={this.state.candidates} updateState={this.updateState} />
         </Container>
       );
     } else {
