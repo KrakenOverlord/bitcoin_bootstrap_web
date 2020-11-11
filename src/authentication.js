@@ -8,8 +8,8 @@ class Authentication extends React.Component {
     if (this.props.contributor === null) {
       return (
         <Nav.Link href={"https://github.com/login/oauth/authorize?client_id=" + process.env.REACT_APP_GITHUB_CLIENT_ID + "&allow_signup=false"}>
-        Sign in with Github
-        <img src="/github.png" alt="" height="25" width="45" />
+        Sign in with GitHub
+        <img className='ml-2' src="/octocat.png" alt="" height="30" width="36" />
         </Nav.Link>
       )
     } else {

@@ -1,17 +1,12 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
 
-class AlertMessage extends React.Component {
-  render() {
-    return (
-      <Alert variant={this.props.alert.variant} onClose={this.props.deleteAlert} dismissible>
-        <Alert.Heading>{this.props.alert.title}</Alert.Heading>
-        <p>
-          {this.props.alert.message}
-        </p>
-      </Alert>
-    );
-  }
+function AlertMessage(props) {
+  return (
+    <Alert className="mt-3" variant={props.alert.variant} onClose={props.deleteAlert} dismissible>
+      {props.alert.message}
+    </Alert>
+  );
 }
 
 export default AlertMessage;

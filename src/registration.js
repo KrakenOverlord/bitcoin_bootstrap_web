@@ -40,7 +40,7 @@ class Registration extends React.Component {
         if (response.error === true) {
           this.handleError(response);
         } else {
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', title: 'You have successfully registered!', message: 'You can unregister at any time.' });
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully registered.' });
         }
       })
       .catch((error) => {
@@ -60,7 +60,7 @@ class Registration extends React.Component {
           this.handleError(response);
         } else {
           this.setState({ blurb: '' });
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', title: 'You have successfully unregistered!', message: 'You can re-register at any time.' });
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully unregistered.' });
         }
       })
       .catch((error) => {
@@ -78,7 +78,7 @@ class Registration extends React.Component {
         if (response.error === true) {
           this.handleError(response);
         } else {
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', title: 'You have successfully updated your description!', message: 'You can continue to update it at any time.' });
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully updated your description.' });
         }
       })
       .catch((error) => {
@@ -108,7 +108,7 @@ class Registration extends React.Component {
     return(
       <div className='mt-3'>
         {this.props.contributor.is_candidate === false &&
-          <Card bg='secondary'>
+          <Card bg='light'>
             <Card.Body>
               <>
               <b>To Register</b>
@@ -130,7 +130,7 @@ class Registration extends React.Component {
           </Card>
         }
         {this.props.contributor.is_candidate === true &&
-          <Card bg='secondary'>
+          <Card bg='light'>
             <Card.Body>
               <>
               <span>You are registered as a candidate. You can either update your blurb or unregister.</span>

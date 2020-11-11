@@ -14,13 +14,15 @@ class App extends React.Component {
 
     this.state = {
       alert: null,
-      state: '',
+      state: '', // ['landingPage', 'signedIn']
+      voting: false,
       contributor: null,
       candidates: []
     };
 
     this.updateState = this.updateState.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
+    this.isVotingCallback = this.isVotingCallback.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -139,6 +141,10 @@ class App extends React.Component {
     });
   }
 
+  isVotingCallback(state) {
+    this.setState({ voting: state });
+  }
+
   deleteAlert() {
     this.setState({ alert: null });
   }
@@ -151,7 +157,12 @@ class App extends React.Component {
         <Container>
           <Header contributor={this.state.contributor} />
           <Introduction />
-          <CandidatesList contributor={this.state.contributor} candidates={this.state.candidates} updateState={this.updateState} />
+          <CandidatesList
+            contributor={this.state.contributor}
+            candidates={this.state.candidates}
+            updateState={this.updateState}
+            voting={this.state.voting}
+            isVotingCallback={this.isVotingCallback} />
         </Container>
       );
     } else if (this.state.state === 'signedIn') {
@@ -159,14 +170,23 @@ class App extends React.Component {
         <Container>
           <Header contributor={this.state.contributor} />
           {this.state.alert !== null &&
-            <AlertMessage alert={this.state.alert} deleteAlert={this.deleteAlert} />
+            <AlertMessage
+              alert={this.state.alert}
+              deleteAlert={this.deleteAlert} />
           }
-          <ContributorPage contributor={this.state.contributor} candidates={this.state.candidates} updateState={this.updateState} />
+          <ContributorPage
+            contributor={this.state.contributor}
+            candidates={this.state.candidates}
+            updateState={this.updateState}
+            voting={this.state.voting}
+            isVotingCallback={this.isVotingCallback} />
         </Container>
       );
     } else {
+      const style = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
+
       return(
-        <div className="text-center">
+        <div className="text-center" style={style}>
           <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>

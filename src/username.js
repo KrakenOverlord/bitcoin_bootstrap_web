@@ -2,13 +2,9 @@ import React from 'react';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 
-class VoteButton extends React.Component {
+class Username extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      voting: false
-    }
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -18,7 +14,7 @@ class VoteButton extends React.Component {
   }
 
   vote(new_candidate_username) {
-    this.setState({ voting: true });
+    this.props.isVotingCallback(true);
     axios.post(this.api_url + "/vote?access_token=" + this.props.contributor.access_token +"&vote=" + new_candidate_username)
       .then((res) => {
         var response = res.data;
@@ -31,30 +27,34 @@ class VoteButton extends React.Component {
             console.log("Problem signing in: " + response.error);
           }
         } else {
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', title: 'You have successfully voted for ' + new_candidate_username});
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully voted for ' + new_candidate_username});
         }
       })
       .catch((error) => {
         console.log(error);
       })
       .then(() => {
-        this.setState({ voting: false });
+        this.props.isVotingCallback(false);
       });
   }
 
   render() {
-    console.log("---VoteButton");
+    console.log("---Username");
 
     return (
       <h5>
         {(this.props.contributor !== null && this.props.contributor.voted_for === this.props.candidate.username) &&
           <>
-            Voted for {this.props.candidate.username}
-            <img src={'vote.png'} alt="" height="48" width="48" />
+          <span style={{ color: 'blue' }}>Voted for {this.props.candidate.username}</span>
+            <img src={'vote.png'} alt="" height="30" width="30" />
           </>
           }
         {(this.props.contributor !== null && this.props.contributor.voted_for !== this.props.candidate.username) &&
-          <Button disabled={this.state.voting} size="m" onClick={() => this.vote(this.props.candidate.username)}>Vote for {this.props.candidate.username}</Button>
+          <Button
+            variant="success"
+            disabled={this.props.voting}
+            size="sm"
+            onClick={() => this.vote(this.props.candidate.username)}>Vote for {this.props.candidate.username}</Button>
         }
         {this.props.contributor === null &&
           <a href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{this.props.candidate.username}</a>
@@ -64,4 +64,4 @@ class VoteButton extends React.Component {
   }
 }
 
-export default VoteButton;
+export default Username;

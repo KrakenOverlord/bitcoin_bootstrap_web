@@ -7,8 +7,7 @@ function Header(props) {
   return (
     <Navbar bg="light" expand="md">
       <Navbar.Brand href="#home">
-       <img src="/bitcoin.png" alt="" width="30" height="30" className="d-inline-block align-top"/>{' '}
-       Bootstrap
+       <img src="/Bitcoin-Logo.png" alt="" width="69" height="40" className="d-inline-block align-top"/>{' '}Bootstrap
      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
