@@ -1,23 +1,59 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 
-function ConfirmationModal(props) {
-  return (
-    <Modal.Dialog>
-      <Modal.Header closeButton>
-        <Modal.Title>Modal title</Modal.Title>
-      </Modal.Header>
+class ConfirmationModal extends React.Component {
+  constructor(props) {
+    super(props);
 
-      <Modal.Body>
-        <p>Modal body text goes here.</p>
-      </Modal.Body>
+    this.state = {
+      confirming: false
+    }
 
-      <Modal.Footer>
-        <Button variant="secondary">Close</Button>
-        <Button variant="primary">Save changes</Button>
-      </Modal.Footer>
-    </Modal.Dialog>
-  );
+    this.confirm = this.confirm.bind(this);
+  }
+
+  confirm() {
+    this.setState({ confirming: true });
+    this.props.confirm();
+  }
+
+  render() {
+    console.log("---ConfirmationModal");
+
+    return (
+      <Modal show={true} onHide={this.props.cancel}>
+          <Modal.Header closeButton>
+            <Modal.Title>Registration</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to unregister?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.props.cancel} disabled={this.state.confirming}>
+              Cancel
+            </Button>
+
+            {this.state.confirming === true &&
+              <Button variant="primary">
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                {' '}Unregistering...
+              </Button>
+            }
+            {this.state.confirming === false &&
+              <Button variant="primary" onClick={this.confirm}>
+                Unregister
+              </Button>
+            }
+          </Modal.Footer>
+        </Modal>
+    );
+  }
 }
 
 export default ConfirmationModal;

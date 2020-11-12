@@ -3,17 +3,21 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
+import ConfirmationModal from './confirmation_modal.js';
 
 class Registration extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      showUnregisterModal: false,
       description: this.props.contributor.description
     };
 
     this.register = this.register.bind(this);
     this.unregister = this.unregister.bind(this);
+    this.unregisterConfirmed = this.unregisterConfirmed.bind(this);
+    this.closeUnregisterModal = this.closeUnregisterModal.bind(this);
     this.updateBlurb = this.updateBlurb.bind(this);
     this.handleBlurbChange = this.handleBlurbChange.bind(this);
 
@@ -49,7 +53,10 @@ class Registration extends React.Component {
   }
 
   unregister() {
-    alert("Are you sure you want to unregister?");
+    this.setState({ showUnregisterModal: true });
+  }
+
+  unregisterConfirmed() {
     console.log("Calling unregister");
     axios.post(this.api_url + "/unregister?access_token=" + this.props.contributor.access_token)
       .then((res) => {
@@ -65,7 +72,14 @@ class Registration extends React.Component {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .then(() => {
+        this.closeUnregisterModal();
       });
+  }
+
+  closeUnregisterModal() {
+    this.setState({ showUnregisterModal: false });
   }
 
   updateBlurb() {
@@ -106,6 +120,11 @@ class Registration extends React.Component {
     console.log("---Registration");
 
     return(
+      <>
+      {this.state.showUnregisterModal === true &&
+        <ConfirmationModal confirm={this.unregisterConfirmed} cancel={this.closeUnregisterModal} />
+      }
+
       <div className='mt-3'>
         {this.props.contributor.is_candidate === false &&
           <Card bg='light'>
@@ -115,16 +134,6 @@ class Registration extends React.Component {
               <p>Simply tell us why you should receive funding and press the "Register" button.</p>
               <p />
               <p>TIP - Include information on how people can get money to you either in the description below or on your GitHub profile page.</p>
-              <p />
-              <b>Once Registered</b>
-              <ul>
-              <li>You will be immediately added to the candidates list</li>
-              <li>Other contributors will be able to vote for you</li>
-              <li>You can unregister at any time and you will be immediately removed from the candidates list.</li>
-              <li>You can update your description at any time.</li>
-              <li>You can register and unregister as many times as you wish.</li>
-              <li>Once you are receiving enough funding to survive, unregister so that others can get the financial assistance they need.</li>
-              </ul>
               </>
             </Card.Body>
           </Card>
@@ -134,17 +143,11 @@ class Registration extends React.Component {
             <Card.Body>
               <>
               <span>You are registered as a candidate. You can either update your description or unregister.</span>
-              <p />
-              <b>Once Unregistered</b>
-              <ul>
-              <li>You will be immediately removed from the candidates list</li>
-              <li>You can reregister at any time.</li>
-              <li>You can register and unregister as many times as you wish.</li>
-              </ul>
               </>
             </Card.Body>
           </Card>
         }
+
         <Form className='mt-3'>
           <Form.Group controlId="description">
             <Form.Label>Why should you receive funding? (250 characters max)</Form.Label>
@@ -161,6 +164,7 @@ class Registration extends React.Component {
           }
         </Form>
       </div>
+      </>
     );
   }
 }

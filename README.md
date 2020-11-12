@@ -3,6 +3,9 @@
 - need a verify unregister modal
 - disable register/unregister and update buttons
 - handle errors
+- stress test with hundreds of contributors and candidates
+- landing page detects if no candidates and encourages the first to sign up
+- create HowItWorks page
 - determine best num chars for blurb
 - figure out whitespace in blurb
 - icon for browser title image
@@ -10,9 +13,6 @@
 - what happens with a candidates votes when a candidate unregisters?
 - disable login link after pressed
 - success stories list after fully funded
-
-Want to help fund a bitcoin developer but not sure who to help? Unless you are actively involved in Bitcoin development, it can be hard to figure out who is doing good work and deserves financial support. Who better to know who is doing good work and needs help than actual Bitcoin developers?
-
 
 **Create the App**
 
