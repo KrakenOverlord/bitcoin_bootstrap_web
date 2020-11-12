@@ -34,7 +34,7 @@ class ConfirmationModal extends React.Component {
             </Button>
 
             {this.state.confirming === true &&
-              <Button variant="primary">
+              <Button disabled={true} variant="primary">
                 <Spinner
                   as="span"
                   animation="border"

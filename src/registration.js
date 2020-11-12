@@ -2,14 +2,19 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import ConfirmationModal from './confirmation_modal.js';
+import RegisterButton from './register_button.js';
+import UpdateDescriptionButton from './update_description_button.js';
 
 class Registration extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      isRegistering: false,
+      isUpdatingDescription: false,
       showUnregisterModal: false,
       description: this.props.contributor.description
     };
@@ -18,8 +23,8 @@ class Registration extends React.Component {
     this.unregister = this.unregister.bind(this);
     this.unregisterConfirmed = this.unregisterConfirmed.bind(this);
     this.closeUnregisterModal = this.closeUnregisterModal.bind(this);
-    this.updateBlurb = this.updateBlurb.bind(this);
-    this.handleBlurbChange = this.handleBlurbChange.bind(this);
+    this.updateDescription = this.updateDescription.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -28,13 +33,15 @@ class Registration extends React.Component {
     }
   }
 
-  handleBlurbChange(event) {
+  handleDescriptionChange(event) {
     this.setState({
       description: event.target.value
     });
   }
 
   register() {
+    this.setState({ isRegistering: true });
+
     console.log("Calling register");
     axios.post(this.api_url + "/register?access_token=" + this.props.contributor.access_token + "&description=" + this.state.description)
       .then((res) => {
@@ -49,6 +56,9 @@ class Registration extends React.Component {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .then(() => {
+        this.setState({ isRegistering: false });
       });
   }
 
@@ -82,7 +92,9 @@ class Registration extends React.Component {
     this.setState({ showUnregisterModal: false });
   }
 
-  updateBlurb() {
+  updateDescription() {
+    this.setState({ isUpdatingDescription: true });
+
     console.log("Calling update_description");
     axios.post(this.api_url + "/update_description?access_token=" + this.props.contributor.access_token +"&description=" + this.state.description)
       .then((res) => {
@@ -97,6 +109,9 @@ class Registration extends React.Component {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .then(() => {
+        this.setState({ isUpdatingDescription: false });
       });
   }
 
@@ -118,7 +133,6 @@ class Registration extends React.Component {
 
   render() {
     console.log("---Registration");
-
     return(
       <>
       {this.state.showUnregisterModal === true &&
@@ -150,16 +164,16 @@ class Registration extends React.Component {
 
         <Form className='mt-3'>
           <Form.Group controlId="description">
-            <Form.Label>Why should you receive funding? (250 characters max)</Form.Label>
-            <Form.Control name="description" as="textarea" rows={3} maxLength="250" onChange={this.handleBlurbChange} value={this.state.description} />
+            <Form.Label>Why should you receive funding? (500 characters max)</Form.Label>
+            <Form.Control name="description" as="textarea" rows={3} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
           </Form.Group>
-          {this.props.contributor.is_candidate === false &&
-            <Button onClick={this.register}>Register</Button>
+          {!this.props.contributor.is_candidate &&
+            <RegisterButton register={this.register} isRegistering={this.state.isRegistering} />
           }
-          {this.props.contributor.is_candidate === true &&
+          {this.props.contributor.is_candidate &&
             <>
-            <Button onClick={this.updateBlurb}>Update</Button>
-            <Button className="ml-2" onClick={this.unregister}>Unregister</Button>
+            <UpdateDescriptionButton isUpdatingDescription={this.state.isUpdatingDescription} updateDescription={this.updateDescription} />
+            <Button disabled={this.state.isUpdatingDescription} className="ml-2" onClick={this.unregister}>Unregister</Button>
             </>
           }
         </Form>

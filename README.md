@@ -1,7 +1,6 @@
 **TODO**
 
-- need a verify unregister modal
-- disable register/unregister and update buttons
+- disable register and update buttons
 - handle errors
 - stress test with hundreds of contributors and candidates
 - landing page detects if no candidates and encourages the first to sign up
