@@ -11,6 +11,9 @@ class Voting extends React.Component {
         <Card bg='light' className='mt-3'>
           <Card.Body>
             <div className="mt-3">
+            {this.props.contributor.voted_for !== '' &&
+              'You voted for ' + this.props.contributor.voted_for
+            }
               <ul>
                 <li>You can vote for a candidate.</li>
                 <li>Your vote is confidential. No one will ever know who you voted for.</li>
@@ -21,7 +24,12 @@ class Voting extends React.Component {
             </div>
           </Card.Body>
         </Card>
-        <CandidatesList contributor={this.props.contributor} candidates={this.props.candidates} updateState={this.props.updateState} voting={this.props.voting} isVotingCallback={this.props.isVotingCallback} />
+        <CandidatesList
+          contributor={this.props.contributor}
+          candidates={this.props.candidates}
+          updateState={this.props.updateState}
+          voting={this.props.voting}
+          isVotingCallback={this.props.isVotingCallback} />
       </>
     );
   }

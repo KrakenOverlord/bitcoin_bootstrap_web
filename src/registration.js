@@ -9,7 +9,7 @@ class Registration extends React.Component {
     super(props);
 
     this.state = {
-      blurb: this.props.contributor.blurb
+      description: this.props.contributor.description
     };
 
     this.register = this.register.bind(this);
@@ -26,13 +26,13 @@ class Registration extends React.Component {
 
   handleBlurbChange(event) {
     this.setState({
-      blurb: event.target.value
+      description: event.target.value
     });
   }
 
   register() {
     console.log("Calling register");
-    axios.post(this.api_url + "/register?access_token=" + this.props.contributor.access_token + "&blurb=" + this.state.blurb)
+    axios.post(this.api_url + "/register?access_token=" + this.props.contributor.access_token + "&description=" + this.state.description)
       .then((res) => {
         var response = res.data;
         console.log("register response: " + JSON.stringify(response));
@@ -59,7 +59,7 @@ class Registration extends React.Component {
         if (response.error === true) {
           this.handleError(response);
         } else {
-          this.setState({ blurb: '' });
+          this.setState({ description: '' });
           this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully unregistered.' });
         }
       })
@@ -69,11 +69,11 @@ class Registration extends React.Component {
   }
 
   updateBlurb() {
-    console.log("Calling update_blurb");
-    axios.post(this.api_url + "/update_blurb?access_token=" + this.props.contributor.access_token +"&blurb=" + this.state.blurb)
+    console.log("Calling update_description");
+    axios.post(this.api_url + "/update_description?access_token=" + this.props.contributor.access_token +"&description=" + this.state.description)
       .then((res) => {
         var response = res.data;
-        console.log("update_blurb response: " + JSON.stringify(response));
+        console.log("update_description response: " + JSON.stringify(response));
 
         if (response.error === true) {
           this.handleError(response);
@@ -114,14 +114,14 @@ class Registration extends React.Component {
               <b>To Register</b>
               <p>Simply tell us why you should receive funding and press the "Register" button.</p>
               <p />
-              <p>TIP - Include information on how people can get money to you either in the blurb below or on your GitHub profile page.</p>
+              <p>TIP - Include information on how people can get money to you either in the description below or on your GitHub profile page.</p>
               <p />
               <b>Once Registered</b>
               <ul>
               <li>You will be immediately added to the candidates list</li>
               <li>Other contributors will be able to vote for you</li>
               <li>You can unregister at any time and you will be immediately removed from the candidates list.</li>
-              <li>You can update your blurb at any time.</li>
+              <li>You can update your description at any time.</li>
               <li>You can register and unregister as many times as you wish.</li>
               <li>Once you are receiving enough funding to survive, unregister so that others can get the financial assistance they need.</li>
               </ul>
@@ -133,7 +133,7 @@ class Registration extends React.Component {
           <Card bg='light'>
             <Card.Body>
               <>
-              <span>You are registered as a candidate. You can either update your blurb or unregister.</span>
+              <span>You are registered as a candidate. You can either update your description or unregister.</span>
               <p />
               <b>Once Unregistered</b>
               <ul>
@@ -146,9 +146,9 @@ class Registration extends React.Component {
           </Card>
         }
         <Form className='mt-3'>
-          <Form.Group controlId="blurb">
+          <Form.Group controlId="description">
             <Form.Label>Why should you receive funding? (250 characters max)</Form.Label>
-            <Form.Control name="blurb" as="textarea" rows={3} maxLength="250" onChange={this.handleBlurbChange} value={this.state.blurb} />
+            <Form.Control name="description" as="textarea" rows={3} maxLength="250" onChange={this.handleBlurbChange} value={this.state.description} />
           </Form.Group>
           {this.props.contributor.is_candidate === false &&
             <Button onClick={this.register}>Register</Button>

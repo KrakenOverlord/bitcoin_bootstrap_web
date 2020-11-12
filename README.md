@@ -8,7 +8,6 @@
 - icon for browser title image
 - get better bitcoin and github images
 - what happens with a candidates votes when a candidate unregisters?
-- position spinner vertically
 - disable login link after pressed
 - success stories list after fully funded
 

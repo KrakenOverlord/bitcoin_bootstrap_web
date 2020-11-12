@@ -54,7 +54,7 @@ class App extends React.Component {
     console.log("Calling get_candidates");
     axios.post(this.api_url + "/get_candidates")
       .then((response) => {
-        let candidates = response.data;
+        let candidates = response.data.candidates;
         candidates.sort(function(a, b) { return b.votes - a.votes });
         this.setState({
           state:      'landingPage',

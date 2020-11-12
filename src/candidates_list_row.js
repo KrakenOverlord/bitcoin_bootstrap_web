@@ -24,7 +24,7 @@ function CandidatesListRow(props) {
           updateState={props.updateState}
           voting={props.voting}
           isVotingCallback={props.isVotingCallback} />
-        <span>{props.candidate.blurb}</span>
+        <span>{props.candidate.description}</span>
       </div>
     </li>
   );
