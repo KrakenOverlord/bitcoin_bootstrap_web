@@ -5,6 +5,20 @@ import Voting from './voting.js';
 import Registration from './registration.js';
 
 class ContributorPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      voting: false
+    };
+
+    this.isVotingCallback = this.isVotingCallback.bind(this);
+  }
+
+  isVotingCallback(state) {
+    this.setState({ voting: state });
+  }
+
   render() {
     return (
       <Tabs>
@@ -13,8 +27,8 @@ class ContributorPage extends React.Component {
             contributor={this.props.contributor}
             candidates={this.props.candidates}
             updateState={this.props.updateState}
-            voting={this.props.voting}
-            isVotingCallback={this.props.isVotingCallback} />
+            voting={this.state.voting}
+            isVotingCallback={this.isVotingCallback} />
         </Tab>
         <Tab eventKey="registration" title="Registration">
           <Registration

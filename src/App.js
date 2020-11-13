@@ -14,15 +14,13 @@ class App extends React.Component {
 
     this.state = {
       alert: null,
-      state: '', // ['landingPage', 'signedIn']
-      voting: false,
+      state: 'loading', // ['loading', 'signedOut', 'signedIn']
       contributor: null,
       candidates: []
     };
 
     this.updateState = this.updateState.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
-    this.isVotingCallback = this.isVotingCallback.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -32,41 +30,25 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (this.code() !== null) {
-      this.authenticateWithCode(this.code());
-    } else if (this.accessToken() !== null) {
-      this.authenticateWithAccessToken(this.accessToken());
+    if (this.getCode() !== null) {
+      this.signInWithCode(this.getCode());
+    } else if (this.getAccessToken() !== null) {
+      this.signInWithAccessToken(this.getAccessToken());
     } else {
-      this.landingPage();
+      this.loadCandidates();
     }
   }
 
-  accessToken() {
-    return localStorage.getItem('access_token');
-  }
-
-  code() {
+  getCode() {
     const url = new URL(window.location.href);
     return url.searchParams.get("code");
   }
 
-  landingPage() {
-    console.log("Calling get_candidates");
-    axios.post(this.api_url + "/get_candidates")
-      .then((response) => {
-        let candidates = response.data.candidates;
-        candidates.sort(function(a, b) { return b.votes - a.votes });
-        this.setState({
-          state:      'landingPage',
-          candidates: candidates
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  getAccessToken() {
+    return localStorage.getItem('access_token');
   }
 
-  authenticateWithCode(code) {
+  signInWithCode(code) {
     window.history.pushState({}, null, 'home');
     console.log("Calling signin_with_code");
     axios.post(this.api_url + "/signin_with_code?code=" + code)
@@ -96,12 +78,13 @@ class App extends React.Component {
       });
   }
 
-  authenticateWithAccessToken(access_token) {
+  signInWithAccessToken(access_token) {
     console.log("Calling signin_with_access_token");
     axios.post(this.api_url + "/signin_with_access_token?access_token=" + access_token)
       .then((res) => {
         var response = res.data;
         console.log("signin_with_access_token response: " + JSON.stringify(response));
+
         if (response.error === true) {
           if (response.error_code === 0 || response.error_code === 1) {
             this.signOut();
@@ -117,6 +100,25 @@ class App extends React.Component {
             candidates:   candidates
           });
         }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  loadCandidates() {
+    console.log("Calling get_candidates");
+    axios.post(this.api_url + "/get_candidates")
+      .then((res) => {
+        var response = res.data;
+        console.log("get_candidates response: " + JSON.stringify(response));
+
+        let candidates = response.candidates;
+        candidates.sort(function(a, b) { return b.votes - a.votes });
+        this.setState({
+          state:      'signedOut',
+          candidates: candidates
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -141,10 +143,6 @@ class App extends React.Component {
     });
   }
 
-  isVotingCallback(state) {
-    this.setState({ voting: state });
-  }
-
   deleteAlert() {
     this.setState({ alert: null });
   }
@@ -152,7 +150,7 @@ class App extends React.Component {
   render() {
     console.log("---App");
 
-    if (this.state.state === 'landingPage') {
+    if (this.state.state === 'signedOut') {
       return (
         <Container>
           <Header contributor={this.state.contributor} />
@@ -177,14 +175,11 @@ class App extends React.Component {
           <ContributorPage
             contributor={this.state.contributor}
             candidates={this.state.candidates}
-            updateState={this.updateState}
-            voting={this.state.voting}
-            isVotingCallback={this.isVotingCallback} />
+            updateState={this.updateState} />
         </Container>
       );
-    } else {
+    } else if (this.state.state === 'loading') {
       const style = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
-
       return(
         <div className="text-center" style={style}>
           <Spinner animation="border" role="status">

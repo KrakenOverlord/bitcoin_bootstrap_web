@@ -2,7 +2,6 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
-import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import ConfirmationModal from './confirmation_modal.js';
 import RegisterButton from './register_button.js';
@@ -77,7 +76,7 @@ class Registration extends React.Component {
           this.handleError(response);
         } else {
           this.setState({ description: '' });
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully unregistered.' });
+          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You successfully unregistered.' });
         }
       })
       .catch((error) => {
