@@ -9,25 +9,30 @@ class ContributorPage extends React.Component {
     super(props);
 
     this.state = {
-      voting: false
+      voting: false,
+      voting_for: ''
     };
 
     this.isVotingCallback = this.isVotingCallback.bind(this);
   }
 
-  isVotingCallback(state) {
-    this.setState({ voting: state });
+  isVotingCallback(state, voting_for) {
+    this.setState({
+      voting: state,
+      voting_for: voting_for
+    });
   }
 
   render() {
     return (
-      <Tabs>
+      <Tabs className="mt-3">
         <Tab eventKey="vote" title="Vote">
           <Voting
             contributor={this.props.contributor}
             candidates={this.props.candidates}
             updateState={this.props.updateState}
             voting={this.state.voting}
+            voting_for={this.state.voting_for}
             isVotingCallback={this.isVotingCallback} />
         </Tab>
         <Tab eventKey="registration" title="Registration">

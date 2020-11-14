@@ -1,5 +1,5 @@
 import React from 'react';
-import Username from './username.js'
+import UsernameButton from './username_button.js'
 
 function CandidatesListRow(props) {
   console.log("---CandidatesListRow");
@@ -18,12 +18,14 @@ function CandidatesListRow(props) {
       </div>
 
       <div className="media-body ml-3 sm">
-        <Username
+        <UsernameButton
           contributor={props.contributor}
           candidate={props.candidate}
           updateState={props.updateState}
           voting={props.voting}
+          voting_for={props.voting_for}
           isVotingCallback={props.isVotingCallback} />
+
         <span>{props.candidate.description}</span>
       </div>
     </li>

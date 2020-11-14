@@ -14,7 +14,7 @@ class App extends React.Component {
 
     this.state = {
       alert: null,
-      state: 'loading', // ['loading', 'signedOut', 'signedIn']
+      appState: 'loading', // ['loading', 'signedOut', 'signedIn']
       contributor: null,
       candidates: []
     };
@@ -67,7 +67,7 @@ class App extends React.Component {
           let candidates = response.candidates;
           candidates.sort(function(a, b) { return b.votes - a.votes });
           this.setState({
-            state:        'signedIn',
+            appState:        'signedIn',
             contributor:  response.contributor,
             candidates:   candidates
           });
@@ -95,7 +95,7 @@ class App extends React.Component {
           let candidates = response.candidates;
           candidates.sort(function(a, b) { return b.votes - a.votes });
           this.setState({
-            state:        'signedIn',
+            appState:        'signedIn',
             contributor:  response.contributor,
             candidates:   candidates
           });
@@ -116,7 +116,7 @@ class App extends React.Component {
         let candidates = response.candidates;
         candidates.sort(function(a, b) { return b.votes - a.votes });
         this.setState({
-          state:      'signedOut',
+          appState:      'signedOut',
           candidates: candidates
         });
       })
@@ -128,7 +128,7 @@ class App extends React.Component {
   signOut() {
     localStorage.removeItem('access_token');
     this.setState({
-      state: '',
+      appState: 'loading',
       contributor: null
     }, this.landingPage);
   }
@@ -150,7 +150,7 @@ class App extends React.Component {
   render() {
     console.log("---App");
 
-    if (this.state.state === 'signedOut') {
+    if (this.state.appState === 'signedOut') {
       return (
         <Container>
           <Header contributor={this.state.contributor} />
@@ -163,7 +163,7 @@ class App extends React.Component {
             isVotingCallback={this.isVotingCallback} />
         </Container>
       );
-    } else if (this.state.state === 'signedIn') {
+    } else if (this.state.appState === 'signedIn') {
       return (
         <Container>
           <Header contributor={this.state.contributor} />
@@ -178,7 +178,7 @@ class App extends React.Component {
             updateState={this.updateState} />
         </Container>
       );
-    } else if (this.state.state === 'loading') {
+    } else if (this.state.appState === 'loading') {
       const style = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
       return(
         <div className="text-center" style={style}>

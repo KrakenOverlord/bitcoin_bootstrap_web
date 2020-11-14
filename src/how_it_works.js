@@ -5,6 +5,11 @@ Who better to know who is doing good work and needs help than actual Bitcoin dev
 
 Voting
 Every contributor to the Bitcoin GitHub repository gets one vote. You can vote for any candidate, including yourself, assuming you are registered.
+You can vote for a candidate.
+Your vote is confidential. No one will ever know who you voted for.
+You can change your vote at any time.
+You can change your vote as many times as you wish.
+You can vote for yourself if you registered.
 
 Registration
 Any contributor to the Bitcoin GitHub repository can register to be listed and receive funding. Just sign in using GitHub, enter a brief description on why you should receive funding, and hit the register button.
