@@ -1,5 +1,5 @@
 **TODO**
-
+- if there are no candidates yet display appropriate message
 - disable register and update buttons
 - handle errors
 - stress test with hundreds of contributors and candidates

@@ -7,13 +7,22 @@ function CandidatesListRow(props) {
   return (
     <li className="media mt-3">
       <div className="img-with-text">
-      <a href={props.candidate.html_url} target="_blank" rel="noopener noreferrer">
+      {props.candidate.avatar_url !== '' ?
+        <a href={props.candidate.html_url} target="_blank" rel="noopener noreferrer">
+          <img
+            src={props.candidate.avatar_url}
+            alt=""
+            height="64"
+            width="64" />
+        </a>
+        :
         <img
-          src={props.candidate.avatar_url}
+          src='anonymous.png'
           alt=""
           height="64"
           width="64" />
-      </a>
+      }
+
       <p>{props.candidate.votes}{' votes'}</p>
       </div>
 

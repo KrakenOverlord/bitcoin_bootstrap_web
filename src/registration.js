@@ -67,6 +67,7 @@ class Registration extends React.Component {
 
   unregisterConfirmed() {
     console.log("Calling unregister");
+
     axios.post(this.api_url + "/unregister?access_token=" + this.props.contributor.access_token)
       .then((res) => {
         var response = res.data;

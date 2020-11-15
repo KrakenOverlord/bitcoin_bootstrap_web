@@ -9,16 +9,24 @@ function Introduction(props) {
     <Jumbotron className="mt-3">
       <h4>Bitcoin Bootstrap is a curated list of Bitcoin developers seeking financial help.</h4>
       <p className='mt-3'>
-        <a href='https://github.com/bitcoin/bitcoin/graphs/contributors' target="_blank" rel="noopener noreferrer">Contributors</a> to the <a href='https://github.com/bitcoin/bitcoin' target="_blank" rel="noopener noreferrer">Bitcoin GitHub repository</a> can register to be listed and vote for those they believe deserve funding.
+        <a href='https://github.com/bitcoin/bitcoin/graphs/contributors' target="_blank" rel="noopener noreferrer">Contributors</a> to the <a href='https://github.com/bitcoin/bitcoin' target="_blank" rel="noopener noreferrer">Bitcoin GitHub repository</a> can register to be listed, and contributors can vote for those they believe deserve funding.
       </p>
-      <p>
 
-      </p>
+      {props.numCandidates === 0 &&
+        <p>
+          No contributor has registered to be a candidate yet. Be the first!
+          Just sign in and hit the register button and you will be listed.
+        </p>
+      }
+
+      {props.numCandidates !== 0 &&
+        <p>
+          The list is displayed below and ordered by highest number of votes to lowest.
+        </p>
+      }
+
       <p>
-        The list is displayed below and ordered by highest number of votes to lowest.
-      </p>
-      <p>
-        <Button variant="primary">How it works</Button>
+        <Button variant="primary">Learn more</Button>
       </p>
     </Jumbotron>
   );

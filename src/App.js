@@ -7,6 +7,7 @@ import Introduction from './introduction.js';
 import CandidatesList from './candidates_list.js';
 import AlertMessage from './alert_message.js';
 import ContributorPage from './contributor_page.js';
+import LearnMore from './learn_more.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,13 +15,15 @@ class App extends React.Component {
 
     this.state = {
       alert: null,
-      appState: 'loading', // ['loading', 'signedOut', 'signedIn']
+      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'learnMore']
       contributor: null,
       candidates: []
     };
 
     this.updateState = this.updateState.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
+    this.showLearnMore = this.showLearnMore.bind(this);
+    this.home = this.home.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000';
@@ -147,14 +150,31 @@ class App extends React.Component {
     this.setState({ alert: null });
   }
 
+  showLearnMore() {
+    this.setState({ appState: 'learnMore' });
+  }
+
+  home() {
+    let appState = '';
+    if (this.state.contributor) {
+      appState = 'signedIn';
+    } else if (this.state.contributor === null) {
+      appState = 'signedOut';
+    }
+
+    this.setState({
+      appState: appState
+    });
+  }
+
   render() {
     console.log("---App");
 
     if (this.state.appState === 'signedOut') {
       return (
         <Container>
-          <Header contributor={this.state.contributor} />
-          <Introduction />
+          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} />
+          <Introduction numCandidates={this.state.candidates.length} />
           <CandidatesList
             contributor={this.state.contributor}
             candidates={this.state.candidates}
@@ -166,7 +186,7 @@ class App extends React.Component {
     } else if (this.state.appState === 'signedIn') {
       return (
         <Container>
-          <Header contributor={this.state.contributor} />
+          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} />
           {this.state.alert !== null &&
             <AlertMessage
               alert={this.state.alert}
@@ -176,6 +196,12 @@ class App extends React.Component {
             contributor={this.state.contributor}
             candidates={this.state.candidates}
             updateState={this.updateState} />
+        </Container>
+      );
+    } else if (this.state.appState === 'learnMore') {
+      return(
+        <Container>
+          <LearnMore contributor={this.state.contributor} />
         </Container>
       );
     } else if (this.state.appState === 'loading') {
