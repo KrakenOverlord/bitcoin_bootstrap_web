@@ -15,7 +15,7 @@ class UsernameButton extends React.Component {
   }
 
   vote(new_candidate_username) {
-    this.props.isVotingCallback(true, new_candidate_username);
+    this.props.isVotingCallback(new_candidate_username);
 
     console.log("Calling vote");
     axios.post(this.api_url + "/vote?access_token=" + this.props.contributor.access_token +"&vote=" + new_candidate_username)
@@ -37,32 +37,54 @@ class UsernameButton extends React.Component {
         console.log(error);
       })
       .then(() => {
-        this.props.isVotingCallback(false, '');
+        this.props.isVotingCallback('');
       });
   }
 
   render() {
-    console.log("---Username");
+    console.log("---UsernameButton");
+
+    const signedIn = this.props.contributor !== null;
+    const candidateUsername = this.props.candidate.username;
+    const isVoting = this.props.isVoting;
 
     return (
       <h5>
         { /* not signed in */ }
-        {this.props.contributor === null &&
-          <a href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{this.props.candidate.username}</a>
+        {!signedIn &&
+          <a href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
+        }
+
+        { /* signed in and not voting state and didn't vote for this candidate */ }
+        {signedIn && !isVoting && this.props.contributor.voted_for !== candidateUsername &&
+          <Button
+            variant="success"
+            size="sm"
+            onClick={() => this.vote(candidateUsername)}>Vote for {candidateUsername}
+          </Button>
+        }
+
+
+        { /* signed in and not voting state and voted for this candidate */ }
+        {signedIn && !isVoting && this.props.contributor.voted_for === candidateUsername &&
+          <>
+          <span style={{ color: 'blue' }}>Voted for {candidateUsername}</span>
+          <img className="ml-2" src={'vote.png'} alt="" height="30" width="30" />
+          </>
         }
 
         { /* signed in and voting state but didn't vote for this candidate */ }
-        {this.props.contributor !== null && this.props.voting && this.props.voting_for !== this.props.candidate.username &&
+        {signedIn && isVoting && isVoting !== candidateUsername &&
           <Button
             disabled={true}
             variant="success"
             size="sm"
-            onClick={() => this.vote(this.props.candidate.username)}>Vote for {this.props.candidate.username}
+            onClick={() => this.vote(candidateUsername)}>Vote for {candidateUsername}
           </Button>
         }
 
         { /* signed in and voting state and voting for this candidate */ }
-        {this.props.contributor !== null && this.props.voting && this.props.voting_for === this.props.candidate.username &&
+        {signedIn && isVoting && isVoting === candidateUsername &&
           <Button
           disabled={true}
           variant="success"
@@ -74,26 +96,8 @@ class UsernameButton extends React.Component {
               role="status"
               aria-hidden="true"
             />
-            {' Voting for ' + this.props.candidate.username}
+            {' Voting for ' + candidateUsername}
           </Button>
-        }
-
-        { /* signed in and not voting state and didn't vote for this candidate */ }
-        {this.props.contributor !== null && !this.props.voting && this.props.contributor.voted_for !== this.props.candidate.username &&
-          <Button
-            variant="success"
-            size="sm"
-            onClick={() => this.vote(this.props.candidate.username)}>Vote for {this.props.candidate.username}
-          </Button>
-        }
-
-
-        { /* signed in and not voting state and voted for this candidate */ }
-        {this.props.contributor !== null && !this.props.voting && this.props.contributor.voted_for === this.props.candidate.username &&
-          <>
-          <span style={{ color: 'blue' }}>Voted for {this.props.candidate.username}</span>
-          <img className="ml-2" src={'vote.png'} alt="" height="30" width="30" />
-          </>
         }
       </h5>
     );

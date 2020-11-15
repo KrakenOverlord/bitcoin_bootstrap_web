@@ -1,6 +1,5 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import Header from './header.js';
 import Introduction from './introduction.js';
@@ -8,6 +7,7 @@ import CandidatesList from './candidates_list.js';
 import AlertMessage from './alert_message.js';
 import ContributorPage from './contributor_page.js';
 import LearnMore from './learn_more.js';
+import LoadingSpinner from './loading_spinner.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class App extends React.Component {
     } else if (this.getAccessToken() !== null) {
       this.signInWithAccessToken(this.getAccessToken());
     } else {
-      this.loadCandidates();
+      this.getCandidates();
     }
   }
 
@@ -109,8 +109,9 @@ class App extends React.Component {
       });
   }
 
-  loadCandidates() {
+  getCandidates() {
     console.log("Calling get_candidates");
+
     axios.post(this.api_url + "/get_candidates")
       .then((res) => {
         var response = res.data;
@@ -119,14 +120,20 @@ class App extends React.Component {
         let candidates = response.candidates;
         candidates.sort(function(a, b) { return b.votes - a.votes });
         this.setState({
-          appState:      'signedOut',
+          appState: 'signedOut',
           candidates: candidates
         });
       })
       .catch((error) => {
         console.log(error);
+
+        this.setState({
+          appState: 'signedOut'
+        });
       });
   }
+
+  // CALLBACKS
 
   signOut() {
     localStorage.removeItem('access_token');
@@ -162,10 +169,10 @@ class App extends React.Component {
       appState = 'signedOut';
     }
 
-    this.setState({
-      appState: appState
-    });
+    this.setState({ appState: appState });
   }
+
+  // END CALLBACKS
 
   render() {
     console.log("---App");
@@ -174,13 +181,12 @@ class App extends React.Component {
       return (
         <Container>
           <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} />
-          <Introduction numCandidates={this.state.candidates.length} />
-          <CandidatesList
-            contributor={this.state.contributor}
-            candidates={this.state.candidates}
-            updateState={this.updateState}
-            voting={this.state.voting}
-            isVotingCallback={this.isVotingCallback} />
+          <Introduction numCandidates={this.state.candidates.length} showLearnMore={this.showLearnMore} />
+          {this.state.candidates.length !== 0 &&
+            <CandidatesList
+              contributor={this.state.contributor}
+              candidates={this.state.candidates} />
+          }
         </Container>
       );
     } else if (this.state.appState === 'signedIn') {
@@ -201,18 +207,14 @@ class App extends React.Component {
     } else if (this.state.appState === 'learnMore') {
       return(
         <Container>
+          <Header contributor={this.state.contributor} home={this.home} />
           <LearnMore contributor={this.state.contributor} />
         </Container>
       );
     } else if (this.state.appState === 'loading') {
-      const style = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
       return(
-        <div className="text-center" style={style}>
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        </div>
-      )
+        <LoadingSpinner />
+      );
     }
   }
 }

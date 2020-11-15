@@ -9,7 +9,7 @@ class Authentication extends React.Component {
       return (
         <Nav.Link href={"https://github.com/login/oauth/authorize?client_id=" + process.env.REACT_APP_GITHUB_CLIENT_ID + "&allow_signup=false"}>
         Sign in with GitHub
-        <img className='ml-2' src="/octocat.png" alt="" height="30" width="36" />
+        <img className='ml-2' src="/GitHub-Mark-32px.png" alt="" height="32" width="32" />
         </Nav.Link>
       )
     } else {

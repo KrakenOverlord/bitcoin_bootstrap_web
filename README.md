@@ -2,6 +2,9 @@
 - if there are no candidates yet display appropriate message
 - disable register and update buttons
 - handle errors
+- get contact working
+- test on multiple browsers
+- get back button working for main screens
 - stress test with hundreds of contributors and candidates
 - landing page detects if no candidates and encourages the first to sign up
 - create HowItWorks page

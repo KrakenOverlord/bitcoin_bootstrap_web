@@ -31,8 +31,7 @@ function CandidatesListRow(props) {
           contributor={props.contributor}
           candidate={props.candidate}
           updateState={props.updateState}
-          voting={props.voting}
-          voting_for={props.voting_for}
+          isVoting={props.isVoting}
           isVotingCallback={props.isVotingCallback} />
 
         <span>{props.candidate.description}</span>
