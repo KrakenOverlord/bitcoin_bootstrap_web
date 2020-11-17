@@ -5,7 +5,7 @@ function LearnMore(props) {
     <>
     <h3>Introduction</h3>
     <span>
-      Bitcoin has given you so much that you want to give back to the Bitcoin community by helping to fund a Bitcoin developer. But which one? Which ones are looking for help? Which ones are doing good work?
+      So you want to give back to the Bitcoin community by helping to fund a Bitcoin developer. But which one? Which ones are looking for help? Which ones are doing good work?
       Unless you are already a Bitcoin developer familiar with the technology and working in the trenches it can be hard to figure out who you should help.
       <p />
       <p>But who knows this information better than other Bitcoin developers? This website leverages the knowledge of Bitcoin developers to asertain who is doing good work and deserves financial help.</p>

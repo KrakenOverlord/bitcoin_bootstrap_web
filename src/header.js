@@ -19,7 +19,7 @@ function Header(props) {
      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Nav.Link onClick={props.showLearnMore} href="#learn-more">Learn more</Nav.Link>
-      <Nav.Link href="#contact">Contact</Nav.Link>
+      <Nav.Link onClick={props.showContact} href="#contact">Contact</Nav.Link>
       <Navbar.Collapse className="justify-content-end">
 
       <Authentication contributor={props.contributor} />

@@ -1,13 +1,13 @@
 **TODO**
-- if there are no candidates yet display appropriate message
-- disable register and update buttons
+- setting api url correct?
+- axios post request should put params in hash
+- what is the max URL parameter length? 1024?
+- must not be able to vote while registration action taking place
+- put encodeURIComponent on every url parameter (but not post requests)
 - handle errors
-- get contact working
 - test on multiple browsers
 - get back button working for main screens
-- stress test with hundreds of contributors and candidates
-- landing page detects if no candidates and encourages the first to sign up
-- create HowItWorks page
+- stress test get_candidates before and after on-demand
 - determine best num chars for blurb
 - figure out whitespace in blurb
 - icon for browser title image

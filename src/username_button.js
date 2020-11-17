@@ -17,8 +17,11 @@ class UsernameButton extends React.Component {
   vote(new_candidate_username) {
     this.props.isVotingCallback(new_candidate_username);
 
-    console.log("Calling vote");
-    axios.post(this.api_url + "/vote?access_token=" + this.props.contributor.access_token +"&vote=" + new_candidate_username)
+    const encoded_new_candidate_username = encodeURIComponent(new_candidate_username);
+    const url = this.api_url + "/vote?access_token=" + this.props.contributor.access_token +"&vote=" + encoded_new_candidate_username;
+    console.log("Calling vote: " + url);
+
+    axios.post(url)
       .then((res) => {
         var response = res.data;
         console.log("vote response: " + JSON.stringify(response));
@@ -49,7 +52,7 @@ class UsernameButton extends React.Component {
     const isVoting = this.props.isVoting;
 
     return (
-      <h5>
+      <>
         { /* not signed in */ }
         {!signedIn &&
           <a href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
@@ -68,7 +71,7 @@ class UsernameButton extends React.Component {
         { /* signed in and not voting state and voted for this candidate */ }
         {signedIn && !isVoting && this.props.contributor.voted_for === candidateUsername &&
           <>
-          <span style={{ color: 'blue' }}>Voted for {candidateUsername}</span>
+          <b><span style={{ color: 'DodgerBlue' }}>Voted for {candidateUsername}</span></b>
           <img className="ml-2" src={'vote.png'} alt="" height="30" width="30" />
           </>
         }
@@ -99,7 +102,7 @@ class UsernameButton extends React.Component {
             {' Voting for ' + candidateUsername}
           </Button>
         }
-      </h5>
+      </>
     );
   }
 }

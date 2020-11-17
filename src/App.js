@@ -7,6 +7,7 @@ import CandidatesList from './candidates_list.js';
 import AlertMessage from './alert_message.js';
 import ContributorPage from './contributor_page.js';
 import LearnMore from './learn_more.js';
+import Contact from './contact.js';
 import LoadingSpinner from './loading_spinner.js';
 
 class App extends React.Component {
@@ -15,14 +16,17 @@ class App extends React.Component {
 
     this.state = {
       alert: null,
-      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'learnMore']
+      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'learnMore', 'contact']
       contributor: null,
       candidates: []
     };
 
     this.updateState = this.updateState.bind(this);
+    this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
     this.showLearnMore = this.showLearnMore.bind(this);
+    this.showContact = this.showContact.bind(this);
+
     this.home = this.home.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -117,16 +121,21 @@ class App extends React.Component {
         var response = res.data;
         console.log("get_candidates response: " + JSON.stringify(response));
 
-        let candidates = response.candidates;
-        candidates.sort(function(a, b) { return b.votes - a.votes });
-        this.setState({
-          appState: 'signedOut',
-          candidates: candidates
-        });
+        if (!response.error) {
+          let candidates = response.candidates;
+          candidates.sort(function(a, b) { return b.votes - a.votes });
+          this.setState({
+            appState: 'signedOut',
+            candidates: candidates
+          });
+        } else {
+          this.setState({
+            appState: 'signedOut'
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
-
         this.setState({
           appState: 'signedOut'
         });
@@ -134,6 +143,35 @@ class App extends React.Component {
   }
 
   // CALLBACKS
+
+  home() {
+    let appState = '';
+    if (this.state.contributor) {
+      appState = 'signedIn';
+    } else if (this.state.contributor === null) {
+      appState = 'signedOut';
+    }
+
+    this.setState({ appState: appState });
+  }
+
+  showAlert(message) {
+    this.setState({
+      alert: message
+    });
+  }
+
+  deleteAlert() {
+    this.setState({ alert: null });
+  }
+
+  showLearnMore() {
+    this.setState({ appState: 'learnMore' });
+  }
+
+  showContact() {
+    this.setState({ appState: 'contact' });
+  }
 
   signOut() {
     localStorage.removeItem('access_token');
@@ -153,25 +191,6 @@ class App extends React.Component {
     });
   }
 
-  deleteAlert() {
-    this.setState({ alert: null });
-  }
-
-  showLearnMore() {
-    this.setState({ appState: 'learnMore' });
-  }
-
-  home() {
-    let appState = '';
-    if (this.state.contributor) {
-      appState = 'signedIn';
-    } else if (this.state.contributor === null) {
-      appState = 'signedOut';
-    }
-
-    this.setState({ appState: appState });
-  }
-
   // END CALLBACKS
 
   render() {
@@ -180,7 +199,12 @@ class App extends React.Component {
     if (this.state.appState === 'signedOut') {
       return (
         <Container>
-          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} />
+          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
+          {this.state.alert !== null &&
+            <AlertMessage
+              alert={this.state.alert}
+              deleteAlert={this.deleteAlert} />
+          }
           <Introduction numCandidates={this.state.candidates.length} showLearnMore={this.showLearnMore} />
           {this.state.candidates.length !== 0 &&
             <CandidatesList
@@ -192,7 +216,7 @@ class App extends React.Component {
     } else if (this.state.appState === 'signedIn') {
       return (
         <Container>
-          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} />
+          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
           {this.state.alert !== null &&
             <AlertMessage
               alert={this.state.alert}
@@ -207,8 +231,25 @@ class App extends React.Component {
     } else if (this.state.appState === 'learnMore') {
       return(
         <Container>
-          <Header contributor={this.state.contributor} home={this.home} />
+          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
+          {this.state.alert !== null &&
+            <AlertMessage
+              alert={this.state.alert}
+              deleteAlert={this.deleteAlert} />
+          }
           <LearnMore contributor={this.state.contributor} />
+        </Container>
+      );
+    } else if (this.state.appState === 'contact') {
+      return(
+        <Container>
+          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
+          {this.state.alert !== null &&
+            <AlertMessage
+              alert={this.state.alert}
+              deleteAlert={this.deleteAlert} />
+          }
+          <Contact contributor={this.state.contributor} showAlert={this.showAlert} />
         </Container>
       );
     } else if (this.state.appState === 'loading') {
