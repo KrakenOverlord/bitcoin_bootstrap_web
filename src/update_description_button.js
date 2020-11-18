@@ -17,7 +17,7 @@ function UpdateDescriptionButton(props) {
         {' '}Updating Description...
       </Button>
       :
-      <Button onClick={props.updateDescription}>Update Description</Button>
+      <Button disabled={props.disabled} onClick={props.updateDescription}>Update Description</Button>
     }
     </>
   );

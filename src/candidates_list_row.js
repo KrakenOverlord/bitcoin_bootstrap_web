@@ -23,7 +23,8 @@ function CandidatesListRow(props) {
           width="64" />
       }
 
-      <p>{props.candidate.votes}{' votes'}</p>
+      <p style={{ textAlign: "center", fontWeight: 'bold', color: 'red', fontSize: '12px' }}>{props.candidate.votes}{' votes'}
+      </p>
       </div>
 
       <div className="media-body ml-3 sm">
@@ -34,7 +35,9 @@ function CandidatesListRow(props) {
           isVoting={props.isVoting}
           isVotingCallback={props.isVotingCallback} />
 
-        <span>{props.candidate.description}</span>
+        <p>
+          <span>{props.candidate.description}</span>
+        </p>
       </div>
     </li>
   );

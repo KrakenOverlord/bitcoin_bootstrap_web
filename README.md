@@ -1,13 +1,15 @@
 **TODO**
+- #url handling is goofy in url bar
 - setting api url correct?
+- stress test get_candidates before and after on-demand
 - axios post request should put params in hash
 - what is the max URL parameter length? 1024?
 - must not be able to vote while registration action taking place
-- put encodeURIComponent on every url parameter (but not post requests)
+- put encodeURIComponent on every get request (but not post requests)
 - handle errors
+- add google analytics
 - test on multiple browsers
 - get back button working for main screens
-- stress test get_candidates before and after on-demand
 - determine best num chars for blurb
 - figure out whitespace in blurb
 - icon for browser title image

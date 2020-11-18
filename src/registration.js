@@ -156,7 +156,7 @@ class Registration extends React.Component {
           <Card bg='light'>
             <Card.Body>
               <>
-              <span>You are registered as a candidate. You can either update your description or unregister.</span>
+              <span>You are registered as a candidate.</span>
               </>
             </Card.Body>
           </Card>
@@ -172,7 +172,7 @@ class Registration extends React.Component {
           }
           {this.props.contributor.is_candidate &&
             <>
-            <UpdateDescriptionButton isUpdatingDescription={this.state.isUpdatingDescription} updateDescription={this.updateDescription} />
+            <UpdateDescriptionButton disabled={this.state.description.length === 0} isUpdatingDescription={this.state.isUpdatingDescription} updateDescription={this.updateDescription} />
             <Button disabled={this.state.isUpdatingDescription} className="ml-2" onClick={this.unregister}>Unregister</Button>
             </>
           }

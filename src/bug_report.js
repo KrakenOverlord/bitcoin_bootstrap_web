@@ -77,6 +77,7 @@ class BugReport extends React.Component {
               <li>The steps to reproduce the bug.</li>
               <li>The browser you are using.</li>
               <li>The operating system you are using.</li>
+              <li>Optionally include your email address if it's ok to contact you for additional information.</li>
             </ul>
             </>
           </Card.Body>

@@ -50,12 +50,24 @@ class UsernameButton extends React.Component {
     const signedIn = this.props.contributor !== null;
     const candidateUsername = this.props.candidate.username;
     const isVoting = this.props.isVoting;
+    const contributions = this.props.candidate.contributions;
+    let anonymous = false;
+    if (this.props.candidate.contributor_type === "Anonymous") {
+      anonymous = true;
+    }
 
     return (
       <>
         { /* not signed in */ }
-        {!signedIn &&
-          <a href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
+        {!signedIn && !anonymous &&
+          <a style={{ fontWeight: 'bold' }} href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
+        }
+
+        { /* not signed in */ }
+        {!signedIn && anonymous &&
+          <>
+            <span style={{ fontWeight: 'bold' }}>{candidateUsername}</span>
+          </>
         }
 
         { /* signed in and not voting state and didn't vote for this candidate */ }
