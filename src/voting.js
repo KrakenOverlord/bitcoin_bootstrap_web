@@ -12,7 +12,7 @@ function Voting(props) {
           <div className="mt-3">
             { /* if they haven't voted yet */}
             {props.contributor.voted_for !== '' &&
-              'You voted for ' + props.contributor.voted_for
+              'You voted for ' + props.contributor.voted_for + "."
             }
 
             { /* if they've voted */}

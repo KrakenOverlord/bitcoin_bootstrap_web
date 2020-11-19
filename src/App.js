@@ -74,7 +74,7 @@ class App extends React.Component {
           let candidates = response.candidates;
           candidates.sort(function(a, b) { return b.votes - a.votes });
           this.setState({
-            appState:        'signedIn',
+            appState:     'signedIn',
             contributor:  response.contributor,
             candidates:   candidates
           });

@@ -42,23 +42,30 @@ class Registration extends React.Component {
     this.setState({ isRegistering: true });
 
     console.log("Calling register");
-    axios.post(this.api_url + "/register?access_token=" + this.props.contributor.access_token + "&description=" + this.state.description)
-      .then((res) => {
-        var response = res.data;
-        console.log("register response: " + JSON.stringify(response));
+    axios.post(this.api_url + "/register", {
+      access_token: this.props.contributor.access_token,
+      description: this.state.description
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("register response: " + JSON.stringify(response));
 
-        if (response.error === true) {
-          this.handleError(response);
-        } else {
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully registered.' });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .then(() => {
-        this.setState({ isRegistering: false });
-      });
+      if (response.error === true) {
+        this.handleError(response);
+      } else {
+        let message = {
+          variant: 'success',
+          message: 'You have successfully registered.'
+        };
+        this.props.updateState(response.contributor, response.candidates, message);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .then(() => {
+      this.setState({ isRegistering: false });
+    });
   }
 
   unregister() {
@@ -77,7 +84,11 @@ class Registration extends React.Component {
           this.handleError(response);
         } else {
           this.setState({ description: '' });
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You successfully unregistered.' });
+          let message = {
+            variant: 'success',
+            message: 'You successfully unregistered.'
+          };
+          this.props.updateState(response.contributor, response.candidates, message);
         }
       })
       .catch((error) => {
@@ -144,10 +155,10 @@ class Registration extends React.Component {
           <Card bg='light'>
             <Card.Body>
               <>
-              <b>To Register</b>
-              <p>Simply tell us why you should receive funding and press the "Register" button.</p>
-              <p />
-              <p>TIP - Include information on how people can get money to you either in the description below or on your GitHub profile page.</p>
+              Please describe the contributions you have made and what you are currently working on.
+              <p>
+              Don't forget to include information on how people can get money to you either in the description below or on your GitHub profile page.
+              </p>
               </>
             </Card.Body>
           </Card>
@@ -156,7 +167,7 @@ class Registration extends React.Component {
           <Card bg='light'>
             <Card.Body>
               <>
-              <span>You are registered as a candidate.</span>
+              <span>You are registered as a candidate. If you unregister we save your description and number of votes.</span>
               </>
             </Card.Body>
           </Card>
@@ -165,7 +176,7 @@ class Registration extends React.Component {
         <Form className='mt-3'>
           <Form.Group controlId="description">
             <Form.Label>Why should you receive funding? (500 characters max)</Form.Label>
-            <Form.Control name="description" as="textarea" rows={3} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
+            <Form.Control name="description" as="textarea" rows={4} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
           </Form.Group>
           {!this.props.contributor.is_candidate &&
             <RegisterButton register={this.register} isRegistering={this.state.isRegistering} />
