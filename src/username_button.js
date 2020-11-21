@@ -17,31 +17,36 @@ class UsernameButton extends React.Component {
   vote(new_candidate_username) {
     this.props.isVotingCallback(new_candidate_username);
 
-    const encoded_new_candidate_username = encodeURIComponent(new_candidate_username);
-    const url = this.api_url + "/vote?access_token=" + this.props.contributor.access_token +"&vote=" + encoded_new_candidate_username;
-    console.log("Calling vote: " + url);
+    console.log("Calling vote");
+    axios.post(this.api_url + "/vote", {
+      access_token: this.props.contributor.access_token,
+      vote: new_candidate_username
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("vote response: " + JSON.stringify(response));
 
-    axios.post(url)
-      .then((res) => {
-        var response = res.data;
-        console.log("vote response: " + JSON.stringify(response));
+      if (response.error) {
+        this.handleError(response.error_code, "Could not record the vote. Please try again later.");
+      } else {
+        this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully voted for ' + new_candidate_username});
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      this.handleError(100, "Could not record the vote. Please try again later.");
+    })
+    .then(() => {
+      this.props.isVotingCallback('');
+    });
+  }
 
-        if (response.error === true) {
-          if (response.error_code === 1) {
-            alert("Only contributors to the Bitcoin GitHub repository are allowed to sign in.");
-          } else {
-            console.log("Problem signing in: " + response.error);
-          }
-        } else {
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully voted for ' + new_candidate_username});
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .then(() => {
-        this.props.isVotingCallback('');
-      });
+  handleError(code, message) {
+    if (code === 0 || code === 1) {
+      this.props.signOut();
+    } else {
+      this.props.showAlert({ variant: 'danger', message: message });
+    }
   }
 
   render() {
@@ -50,7 +55,6 @@ class UsernameButton extends React.Component {
     const signedIn = this.props.contributor !== null;
     const candidateUsername = this.props.candidate.username;
     const isVoting = this.props.isVoting;
-    const contributions = this.props.candidate.contributions;
     let anonymous = false;
     if (this.props.candidate.contributor_type === "Anonymous") {
       anonymous = true;

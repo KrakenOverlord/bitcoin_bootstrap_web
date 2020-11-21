@@ -4,28 +4,29 @@ function LearnMore(props) {
   return(
     <>
     <h3 className='mt-3'>Introduction</h3>
-    <span>
-    Starting with Satoshi Nakamoto, Bitcoin was originally built and maintained by unpaid volunteers who envisioned a better world.
 
-    Over the years, some of these developers got jobs that pay them to work on bitcoin full-time,
-    but most continue as unpaid volunteers.
+    <b>The History</b>
+    <p />Starting with Satoshi Nakamoto, Bitcoin was built by unpaid volunteers who envisioned a better world with Bitcoin.
+    Most worked on it on the side while working a normal job to support themselves. Some even worked on it while living off their personal savings.
+    Eventually, some found jobs that pay them to work on Bitcoin, but most continue unpaid.
 
-    Many people recognize the benefits Bitcoin has given them, and would like to give back to the community by financially helping one of these Bitcoin developers.
-
+    <p /><b>The Problem</b>
+    <p />Many people recognize the contributions of these selfless workers, and would like to give back to the community by financially helping one of these unpaid Bitcoin developers.
     But which one? Which ones are looking for help? Which ones are doing good work?
+    Unless you are a Bitcoin developer familiar with the technology and working in the trenches, it is hard to know which individuals are most deserving of help.
 
-      Unless you are already a developer familiar with the technology and working in the trenches, it can be hard to figure out the right person to support.
-      <p />
-      <p>But who knows this information better than Bitcoin developers?
-      This website leverages the knowledge of Bitcoin developers to bring visibility to the developers doing good work and deserving of financial help.</p>
-    </span>
+    <p /><b>The Solution</b>
+    <p />But Bitcoin developers <i>are</i> familiar with the technology and <i>are</i> working in the trenches.
+    They already know who is doing good work and who is most deserving of help.
+    We just need to bring that knowledge to the surface in an accessible way.
+    To do that, contributors to Bitcoin core can register on this website to be placed on a list of candidates seeking financial help.
+    Then other contributors can vote on them. In this way, the most eligible developers will rise to the top, as ranked by other developers.
+    This publicly viewable list can then be used by patrons researching who to fund. 
 
-    <p />
-
-    <h3>Voting</h3>
+    <p /><h3>Voting</h3>
     <span>
       Any contributor to the Bitcoin GitHub repository can vote. Simply sign in and click on your favorite candidate in the list.
-      Candidates are displayed in the list from highest number of votes at the top, to lowest number of votes at the bottom.
+      Candidates are displayed in the list from highest number of votes at the top to lowest number of votes at the bottom.
       <p />
       <ul>
       <li>Every contributor gets one vote.</li>
@@ -39,28 +40,19 @@ function LearnMore(props) {
 
     <h3>Registration</h3>
     <span>
-      Any contributor to the Bitcoin GitHub repository can register to be listed. Just sign in using GitHub, enter a brief description on why you should receive funding, and hit the register button.
+      Any contributor to the Bitcoin GitHub repository can register to be listed. Just sign in, enter a brief description on why you should receive funding, and hit the register button.
       You willl be immediately listed and publicly viewable. It's really that simple.
       <p />
       <p>Make sure to include information on how people can get money to you in the description, or include a link to a page that does.</p>
       <p />
-      <b>If you Register</b>
       <ul>
-      <li>You will be immediately added to the candidates list.</li>
+      <li>You will be immediately added to the candidates list when you register.</li>
+      <li>You will be immediately removed from the candidates list if you unregister.</li>
       <li>Other contributors will be able to vote for you.</li>
       <li>You can update your description at any time.</li>
-      <li>You can unregister at any time.</li>
       <li>You can register and unregister as many times as you wish.</li>
       <li>Once you are receiving enough funding to survive, unregister so that others can get the financial assistance they need.</li>
       </ul>
-
-      <b>If you Unregister</b>
-      <ul>
-      <li>You will be immediately removed from the candidates list.</li>
-      <li>You can reregister at any time.</li>
-      <li>You can register and unregister as many times as you wish.</li>
-      </ul>
-
       <p />
 
       <img

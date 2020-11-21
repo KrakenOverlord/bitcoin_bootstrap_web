@@ -7,7 +7,8 @@ import CandidatesList from './candidates_list.js';
 import AlertMessage from './alert_message.js';
 import ContributorPage from './contributor_page.js';
 import LearnMore from './learn_more.js';
-import Contact from './contact.js';
+import BugReport from './bug_report.js';
+import FeatureRequest from './feature_request.js';
 import LoadingSpinner from './loading_spinner.js';
 
 class App extends React.Component {
@@ -15,17 +16,20 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      isUpdating: null,
       alert: null,
-      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'learnMore', 'contact']
+      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'learnMore', 'bugReport', 'featureRequest']
       contributor: null,
       candidates: []
     };
 
+    this.isUpdatingCallback = this.isUpdatingCallback.bind(this);
     this.updateState = this.updateState.bind(this);
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
-    this.showLearnMore = this.showLearnMore.bind(this);
-    this.showContact = this.showContact.bind(this);
+    this.showLearnMorePage = this.showLearnMorePage.bind(this);
+    this.showBugReportPage = this.showBugReportPage.bind(this);
+    this.showFeatureRequestPage = this.showFeatureRequestPage.bind(this);
 
     this.home = this.home.bind(this);
 
@@ -57,80 +61,82 @@ class App extends React.Component {
 
   signInWithCode(code) {
     window.history.pushState({}, null, 'home');
-    console.log("Calling signin_with_code");
-    axios.post(this.api_url + "/signin_with_code?code=" + code)
-      .then((res) => {
-        var response = res.data;
-        console.log("signin_with_code response: " + JSON.stringify(response));
 
-        if (response.error === true) {
-          if (response.error_code === 1) {
-            alert("Only contributors to the Bitcoin GitHub repository are allowed to sign in.");
-          } else {
-            console.log("Problem signing in: " + response.error);
-          }
+    console.log("Calling signin_with_code");
+    axios.post(this.api_url + "/signin_with_code", {
+      code: code
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("signin_with_code response: " + JSON.stringify(response));
+
+      if (response.error) {
+        if (response.error_code === 1) {
+          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in." });
         } else {
-          localStorage.setItem('access_token', response.contributor.access_token);
-          let candidates = response.candidates;
-          candidates.sort(function(a, b) { return b.votes - a.votes });
-          this.setState({
-            appState:     'signedIn',
-            contributor:  response.contributor,
-            candidates:   candidates
-          });
+          this.signOut();
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      } else {
+        localStorage.setItem('access_token', response.contributor.access_token);
+        let candidates = response.candidates;
+        candidates.sort(function(a, b) { return b.votes - a.votes });
+        this.setState({
+          appState:     'signedIn',
+          contributor:  response.contributor,
+          candidates:   candidates
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   signInWithAccessToken(access_token) {
     console.log("Calling signin_with_access_token");
-    axios.post(this.api_url + "/signin_with_access_token?access_token=" + access_token)
-      .then((res) => {
-        var response = res.data;
-        console.log("signin_with_access_token response: " + JSON.stringify(response));
+    axios.post(this.api_url + "/signin_with_access_token", {
+      access_token: access_token
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("signin_with_access_token response: " + JSON.stringify(response));
 
-        if (response.error === true) {
-          if (response.error_code === 0 || response.error_code === 1) {
-            this.signOut();
-          } else if (response.error_code === 100) {
-            alert("Internal server error.");
-          }
-        } else {
-          let candidates = response.candidates;
-          candidates.sort(function(a, b) { return b.votes - a.votes });
-          this.setState({
-            appState:        'signedIn',
-            contributor:  response.contributor,
-            candidates:   candidates
-          });
+      if (response.error) {
+        if (response.error_code === 0 || response.error_code === 1) {
+          this.signOut();
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      } else {
+        let candidates = response.candidates;
+        candidates.sort(function(a, b) { return b.votes - a.votes });
+        this.setState({
+          appState:     'signedIn',
+          contributor:  response.contributor,
+          candidates:   candidates
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   getCandidates() {
     console.log("Calling get_candidates");
-
     axios.post(this.api_url + "/get_candidates")
       .then((res) => {
         var response = res.data;
         console.log("get_candidates response: " + JSON.stringify(response));
 
-        if (!response.error) {
+        if (response.error) {
+          this.setState({
+            appState: 'signedOut'
+          });
+        } else {
           let candidates = response.candidates;
           candidates.sort(function(a, b) { return b.votes - a.votes });
           this.setState({
             appState: 'signedOut',
             candidates: candidates
-          });
-        } else {
-          this.setState({
-            appState: 'signedOut'
           });
         }
       })
@@ -143,6 +149,12 @@ class App extends React.Component {
   }
 
   // CALLBACKS
+
+  isUpdatingCallback(isUpdating) {
+    this.setState({
+      isUpdating: isUpdating
+    });
+  }
 
   home() {
     let appState = '';
@@ -165,12 +177,16 @@ class App extends React.Component {
     this.setState({ alert: null });
   }
 
-  showLearnMore() {
-    this.setState({ appState: 'learnMore' });
+  showBugReportPage() {
+    this.setState({ appState: 'bugReport' });
   }
 
-  showContact() {
-    this.setState({ appState: 'contact' });
+  showFeatureRequestPage() {
+    this.setState({ appState: 'featureRequest' });
+  }
+
+  showLearnMorePage() {
+    this.setState({ appState: 'learnMore' });
   }
 
   signOut() {
@@ -199,13 +215,18 @@ class App extends React.Component {
     if (this.state.appState === 'signedOut') {
       return (
         <Container>
-          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
+          <Header
+            contributor={this.state.contributor}
+            home={this.home}
+            showLearnMorePage={this.showLearnMorePage}
+            showBugReportPage={this.showBugReportPage}
+            showFeatureRequestPage={this.showFeatureRequestPage} />
           {this.state.alert !== null &&
             <AlertMessage
               alert={this.state.alert}
               deleteAlert={this.deleteAlert} />
           }
-          <Introduction numCandidates={this.state.candidates.length} showLearnMore={this.showLearnMore} />
+          <Introduction numCandidates={this.state.candidates.length} showLearnMorePage={this.showLearnMorePage} />
           {this.state.candidates.length !== 0 &&
             <CandidatesList
               contributor={this.state.contributor}
@@ -216,7 +237,12 @@ class App extends React.Component {
     } else if (this.state.appState === 'signedIn') {
       return (
         <Container>
-          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
+          <Header
+            contributor={this.state.contributor}
+            home={this.home}
+            showLearnMorePage={this.showLearnMorePage}
+            showBugReportPage={this.showBugReportPage}
+            showFeatureRequestPage={this.showFeatureRequestPage} />
           {this.state.alert !== null &&
             <AlertMessage
               alert={this.state.alert}
@@ -225,13 +251,20 @@ class App extends React.Component {
           <ContributorPage
             contributor={this.state.contributor}
             candidates={this.state.candidates}
-            updateState={this.updateState} />
+            updateState={this.updateState}
+            signOut={this.signOut}
+            showAlert={this.showAlert} />
         </Container>
       );
     } else if (this.state.appState === 'learnMore') {
       return(
         <Container>
-          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
+          <Header
+            contributor={this.state.contributor}
+            home={this.home}
+            showLearnMorePage={this.showLearnMorePage}
+            showBugReportPage={this.showBugReportPage}
+            showFeatureRequestPage={this.showFeatureRequestPage} />
           {this.state.alert !== null &&
             <AlertMessage
               alert={this.state.alert}
@@ -240,16 +273,46 @@ class App extends React.Component {
           <LearnMore contributor={this.state.contributor} />
         </Container>
       );
-    } else if (this.state.appState === 'contact') {
+    } else if (this.state.appState === 'bugReport') {
       return(
         <Container>
-          <Header contributor={this.state.contributor} home={this.home} showLearnMore={this.showLearnMore} showContact={this.showContact} />
+          <Header
+            contributor={this.state.contributor}
+            home={this.home}
+            showLearnMorePage={this.showLearnMorePage}
+            showBugReportPage={this.showBugReportPage}
+            showFeatureRequestPage={this.showFeatureRequestPage} />
           {this.state.alert !== null &&
             <AlertMessage
               alert={this.state.alert}
               deleteAlert={this.deleteAlert} />
           }
-          <Contact contributor={this.state.contributor} showAlert={this.showAlert} />
+          <BugReport
+            contributor={this.state.contributor}
+            showAlert={this.showAlert}
+            isUpdating={this.state.isUpdating}
+            isUpdatingCallback={this.isUpdatingCallback} />
+        </Container>
+      );
+    } else if (this.state.appState === 'featureRequest') {
+      return(
+        <Container>
+          <Header
+            contributor={this.state.contributor}
+            home={this.home}
+            showLearnMorePage={this.showLearnMorePage}
+            showBugReportPage={this.showBugReportPage}
+            showFeatureRequestPage={this.showFeatureRequestPage} />
+          {this.state.alert !== null &&
+            <AlertMessage
+              alert={this.state.alert}
+              deleteAlert={this.deleteAlert} />
+          }
+          <FeatureRequest
+            contributor={this.state.contributor}
+            showAlert={this.showAlert}
+            isUpdating={this.state.isUpdating}
+            isUpdatingCallback={this.isUpdatingCallback} />
         </Container>
       );
     } else if (this.state.appState === 'loading') {
@@ -261,33 +324,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-// setVotedFor(username) {
-//   var contributor = {...this.state.contributor};
-//   contributor.voted_for = username;
-//   this.setState({contributor});
-// }
-//
-// changeCandidate(newCandidateUsername) {
-//   let candidates = [...this.state.candidates];
-//
-//   // Decrement old candidate if the contributor previously voted
-//   if (this.state.contributor.voted_for !== '') {
-//     const index = this.state.candidates.findIndex(candidate => candidate.username === this.state.contributor.voted_for);
-//     const oldCandidate = this.state.candidates[index];
-//     oldCandidate.votes = oldCandidate.votes - 1;
-//     candidates[index] = oldCandidate;
-//   }
-//
-//   // Increment new candidate
-//   const index = this.state.candidates.findIndex(candidate => candidate.username === newCandidateUsername);
-//   const newCandidate = this.state.candidates[index];
-//   newCandidate.votes = newCandidate.votes + 1;
-//   candidates[index] = newCandidate;
-//
-//   candidates.sort(function(a, b) { return b.votes - a.votes });
-//
-//   this.setState({candidates});
-//
-//   this.setVotedFor(newCandidateUsername);
-// }

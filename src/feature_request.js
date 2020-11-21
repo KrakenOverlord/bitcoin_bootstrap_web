@@ -29,8 +29,6 @@ class FeatureRequest extends React.Component {
   }
 
   submit() {
-    console.log("Calling create_feature_request");
-
     this.props.isUpdatingCallback(true);
 
     // Get username if a contributor exists
@@ -39,6 +37,7 @@ class FeatureRequest extends React.Component {
       username = this.props.contributor.username;
     }
 
+    console.log("Calling create_feature_request");
     axios.post(this.api_url + "/create_feature_request", {
         username: username,
         description: this.state.description
@@ -47,11 +46,11 @@ class FeatureRequest extends React.Component {
         var response = res.data;
         console.log("create_feature_request response: " + JSON.stringify(response));
 
-        if (!response.error) {
+        if (response.error) {
+          this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
+        } else {
           this.props.showAlert({ variant: 'success', message: "Thanks for the feature request!" });
           this.setState({ description: '' });
-        } else {
-          this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
         }
       })
       .catch((error) => {

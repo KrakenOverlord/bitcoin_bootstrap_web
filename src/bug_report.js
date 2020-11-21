@@ -29,8 +29,6 @@ class BugReport extends React.Component {
   }
 
   submit() {
-    console.log("Calling create_bug_report");
-
     this.props.isUpdatingCallback(true);
 
     // Get username if a contributor exists
@@ -39,6 +37,7 @@ class BugReport extends React.Component {
       username = this.props.contributor.username;
     }
 
+    console.log("Calling create_bug_report");
     axios.post(this.api_url + "/create_bug_report", {
         username: username,
         description: this.state.description
@@ -47,11 +46,11 @@ class BugReport extends React.Component {
         var response = res.data;
         console.log("create_bug_report response: " + JSON.stringify(response));
 
-        if (!response.error) {
+        if (response.error) {
+          this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
+        } else {
           this.props.showAlert({ variant: 'success', message: "Thanks for the bug report!" });
           this.setState({ description: '' });
-        } else {
-          this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
         }
       })
       .catch((error) => {

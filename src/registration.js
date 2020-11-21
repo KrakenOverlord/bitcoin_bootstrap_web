@@ -51,7 +51,7 @@ class Registration extends React.Component {
       console.log("register response: " + JSON.stringify(response));
 
       if (response.error === true) {
-        this.handleError(response);
+        this.handleError(response.error_code, "Could not register. Please try again later.");
       } else {
         let message = {
           variant: 'success',
@@ -62,6 +62,7 @@ class Registration extends React.Component {
     })
     .catch((error) => {
       console.log(error);
+      this.handleError(100, "Could not register. Please try again later.");
     })
     .then(() => {
       this.setState({ isRegistering: false });
@@ -74,29 +75,31 @@ class Registration extends React.Component {
 
   unregisterConfirmed() {
     console.log("Calling unregister");
+    axios.post(this.api_url + "/unregister", {
+      access_token: this.props.contributor.access_token
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("unregister response: " + JSON.stringify(response));
 
-    axios.post(this.api_url + "/unregister?access_token=" + this.props.contributor.access_token)
-      .then((res) => {
-        var response = res.data;
-        console.log("unregister response: " + JSON.stringify(response));
-
-        if (response.error === true) {
-          this.handleError(response);
-        } else {
-          this.setState({ description: '' });
-          let message = {
-            variant: 'success',
-            message: 'You successfully unregistered.'
-          };
-          this.props.updateState(response.contributor, response.candidates, message);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .then(() => {
-        this.closeUnregisterModal();
-      });
+      if (response.error) {
+        this.handleError(response.error_code, "Could not unregister. Please try again later.");
+      } else {
+        this.setState({ description: '' });
+        let message = {
+          variant: 'success',
+          message: 'You successfully unregistered.'
+        };
+        this.props.updateState(response.contributor, response.candidates, message);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      this.handleError(100, "Could not unregister. Please try again later.");
+    })
+    .then(() => {
+      this.closeUnregisterModal();
+    });
   }
 
   closeUnregisterModal() {
@@ -107,38 +110,34 @@ class Registration extends React.Component {
     this.setState({ isUpdatingDescription: true });
 
     console.log("Calling update_description");
-    axios.post(this.api_url + "/update_description?access_token=" + this.props.contributor.access_token +"&description=" + this.state.description)
-      .then((res) => {
-        var response = res.data;
-        console.log("update_description response: " + JSON.stringify(response));
+    axios.post(this.api_url + "/update_description", {
+      access_token: this.props.contributor.access_token,
+      description: this.state.description
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("update_description response: " + JSON.stringify(response));
 
-        if (response.error === true) {
-          this.handleError(response);
-        } else {
-          this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully updated your description.' });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .then(() => {
-        this.setState({ isUpdatingDescription: false });
-      });
+      if (response.error) {
+        this.handleError(response.error_code, "Could not update description. Please try again later.");
+      } else {
+        this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully updated your description.' });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      this.handleError(100, "Could not update description. Please try again later.");
+    })
+    .then(() => {
+      this.setState({ isUpdatingDescription: false });
+    });
   }
 
-  handleError(response) {
-    if (response.error_code === 0 || response.error_code === 1) {
-      localStorage.removeItem('access_token');
-      this.props.setState({
-        contributor: null
-      });
-    } else if (response.error_code === 2 || response.error_code === 3) {
-      console.log("Invalid request: " + response.error_code);
-    } else if (response.error_code === 100) {
-      alert("Internal server error: " + response.error_code);
-    }
-    else {
-      console.log("Error: " + response.error_code);
+  handleError(code, message) {
+    if (code === 0 || code === 1) {
+      this.props.signOut();
+    } else {
+      this.props.showAlert({ variant: 'danger', message: message });
     }
   }
 
@@ -179,11 +178,16 @@ class Registration extends React.Component {
             <Form.Control name="description" as="textarea" rows={4} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
           </Form.Group>
           {!this.props.contributor.is_candidate &&
-            <RegisterButton register={this.register} isRegistering={this.state.isRegistering} />
+            <RegisterButton
+              register={this.register}
+              isRegistering={this.state.isRegistering} />
           }
           {this.props.contributor.is_candidate &&
             <>
-            <UpdateDescriptionButton disabled={this.state.description.length === 0} isUpdatingDescription={this.state.isUpdatingDescription} updateDescription={this.updateDescription} />
+            <UpdateDescriptionButton
+              disabled={this.state.description.length === 0}
+              isUpdatingDescription={this.state.isUpdatingDescription}
+              updateDescription={this.updateDescription} />
             <Button disabled={this.state.isUpdatingDescription} className="ml-2" onClick={this.unregister}>Unregister</Button>
             </>
           }

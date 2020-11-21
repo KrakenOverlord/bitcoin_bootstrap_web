@@ -11,6 +11,8 @@ function CandidatesList(props) {
                                             contributor={props.contributor}
                                             candidate={candidate}
                                             updateState={props.updateState}
+                                            signOut={props.signOut}
+                                            showAlert={props.showAlert}
                                             isVoting={props.isVoting}
                                             isVotingCallback={props.isVotingCallback} />))}
     </ul>

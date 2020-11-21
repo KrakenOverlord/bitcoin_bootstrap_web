@@ -1,8 +1,8 @@
 **TODO**
+- bug report and feature request buttons don't spin
+- show contributions on listing
 - #url handling is goofy in url bar
 - setting api url correct?
-- stress test get_candidates before and after on-demand
-- axios post request should put params in hash
 - what is the max URL parameter length? 1024?
 - must not be able to vote while registration action taking place
 - put encodeURIComponent on every get request (but not post requests)

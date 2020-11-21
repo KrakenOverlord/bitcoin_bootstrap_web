@@ -33,7 +33,7 @@ function Introduction(props) {
       }
 
       <p>
-        <Button href="#learn-more" variant="primary" onClick={props.showLearnMore}>Learn more</Button>
+        <Button href="#learn-more" variant="primary" onClick={props.showLearnMorePage}>Learn more</Button>
       </p>
     </Jumbotron>
   );

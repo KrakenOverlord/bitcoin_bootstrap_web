@@ -31,13 +31,17 @@ class ContributorPage extends React.Component {
             contributor={this.props.contributor}
             candidates={this.props.candidates}
             updateState={this.props.updateState}
+            signOut={this.props.signOut}
+            showAlert={this.props.showAlert}
             isVoting={this.state.isVoting}
             isVotingCallback={this.isVotingCallback} />
         </Tab>
         <Tab eventKey="registration" title="Registration">
           <Registration
             contributor={this.props.contributor}
-            updateState={this.props.updateState} />
+            updateState={this.props.updateState}
+            signOut={this.props.signOut}
+            showAlert={this.props.showAlert} />
         </Tab>
       </Tabs>
     );

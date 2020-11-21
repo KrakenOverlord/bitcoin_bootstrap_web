@@ -26,6 +26,8 @@ function Voting(props) {
         contributor={props.contributor}
         candidates={props.candidates}
         updateState={props.updateState}
+        signOut={props.signOut}
+        showAlert={props.showAlert}
         isVoting={props.isVoting}
         isVotingCallback={props.isVotingCallback} />
     </>
