@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 
-class BugReport extends React.Component {
+class BugReportPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,9 +16,9 @@ class BugReport extends React.Component {
     this.submit = this.submit.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      this.api_url = 'http://localhost:3000';
+      this.api_url = 'http://localhost:3000/api';
     } else {
-      this.api_url = 'https://bitcoinbootstrap.org';
+      this.api_url = 'https://bitcoinbootstrap.org/api';
     }
   }
 
@@ -37,33 +37,34 @@ class BugReport extends React.Component {
       username = this.props.contributor.username;
     }
 
-    console.log("Calling create_bug_report");
-    axios.post(this.api_url + "/create_bug_report", {
-        username: username,
-        description: this.state.description
-      })
-      .then((res) => {
-        var response = res.data;
-        console.log("create_bug_report response: " + JSON.stringify(response));
+    console.log("Calling CreateBugReport");
+    axios.post(this.api_url, {
+      command: 'CreateBugReport',
+      username: username,
+      description: this.state.description
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("create_bug_report response: " + JSON.stringify(response));
 
-        if (response.error) {
-          this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
-        } else {
-          this.props.showAlert({ variant: 'success', message: "Thanks for the bug report!" });
-          this.setState({ description: '' });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+      if (response.error) {
         this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
-      })
-      .then(() => {
-        this.props.isUpdatingCallback(false);
-      });
+      } else {
+        this.props.showAlert({ variant: 'success', message: "Thanks for the bug report!" });
+        this.setState({ description: '' });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
+    })
+    .then(() => {
+      this.props.isUpdatingCallback(false);
+    });
   }
 
   render() {
-    console.log("---BugReport");
+    console.log("---BugReportPage");
 
     return(
       <>
@@ -95,4 +96,4 @@ class BugReport extends React.Component {
   }
 }
 
-export default BugReport;
+export default BugReportPage;

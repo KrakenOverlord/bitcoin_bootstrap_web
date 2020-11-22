@@ -26,9 +26,9 @@ class Registration extends React.Component {
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      this.api_url = 'http://localhost:3000';
+      this.api_url = 'http://localhost:3000/api';
     } else {
-      this.api_url = 'https://bitcoinbootstrap.org';
+      this.api_url = 'https://bitcoinbootstrap.org/api';
     }
   }
 
@@ -41,8 +41,9 @@ class Registration extends React.Component {
   register() {
     this.setState({ isRegistering: true });
 
-    console.log("Calling register");
-    axios.post(this.api_url + "/register", {
+    console.log("Calling Register");
+    axios.post(this.api_url, {
+      command: "Register",
       access_token: this.props.contributor.access_token,
       description: this.state.description
     })
@@ -74,8 +75,9 @@ class Registration extends React.Component {
   }
 
   unregisterConfirmed() {
-    console.log("Calling unregister");
-    axios.post(this.api_url + "/unregister", {
+    console.log("Calling Unregister");
+    axios.post(this.api_url, {
+      command: "Unregister",
       access_token: this.props.contributor.access_token
     })
     .then((res) => {
@@ -109,8 +111,9 @@ class Registration extends React.Component {
   updateDescription() {
     this.setState({ isUpdatingDescription: true });
 
-    console.log("Calling update_description");
-    axios.post(this.api_url + "/update_description", {
+    console.log("Calling UpdateDescription");
+    axios.post(this.api_url, {
+      command: "UpdateDescription",
       access_token: this.props.contributor.access_token,
       description: this.state.description
     })
@@ -166,7 +169,7 @@ class Registration extends React.Component {
           <Card bg='light'>
             <Card.Body>
               <>
-              <span>You are registered as a candidate. If you unregister we save your description and number of votes.</span>
+              <span>You are registered as a candidate.</span>
               </>
             </Card.Body>
           </Card>

@@ -3,10 +3,8 @@
 - show contributions on listing
 - #url handling is goofy in url bar
 - setting api url correct?
-- what is the max URL parameter length? 1024?
+- make sure mobile friendly
 - must not be able to vote while registration action taking place
-- put encodeURIComponent on every get request (but not post requests)
-- handle errors
 - add google analytics
 - test on multiple browsers
 - get back button working for main screens
@@ -14,7 +12,6 @@
 - figure out whitespace in blurb
 - icon for browser title image
 - get better bitcoin and github images
-- what happens with a candidates votes when a candidate unregisters?
 - disable login link after pressed
 - success stories list after fully funded
 

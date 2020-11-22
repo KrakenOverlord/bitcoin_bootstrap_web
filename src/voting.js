@@ -28,8 +28,8 @@ function Voting(props) {
         updateState={props.updateState}
         signOut={props.signOut}
         showAlert={props.showAlert}
-        isVoting={props.isVoting}
-        isVotingCallback={props.isVotingCallback} />
+        isUpdating={props.isUpdating}
+        isUpdatingCallback={props.isUpdatingCallback} />
     </>
   );
 }

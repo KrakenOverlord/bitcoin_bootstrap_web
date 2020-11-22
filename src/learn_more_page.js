@@ -1,6 +1,6 @@
 import React from 'react'
 
-function LearnMore(props) {
+function LearnMorePage(props) {
   return(
     <>
     <h3 className='mt-3'>Introduction</h3>
@@ -21,7 +21,7 @@ function LearnMore(props) {
     We just need to bring that knowledge to the surface in an accessible way.
     To do that, contributors to Bitcoin core can register on this website to be placed on a list of candidates seeking financial help.
     Then other contributors can vote on them. In this way, the most eligible developers will rise to the top, as ranked by other developers.
-    This publicly viewable list can then be used by patrons researching who to fund. 
+    This publicly viewable list can then be used by patrons researching who to fund.
 
     <p /><h3>Voting</h3>
     <span>
@@ -71,4 +71,4 @@ function LearnMore(props) {
   );
 }
 
-export default LearnMore;
+export default LearnMorePage;

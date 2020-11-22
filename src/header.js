@@ -20,6 +20,12 @@ function Header(props) {
       </Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link onClick={props.home} href="#home">Home</Nav.Link>
+        {props.contributor &&
+          <>
+          <Nav.Link onClick={props.showRegistrationPage} href="#registration">Registration</Nav.Link>
+          <Nav.Link onClick={props.showVotingPage} href="#voting">Voting</Nav.Link>
+          </>
+        }
         <Nav.Link onClick={props.showLearnMorePage} href="#learn-more">Learn more</Nav.Link>
         <NavDropdown title="Contact" id="basic-nav-dropdown">
         <NavDropdown.Item href="#bug-report" onClick={props.showBugReportPage}>Bug Report</NavDropdown.Item>

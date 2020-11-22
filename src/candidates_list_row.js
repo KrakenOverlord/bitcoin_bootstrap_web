@@ -17,7 +17,7 @@ function CandidatesListRow(props) {
         </a>
         :
         <img
-          src='anonymous.png'
+          src='bitcoin-anon.png'
           alt=""
           height="64"
           width="64" />
@@ -34,8 +34,8 @@ function CandidatesListRow(props) {
           updateState={props.updateState}
           signOut={props.signOut}
           showAlert={props.showAlert}
-          isVoting={props.isVoting}
-          isVotingCallback={props.isVotingCallback} />
+          isUpdating={props.isUpdating}
+          isUpdatingCallback={props.isUpdatingCallback} />
         <p>
           <span>{props.candidate.description}</span>
         </p>

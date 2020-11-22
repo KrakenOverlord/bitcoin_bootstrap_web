@@ -5,10 +5,11 @@ import Header from './header.js';
 import Introduction from './introduction.js';
 import CandidatesList from './candidates_list.js';
 import AlertMessage from './alert_message.js';
-import ContributorPage from './contributor_page.js';
-import LearnMore from './learn_more.js';
-import BugReport from './bug_report.js';
-import FeatureRequest from './feature_request.js';
+import Registration from './registration.js';
+import Voting from './voting.js';
+import LearnMorePage from './learn_more_page.js';
+import BugReportPage from './bug_report_page.js';
+import FeatureRequestPage from './feature_request_page.js';
 import LoadingSpinner from './loading_spinner.js';
 
 class App extends React.Component {
@@ -18,7 +19,7 @@ class App extends React.Component {
     this.state = {
       isUpdating: null,
       alert: null,
-      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'learnMore', 'bugReport', 'featureRequest']
+      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
       contributor: null,
       candidates: []
     };
@@ -27,6 +28,8 @@ class App extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
+    this.showRegistrationPage = this.showRegistrationPage.bind(this);
+    this.showVotingPage = this.showVotingPage.bind(this);
     this.showLearnMorePage = this.showLearnMorePage.bind(this);
     this.showBugReportPage = this.showBugReportPage.bind(this);
     this.showFeatureRequestPage = this.showFeatureRequestPage.bind(this);
@@ -34,9 +37,9 @@ class App extends React.Component {
     this.home = this.home.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      this.api_url = 'http://localhost:3000';
+      this.api_url = 'http://localhost:3000/api';
     } else {
-      this.api_url = 'https://bitcoinbootstrap.org';
+      this.api_url = 'https://bitcoinbootstrap.org/api';
     }
   }
 
@@ -62,8 +65,9 @@ class App extends React.Component {
   signInWithCode(code) {
     window.history.pushState({}, null, 'home');
 
-    console.log("Calling signin_with_code");
-    axios.post(this.api_url + "/signin_with_code", {
+    console.log("Calling SigninWithCode");
+    axios.post(this.api_url, {
+      command: 'SigninWithCode',
       code: code
     })
     .then((res) => {
@@ -93,8 +97,9 @@ class App extends React.Component {
   }
 
   signInWithAccessToken(access_token) {
-    console.log("Calling signin_with_access_token");
-    axios.post(this.api_url + "/signin_with_access_token", {
+    console.log("Calling SigninWithAccessToken");
+    axios.post(this.api_url, {
+      command: 'SigninWithAccessToken',
       access_token: access_token
     })
     .then((res) => {
@@ -121,31 +126,33 @@ class App extends React.Component {
   }
 
   getCandidates() {
-    console.log("Calling get_candidates");
-    axios.post(this.api_url + "/get_candidates")
-      .then((res) => {
-        var response = res.data;
-        console.log("get_candidates response: " + JSON.stringify(response));
+    console.log("Calling GetCandidates");
+    axios.post(this.api_url, {
+      command: 'GetCandidates'
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("get_candidates response: " + JSON.stringify(response));
 
-        if (response.error) {
-          this.setState({
-            appState: 'signedOut'
-          });
-        } else {
-          let candidates = response.candidates;
-          candidates.sort(function(a, b) { return b.votes - a.votes });
-          this.setState({
-            appState: 'signedOut',
-            candidates: candidates
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+      if (response.error) {
         this.setState({
           appState: 'signedOut'
         });
+      } else {
+        let candidates = response.candidates;
+        candidates.sort(function(a, b) { return b.votes - a.votes });
+        this.setState({
+          appState: 'signedOut',
+          candidates: candidates
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      this.setState({
+        appState: 'signedOut'
       });
+    });
   }
 
   // CALLBACKS
@@ -177,16 +184,24 @@ class App extends React.Component {
     this.setState({ alert: null });
   }
 
-  showBugReportPage() {
-    this.setState({ appState: 'bugReport' });
+  showRegistrationPage() {
+    this.setState({ appState: 'registrationPage' });
   }
 
-  showFeatureRequestPage() {
-    this.setState({ appState: 'featureRequest' });
+  showVotingPage() {
+    this.setState({ appState: 'votingPage' });
   }
 
   showLearnMorePage() {
-    this.setState({ appState: 'learnMore' });
+    this.setState({ appState: 'learnMorePage' });
+  }
+
+  showBugReportPage() {
+    this.setState({ appState: 'bugReportPage' });
+  }
+
+  showFeatureRequestPage() {
+    this.setState({ appState: 'featureRequestPage' });
   }
 
   signOut() {
@@ -218,6 +233,8 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
+            showRegistrationPage={this.showRegistrationPage}
+            showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
             showFeatureRequestPage={this.showFeatureRequestPage} />
@@ -229,7 +246,7 @@ class App extends React.Component {
           <Introduction numCandidates={this.state.candidates.length} showLearnMorePage={this.showLearnMorePage} />
           {this.state.candidates.length !== 0 &&
             <CandidatesList
-              contributor={this.state.contributor}
+              contributor={null}
               candidates={this.state.candidates} />
           }
         </Container>
@@ -240,6 +257,8 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
+            showRegistrationPage={this.showRegistrationPage}
+            showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
             showFeatureRequestPage={this.showFeatureRequestPage} />
@@ -248,20 +267,42 @@ class App extends React.Component {
               alert={this.state.alert}
               deleteAlert={this.deleteAlert} />
           }
-          <ContributorPage
+          <CandidatesList
+            contributor={null}
+            candidates={this.state.candidates} />
+        </Container>
+      );
+    } else if (this.state.appState === 'registrationPage') {
+      return(
+        <Container>
+          <Header
             contributor={this.state.contributor}
-            candidates={this.state.candidates}
+            home={this.home}
+            showRegistrationPage={this.showRegistrationPage}
+            showVotingPage={this.showVotingPage}
+            showLearnMorePage={this.showLearnMorePage}
+            showBugReportPage={this.showBugReportPage}
+            showFeatureRequestPage={this.showFeatureRequestPage} />
+          {this.state.alert !== null &&
+            <AlertMessage
+              alert={this.state.alert}
+              deleteAlert={this.deleteAlert} />
+          }
+          <Registration
+            contributor={this.state.contributor}
             updateState={this.updateState}
             signOut={this.signOut}
             showAlert={this.showAlert} />
         </Container>
       );
-    } else if (this.state.appState === 'learnMore') {
+    } else if (this.state.appState === 'votingPage') {
       return(
         <Container>
           <Header
             contributor={this.state.contributor}
             home={this.home}
+            showRegistrationPage={this.showRegistrationPage}
+            showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
             showFeatureRequestPage={this.showFeatureRequestPage} />
@@ -270,15 +311,24 @@ class App extends React.Component {
               alert={this.state.alert}
               deleteAlert={this.deleteAlert} />
           }
-          <LearnMore contributor={this.state.contributor} />
+          <Voting
+            contributor={this.state.contributor}
+            candidates={this.state.candidates}
+            updateState={this.updateState}
+            signOut={this.signOut}
+            showAlert={this.showAlert}
+            isUpdating={this.state.isUpdating}
+            isUpdatingCallback={this.isUpdatingCallback} />
         </Container>
       );
-    } else if (this.state.appState === 'bugReport') {
+    } else if (this.state.appState === 'learnMorePage') {
       return(
         <Container>
           <Header
             contributor={this.state.contributor}
             home={this.home}
+            showRegistrationPage={this.showRegistrationPage}
+            showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
             showFeatureRequestPage={this.showFeatureRequestPage} />
@@ -287,19 +337,40 @@ class App extends React.Component {
               alert={this.state.alert}
               deleteAlert={this.deleteAlert} />
           }
-          <BugReport
+          <LearnMorePage contributor={this.state.contributor} />
+        </Container>
+      );
+    } else if (this.state.appState === 'bugReportPage') {
+      return(
+        <Container>
+          <Header
+            contributor={this.state.contributor}
+            home={this.home}
+            showRegistrationPage={this.showRegistrationPage}
+            showVotingPage={this.showVotingPage}
+            showLearnMorePage={this.showLearnMorePage}
+            showBugReportPage={this.showBugReportPage}
+            showFeatureRequestPage={this.showFeatureRequestPage} />
+          {this.state.alert !== null &&
+            <AlertMessage
+              alert={this.state.alert}
+              deleteAlert={this.deleteAlert} />
+          }
+          <BugReportPage
             contributor={this.state.contributor}
             showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
             isUpdatingCallback={this.isUpdatingCallback} />
         </Container>
       );
-    } else if (this.state.appState === 'featureRequest') {
+    } else if (this.state.appState === 'featureRequestPage') {
       return(
         <Container>
           <Header
             contributor={this.state.contributor}
             home={this.home}
+            showRegistrationPage={this.showRegistrationPage}
+            showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
             showFeatureRequestPage={this.showFeatureRequestPage} />
@@ -308,7 +379,7 @@ class App extends React.Component {
               alert={this.state.alert}
               deleteAlert={this.deleteAlert} />
           }
-          <FeatureRequest
+          <FeatureRequestPage
             contributor={this.state.contributor}
             showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}

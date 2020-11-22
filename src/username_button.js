@@ -8,17 +8,18 @@ class UsernameButton extends React.Component {
     super(props);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      this.api_url = 'http://localhost:3000';
+      this.api_url = 'http://localhost:3000/api';
     } else {
-      this.api_url = 'https://bitcoinbootstrap.org';
+      this.api_url = 'https://bitcoinbootstrap.org/api';
     }
   }
 
   vote(new_candidate_username) {
-    this.props.isVotingCallback(new_candidate_username);
+    this.props.isUpdatingCallback(new_candidate_username);
 
-    console.log("Calling vote");
-    axios.post(this.api_url + "/vote", {
+    console.log("Calling Vote");
+    axios.post(this.api_url, {
+      command: 'Vote',
       access_token: this.props.contributor.access_token,
       vote: new_candidate_username
     })
@@ -37,7 +38,7 @@ class UsernameButton extends React.Component {
       this.handleError(100, "Could not record the vote. Please try again later.");
     })
     .then(() => {
-      this.props.isVotingCallback('');
+      this.props.isUpdatingCallback('');
     });
   }
 
@@ -54,7 +55,7 @@ class UsernameButton extends React.Component {
 
     const signedIn = this.props.contributor !== null;
     const candidateUsername = this.props.candidate.username;
-    const isVoting = this.props.isVoting;
+    const isUpdating = this.props.isUpdating;
     let anonymous = false;
     if (this.props.candidate.contributor_type === "Anonymous") {
       anonymous = true;
@@ -75,7 +76,7 @@ class UsernameButton extends React.Component {
         }
 
         { /* signed in and not voting state and didn't vote for this candidate */ }
-        {signedIn && !isVoting && this.props.contributor.voted_for !== candidateUsername &&
+        {signedIn && !isUpdating && this.props.contributor.voted_for !== candidateUsername &&
           <Button
             variant="success"
             size="sm"
@@ -85,7 +86,7 @@ class UsernameButton extends React.Component {
 
 
         { /* signed in and not voting state and voted for this candidate */ }
-        {signedIn && !isVoting && this.props.contributor.voted_for === candidateUsername &&
+        {signedIn && !isUpdating && this.props.contributor.voted_for === candidateUsername &&
           <>
           <b><span style={{ color: 'DodgerBlue' }}>Voted for {candidateUsername}</span></b>
           <img className="ml-2" src={'vote.png'} alt="" height="30" width="30" />
@@ -93,7 +94,7 @@ class UsernameButton extends React.Component {
         }
 
         { /* signed in and voting state but didn't vote for this candidate */ }
-        {signedIn && isVoting && isVoting !== candidateUsername &&
+        {signedIn && isUpdating && isUpdating !== candidateUsername &&
           <Button
             disabled={true}
             variant="success"
@@ -103,7 +104,7 @@ class UsernameButton extends React.Component {
         }
 
         { /* signed in and voting state and voting for this candidate */ }
-        {signedIn && isVoting && isVoting === candidateUsername &&
+        {signedIn && isUpdating && isUpdating === candidateUsername &&
           <Button
           disabled={true}
           variant="success"

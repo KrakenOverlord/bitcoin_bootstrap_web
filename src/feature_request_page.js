@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 
-class FeatureRequest extends React.Component {
+class FeatureRequestPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,9 +16,9 @@ class FeatureRequest extends React.Component {
     this.submit = this.submit.bind(this);
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      this.api_url = 'http://localhost:3000';
+      this.api_url = 'http://localhost:3000/api';
     } else {
-      this.api_url = 'https://bitcoinbootstrap.org';
+      this.api_url = 'https://bitcoinbootstrap.org/api';
     }
   }
 
@@ -37,33 +37,34 @@ class FeatureRequest extends React.Component {
       username = this.props.contributor.username;
     }
 
-    console.log("Calling create_feature_request");
-    axios.post(this.api_url + "/create_feature_request", {
-        username: username,
-        description: this.state.description
-      })
-      .then((res) => {
-        var response = res.data;
-        console.log("create_feature_request response: " + JSON.stringify(response));
+    console.log("Calling CreateFeatureRequest");
+    axios.post(this.api_url, {
+      command: 'CreateFeatureRequest',
+      username: username,
+      description: this.state.description
+    })
+    .then((res) => {
+      var response = res.data;
+      console.log("create_feature_request response: " + JSON.stringify(response));
 
-        if (response.error) {
-          this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
-        } else {
-          this.props.showAlert({ variant: 'success', message: "Thanks for the feature request!" });
-          this.setState({ description: '' });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+      if (response.error) {
         this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
-      })
-      .then(() => {
-        this.props.isUpdatingCallback(false);
-      });
+      } else {
+        this.props.showAlert({ variant: 'success', message: "Thanks for the feature request!" });
+        this.setState({ description: '' });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
+    })
+    .then(() => {
+      this.props.isUpdatingCallback(false);
+    });
   }
 
   render() {
-    console.log("---FeatureRequest");
+    console.log("---FeatureRequestPage");
 
     return(
       <>
@@ -89,4 +90,4 @@ class FeatureRequest extends React.Component {
   }
 }
 
-export default FeatureRequest;
+export default FeatureRequestPage;
