@@ -22,7 +22,7 @@ function Introduction(props) {
       {props.numCandidates === 0 &&
         <p>
           No contributor has registered yet. Be the first!
-          Just sign in, enter a brief description about the work you are doing and why you should recieve funding and hit the register button and you will be listed.
+          Just sign in, enter a brief description about the work you are doing and why you should receive funding and hit the register button and you will be listed.
         </p>
       }
 

@@ -39,7 +39,7 @@ class MyApp extends React.Component {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       this.api_url = 'http://localhost:3000/api';
     } else {
-      this.api_url = 'https://bitcoinbootstrap.org/api';
+      this.api_url = 'https://main.d16vyd9qf9h6zd.amplifyapp.com/api';
     }
   }
 
