@@ -45,7 +45,6 @@ class MyApp extends React.Component {
   }
 
   componentDidMount() {
-    alert(process.env.REACT_APP_ENVIRONMENT);
     if (this.getCode() !== null) {
       this.signInWithCode(this.getCode());
     } else if (this.getAccessToken() !== null) {
