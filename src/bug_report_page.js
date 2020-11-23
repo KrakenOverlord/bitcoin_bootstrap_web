@@ -15,10 +15,11 @@ class BugReportPage extends React.Component {
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.submit = this.submit.bind(this);
 
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      this.api_url = 'http://localhost:3000/api';
-    } else {
+    if (process.env.ENVIRONMENT === 'production') {
+    } else if (process.env.PRODUCTION === 'stage') {
       this.api_url = 'https://bapm03al05.execute-api.us-west-2.amazonaws.com/api';
+    } else {
+      this.api_url = 'http://localhost:3000/api';
     }
   }
 
