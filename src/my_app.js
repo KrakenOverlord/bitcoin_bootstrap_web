@@ -36,7 +36,7 @@ class MyApp extends React.Component {
 
     this.home = this.home.bind(this);
 
-    if (process.env.ENVIRONMENT === 'production') {
+    if (process.env.REACT_APP_ENVIRONMENT === 'production') {
     } else if (process.env.PRODUCTION === 'stage') {
       this.api_url = 'https://bapm03al05.execute-api.us-west-2.amazonaws.com/api';
     } else {
