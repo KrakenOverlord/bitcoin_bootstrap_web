@@ -25,7 +25,7 @@ class Registration extends React.Component {
     this.updateDescription = this.updateDescription.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
 
-    this.api_url = process.env.REACT_APP_API_GATEWAY;
+    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   handleDescriptionChange(event) {

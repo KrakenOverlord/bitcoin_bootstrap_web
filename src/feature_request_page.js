@@ -15,7 +15,7 @@ class FeatureRequestPage extends React.Component {
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.submit = this.submit.bind(this);
 
-    this.api_url = process.env.REACT_APP_API_GATEWAY;
+    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   handleDescriptionChange(event) {

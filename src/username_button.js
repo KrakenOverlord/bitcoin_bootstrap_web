@@ -7,7 +7,7 @@ class UsernameButton extends React.Component {
   constructor(props) {
     super(props);
 
-    this.api_url = process.env.REACT_APP_API_GATEWAY;
+    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   vote(new_candidate_username) {

@@ -36,7 +36,7 @@ class MyApp extends React.Component {
 
     this.home = this.home.bind(this);
 
-    this.api_url = process.env.REACT_APP_API_GATEWAY;
+    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   componentDidMount() {
