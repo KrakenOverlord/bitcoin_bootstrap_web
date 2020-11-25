@@ -25,12 +25,7 @@ class Registration extends React.Component {
     this.updateDescription = this.updateDescription.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
 
-    if (process.env.REACT_APP_ENVIRONMENT === 'production') {
-    } else if (process.env.REACT_APP_ENVIRONMENT === 'stage') {
-      this.api_url = 'https://bapm03al05.execute-api.us-west-2.amazonaws.com/api';
-    } else {
-      this.api_url = 'http://localhost:3000/api';
-    }
+    this.api_url = process.env.REACT_APP_API_GATEWAY;
   }
 
   handleDescriptionChange(event) {
