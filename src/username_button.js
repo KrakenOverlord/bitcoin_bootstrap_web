@@ -7,12 +7,7 @@ class UsernameButton extends React.Component {
   constructor(props) {
     super(props);
 
-    if (process.env.REACT_APP_ENVIRONMENT === 'production') {
-    } else if (process.env.REACT_APP_ENVIRONMENT === 'stage') {
-      this.api_url = 'https://bapm03al05.execute-api.us-west-2.amazonaws.com/api';
-    } else {
-      this.api_url = 'http://localhost:3000/api';
-    }
+    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   vote(new_candidate_username) {

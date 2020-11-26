@@ -19,7 +19,7 @@ class MyApp extends React.Component {
     this.state = {
       isUpdating: null,
       alert: null,
-      appState: 'loading', // ['loading', 'signedOut', 'signedIn', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
+      appState: 'landingPage', // ['loadingPage', 'landingPage', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
       contributor: null,
       candidates: []
     };
@@ -36,12 +36,7 @@ class MyApp extends React.Component {
 
     this.home = this.home.bind(this);
 
-    if (process.env.REACT_APP_ENVIRONMENT === 'production') {
-    } else if (process.env.REACT_APP_ENVIRONMENT === 'stage') {
-      this.api_url = 'https://bapm03al05.execute-api.us-west-2.amazonaws.com/api';
-    } else {
-      this.api_url = 'http://localhost:3000/api';
-    }
+    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   componentDidMount() {
@@ -49,9 +44,9 @@ class MyApp extends React.Component {
       this.signInWithCode(this.getCode());
     } else if (this.getAccessToken() !== null) {
       this.signInWithAccessToken(this.getAccessToken());
-    } else {
-      this.getCandidates();
     }
+
+    this.getCandidates();
   }
 
   getCode() {
@@ -73,7 +68,7 @@ class MyApp extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("signin_with_code response: " + JSON.stringify(response));
+      console.log("SigninWithCode response: " + JSON.stringify(response));
 
       if (response.error) {
         if (response.error_code === 1) {
@@ -83,12 +78,8 @@ class MyApp extends React.Component {
         }
       } else {
         localStorage.setItem('access_token', response.contributor.access_token);
-        let candidates = response.candidates;
-        candidates.sort(function(a, b) { return b.votes - a.votes });
         this.setState({
-          appState:     'signedIn',
-          contributor:  response.contributor,
-          candidates:   candidates
+          contributor:  response.contributor
         });
       }
     })
@@ -105,19 +96,15 @@ class MyApp extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("signin_with_access_token response: " + JSON.stringify(response));
+      console.log("SigninWithAccessToken response: " + JSON.stringify(response));
 
       if (response.error) {
         if (response.error_code === 0 || response.error_code === 1) {
           this.signOut();
         }
       } else {
-        let candidates = response.candidates;
-        candidates.sort(function(a, b) { return b.votes - a.votes });
         this.setState({
-          appState:     'signedIn',
-          contributor:  response.contributor,
-          candidates:   candidates
+          contributor:  response.contributor
         });
       }
     })
@@ -136,23 +123,16 @@ class MyApp extends React.Component {
       console.log("get_candidates response: " + JSON.stringify(response));
 
       if (response.error) {
-        this.setState({
-          appState: 'signedOut'
-        });
       } else {
         let candidates = response.candidates;
         candidates.sort(function(a, b) { return b.votes - a.votes });
         this.setState({
-          appState: 'signedOut',
           candidates: candidates
         });
       }
     })
     .catch((error) => {
       console.log(error);
-      this.setState({
-        appState: 'signedOut'
-      });
     });
   }
 
@@ -164,17 +144,6 @@ class MyApp extends React.Component {
     });
   }
 
-  home() {
-    let appState = '';
-    if (this.state.contributor) {
-      appState = 'signedIn';
-    } else if (this.state.contributor === null) {
-      appState = 'signedOut';
-    }
-
-    this.setState({ appState: appState });
-  }
-
   showAlert(message) {
     this.setState({
       alert: message
@@ -183,6 +152,10 @@ class MyApp extends React.Component {
 
   deleteAlert() {
     this.setState({ alert: null });
+  }
+
+  home() {
+    this.setState({ appState: 'landingPage' });
   }
 
   showRegistrationPage() {
@@ -208,7 +181,6 @@ class MyApp extends React.Component {
   signOut() {
     localStorage.removeItem('access_token');
     this.setState({
-      appState: 'loading',
       contributor: null
     }, this.landingPage);
   }
@@ -228,7 +200,7 @@ class MyApp extends React.Component {
   render() {
     console.log("---App");
 
-    if (this.state.appState === 'signedOut') {
+    if (this.state.appState === 'landingPage') {
       return (
         <Container>
           <Header
@@ -250,27 +222,6 @@ class MyApp extends React.Component {
               contributor={null}
               candidates={this.state.candidates} />
           }
-        </Container>
-      );
-    } else if (this.state.appState === 'signedIn') {
-      return (
-        <Container>
-          <Header
-            contributor={this.state.contributor}
-            home={this.home}
-            showRegistrationPage={this.showRegistrationPage}
-            showVotingPage={this.showVotingPage}
-            showLearnMorePage={this.showLearnMorePage}
-            showBugReportPage={this.showBugReportPage}
-            showFeatureRequestPage={this.showFeatureRequestPage} />
-          {this.state.alert !== null &&
-            <AlertMessage
-              alert={this.state.alert}
-              deleteAlert={this.deleteAlert} />
-          }
-          <CandidatesList
-            contributor={null}
-            candidates={this.state.candidates} />
         </Container>
       );
     } else if (this.state.appState === 'registrationPage') {
@@ -387,7 +338,7 @@ class MyApp extends React.Component {
             isUpdatingCallback={this.isUpdatingCallback} />
         </Container>
       );
-    } else if (this.state.appState === 'loading') {
+    } else if (this.state.appState === 'loadingPage') {
       return(
         <LoadingSpinner />
       );

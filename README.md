@@ -15,21 +15,15 @@
 - disable login link after pressed
 - success stories list after fully funded
 
-**Create the App**
+**Access Control**
+Username: KrakenOverlord
+Password: atandt01
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-- `npx create-react-app bitcoin_bootstrap_web`
+**GitHub OAuth Callbacks**
+Stage: https://development.d16vyd9qf9h6zd.amplifyapp.com
+Main: https://www.bitcoinbootstrap.org
 
 **Dependencies**
-
-- Github OAuth account
-- `npm install axios`
-- install React Bootstrap
-
-- Create a Github repo for this app
-- Connect Amplify to the Github repo
-- Configure domain
 
 `_67d959b18e055e7ce8fb89da5b2aaa50.bitcoinbootstrap.org. CNAME _dd815294d14bf421a6ac39d13da556de.zbkrxsrfvj.acm-validations.aws.`
 
