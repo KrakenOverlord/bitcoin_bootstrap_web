@@ -12,7 +12,7 @@ import BugReportPage from './bug_report_page.js';
 import FeatureRequestPage from './feature_request_page.js';
 import LoadingSpinner from './loading_spinner.js';
 
-class MyApp extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -346,4 +346,4 @@ class MyApp extends React.Component {
   }
 }
 
-export default MyApp;
+export default App;
