@@ -3,14 +3,14 @@ import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 import Header from './header.js';
 import Introduction from './introduction.js';
-import CandidatesList from './candidates_list.js';
-import AlertMessage from './alert_message.js';
-import RegistrationPage from './registration_page.js';
-import Voting from './voting.js';
+import CandidatesList from './candidates/candidates_list.js';
+import RegistrationPage from './registration/registration_page.js';
+import VotingPage from './voting_page.js';
 import LearnMorePage from './learn_more_page.js';
 import BugReportPage from './bug_report_page.js';
 import FeatureRequestPage from './feature_request_page.js';
-import LoadingSpinner from './loading_spinner.js';
+import LoadingSpinner from './utils/loading_spinner.js';
+import AlertMessage from './utils/alert_message.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,13 +28,7 @@ class App extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
-    this.showRegistrationPagePage = this.showRegistrationPagePage.bind(this);
-    this.showVotingPage = this.showVotingPage.bind(this);
-    this.showLearnMorePage = this.showLearnMorePage.bind(this);
-    this.showBugReportPage = this.showBugReportPage.bind(this);
-    this.showFeatureRequestPage = this.showFeatureRequestPage.bind(this);
-
-    this.home = this.home.bind(this);
+    this.showPage = this.showPage.bind(this);
 
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
@@ -120,7 +114,7 @@ class App extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("get_candidates response: " + JSON.stringify(response));
+      console.log("GetCandidates response: " + JSON.stringify(response));
 
       if (response.error) {
       } else {
@@ -154,28 +148,8 @@ class App extends React.Component {
     this.setState({ alert: null });
   }
 
-  home() {
-    this.setState({ appState: 'landingPage' });
-  }
-
-  showRegistrationPagePage() {
-    this.setState({ appState: 'registrationPage' });
-  }
-
-  showVotingPage() {
-    this.setState({ appState: 'votingPage' });
-  }
-
-  showLearnMorePage() {
-    this.setState({ appState: 'learnMorePage' });
-  }
-
-  showBugReportPage() {
-    this.setState({ appState: 'bugReportPage' });
-  }
-
-  showFeatureRequestPage() {
-    this.setState({ appState: 'featureRequestPage' });
+  showPage(page) {
+    this.setState({ appState: page });
   }
 
   signOut() {
@@ -200,46 +174,30 @@ class App extends React.Component {
   render() {
     console.log("---App");
 
-    if (this.state.appState === 'landingPage') {
-      return (
-        <Container>
-          <Header
-            contributor={this.state.contributor}
-            home={this.home}
-            showRegistrationPagePage={this.showRegistrationPagePage}
-            showVotingPage={this.showVotingPage}
-            showLearnMorePage={this.showLearnMorePage}
-            showBugReportPage={this.showBugReportPage}
-            showFeatureRequestPage={this.showFeatureRequestPage} />
-          {this.state.alert !== null &&
-            <AlertMessage
-              alert={this.state.alert}
-              deleteAlert={this.deleteAlert} />
+    let appState = this.state.appState;
+    return (
+      <Container>
+        <Header
+          contributor={this.state.contributor}
+          showPage={this.showPage} />
+
+        {this.state.alert &&
+          <AlertMessage
+            alert={this.state.alert}
+            deleteAlert={this.deleteAlert} />
+        }
+
+        {appState === 'landingPage' &&
+        <>
+          <Introduction numCandidates={this.state.candidates.length} showLearnMorePage={this.showPage} />
+          <CandidatesList
+            contributor={null}
+            candidates={this.state.candidates} />
           }
-          <Introduction numCandidates={this.state.candidates.length} showLearnMorePage={this.showLearnMorePage} />
-          {this.state.candidates.length !== 0 &&
-            <CandidatesList
-              contributor={null}
-              candidates={this.state.candidates} />
-          }
-        </Container>
-      );
-    } else if (this.state.appState === 'registrationPage') {
-      return(
-        <Container>
-          <Header
-            contributor={this.state.contributor}
-            home={this.home}
-            showRegistrationPagePage={this.showRegistrationPagePage}
-            showVotingPage={this.showVotingPage}
-            showLearnMorePage={this.showLearnMorePage}
-            showBugReportPage={this.showBugReportPage}
-            showFeatureRequestPage={this.showFeatureRequestPage} />
-          {this.state.alert !== null &&
-            <AlertMessage
-              alert={this.state.alert}
-              deleteAlert={this.deleteAlert} />
-          }
+        </>
+        }
+
+        {appState === 'registrationPage' &&
           <RegistrationPage
             contributor={this.state.contributor}
             updateState={this.updateState}
@@ -247,25 +205,10 @@ class App extends React.Component {
             showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
             isUpdatingCallback={this.isUpdatingCallback} />
-        </Container>
-      );
-    } else if (this.state.appState === 'votingPage') {
-      return(
-        <Container>
-          <Header
-            contributor={this.state.contributor}
-            home={this.home}
-            showRegistrationPagePage={this.showRegistrationPagePage}
-            showVotingPage={this.showVotingPage}
-            showLearnMorePage={this.showLearnMorePage}
-            showBugReportPage={this.showBugReportPage}
-            showFeatureRequestPage={this.showFeatureRequestPage} />
-          {this.state.alert !== null &&
-            <AlertMessage
-              alert={this.state.alert}
-              deleteAlert={this.deleteAlert} />
-          }
-          <Voting
+        }
+
+        {appState === 'votingPage' &&
+          <VotingPage
             contributor={this.state.contributor}
             candidates={this.state.candidates}
             updateState={this.updateState}
@@ -273,78 +216,33 @@ class App extends React.Component {
             showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
             isUpdatingCallback={this.isUpdatingCallback} />
-        </Container>
-      );
-    } else if (this.state.appState === 'learnMorePage') {
-      return(
-        <Container>
-          <Header
-            contributor={this.state.contributor}
-            home={this.home}
-            showRegistrationPagePage={this.showRegistrationPagePage}
-            showVotingPage={this.showVotingPage}
-            showLearnMorePage={this.showLearnMorePage}
-            showBugReportPage={this.showBugReportPage}
-            showFeatureRequestPage={this.showFeatureRequestPage} />
-          {this.state.alert !== null &&
-            <AlertMessage
-              alert={this.state.alert}
-              deleteAlert={this.deleteAlert} />
-          }
+        }
+
+        {appState === 'learnMorePage' &&
           <LearnMorePage contributor={this.state.contributor} />
-        </Container>
-      );
-    } else if (this.state.appState === 'bugReportPage') {
-      return(
-        <Container>
-          <Header
-            contributor={this.state.contributor}
-            home={this.home}
-            showRegistrationPagePage={this.showRegistrationPagePage}
-            showVotingPage={this.showVotingPage}
-            showLearnMorePage={this.showLearnMorePage}
-            showBugReportPage={this.showBugReportPage}
-            showFeatureRequestPage={this.showFeatureRequestPage} />
-          {this.state.alert !== null &&
-            <AlertMessage
-              alert={this.state.alert}
-              deleteAlert={this.deleteAlert} />
-          }
+        }
+
+        {appState === 'bugReportPage' &&
           <BugReportPage
             contributor={this.state.contributor}
             showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
             isUpdatingCallback={this.isUpdatingCallback} />
-        </Container>
-      );
-    } else if (this.state.appState === 'featureRequestPage') {
-      return(
-        <Container>
-          <Header
-            contributor={this.state.contributor}
-            home={this.home}
-            showRegistrationPagePage={this.showRegistrationPagePage}
-            showVotingPage={this.showVotingPage}
-            showLearnMorePage={this.showLearnMorePage}
-            showBugReportPage={this.showBugReportPage}
-            showFeatureRequestPage={this.showFeatureRequestPage} />
-          {this.state.alert !== null &&
-            <AlertMessage
-              alert={this.state.alert}
-              deleteAlert={this.deleteAlert} />
-          }
+        }
+
+        {appState === 'featureRequestPage' &&
           <FeatureRequestPage
             contributor={this.state.contributor}
             showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
             isUpdatingCallback={this.isUpdatingCallback} />
-        </Container>
-      );
-    } else if (this.state.appState === 'loadingPage') {
-      return(
-        <LoadingSpinner />
-      );
-    }
+        }
+
+        {appState === 'loadingPage' &&
+          <LoadingSpinner />
+        }
+      </Container>
+    );
   }
 }
 

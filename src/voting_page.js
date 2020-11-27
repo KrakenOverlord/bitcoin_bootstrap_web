@@ -1,8 +1,8 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import CandidatesList from './candidates_list.js';
+import CandidatesList from './candidates/candidates_list.js';
 
-function Voting(props) {
+function VotingPage(props) {
   console.log("---Voting");
 
   return(
@@ -34,4 +34,4 @@ function Voting(props) {
   );
 }
 
-export default Voting;
+export default VotingPage;
