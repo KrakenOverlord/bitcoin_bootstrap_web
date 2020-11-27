@@ -1,19 +1,17 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import ConfirmationModal from './confirmation_modal.js';
+import RegistrationCard from './registration_card.js';
 import RegisterButton from './register_button.js';
 import UpdateDescriptionButton from './update_description_button.js';
 
-class Registration extends React.Component {
+class RegistrationPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isRegistering: false,
-      isUpdatingDescription: false,
       showUnregisterModal: false,
       description: this.props.contributor.description
     };
@@ -35,7 +33,7 @@ class Registration extends React.Component {
   }
 
   register() {
-    this.setState({ isRegistering: true });
+    this.props.isUpdatingCallback({ 'action' : 'registering'});
 
     console.log("Calling Register");
     axios.post(this.api_url, {
@@ -62,12 +60,8 @@ class Registration extends React.Component {
       this.handleError(100, "Could not register. Please try again later.");
     })
     .then(() => {
-      this.setState({ isRegistering: false });
+      this.props.isUpdatingCallback(null);
     });
-  }
-
-  unregister() {
-    this.setState({ showUnregisterModal: true });
   }
 
   unregisterConfirmed() {
@@ -78,7 +72,7 @@ class Registration extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("unregister response: " + JSON.stringify(response));
+      console.log("Unregister response: " + JSON.stringify(response));
 
       if (response.error) {
         this.handleError(response.error_code, "Could not unregister. Please try again later.");
@@ -100,12 +94,8 @@ class Registration extends React.Component {
     });
   }
 
-  closeUnregisterModal() {
-    this.setState({ showUnregisterModal: false });
-  }
-
   updateDescription() {
-    this.setState({ isUpdatingDescription: true });
+    this.props.isUpdatingCallback({ 'action' : 'updatingDescription' });
 
     console.log("Calling UpdateDescription");
     axios.post(this.api_url, {
@@ -128,7 +118,7 @@ class Registration extends React.Component {
       this.handleError(100, "Could not update description. Please try again later.");
     })
     .then(() => {
-      this.setState({ isUpdatingDescription: false });
+      this.props.isUpdatingCallback(null);
     });
   }
 
@@ -140,55 +130,59 @@ class Registration extends React.Component {
     }
   }
 
+  unregister() {
+    this.setState({ showUnregisterModal: true });
+  }
+
+  closeUnregisterModal() {
+    this.setState({ showUnregisterModal: false });
+  }
+
   render() {
-    console.log("---Registration");
+    const is_candidate = this.props.contributor.is_candidate;
+    console.log("---RegistrationPage");
     return(
       <>
-      {this.state.showUnregisterModal === true &&
-        <ConfirmationModal confirm={this.unregisterConfirmed} cancel={this.closeUnregisterModal} />
+      { /* show unregister modal? */ }
+      {this.state.showUnregisterModal &&
+        <ConfirmationModal
+          confirm={this.unregisterConfirmed}
+          cancel={this.closeUnregisterModal} />
       }
 
       <div className='mt-3'>
-        {this.props.contributor.is_candidate === false &&
-          <Card bg='light'>
-            <Card.Body>
-              <>
-              Please describe the contributions you have made and what you are currently working on.
-              <p>
-              Don't forget to include information on how people can get money to you either in the description below or on your GitHub profile page.
-              </p>
-              </>
-            </Card.Body>
-          </Card>
-        }
-        {this.props.contributor.is_candidate === true &&
-          <Card bg='light'>
-            <Card.Body>
-              <>
-              <span>You are registered as a candidate.</span>
-              </>
-            </Card.Body>
-          </Card>
-        }
+        <RegistrationCard is_candidate={is_candidate} />
 
         <Form className='mt-3'>
+          { /* description */ }
           <Form.Group controlId="description">
             <Form.Label>Why should you receive funding? (500 characters max)</Form.Label>
-            <Form.Control name="description" as="textarea" rows={4} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
+            <Form.Control
+              name="description"
+              as="textarea"
+              rows={4}
+              maxLength="500"
+              onChange={this.handleDescriptionChange}
+              value={this.state.description} />
           </Form.Group>
-          {!this.props.contributor.is_candidate &&
+
+          {is_candidate ?
+            <>
+              <UpdateDescriptionButton
+                disabled={this.state.description.length === 0}
+                isUpdating={this.props.isUpdating}
+                updateDescription={this.updateDescription} />
+              <Button
+                disabled={this.state.isUpdating}
+                className="ml-2"
+                onClick={this.unregister}>
+                Unregister
+              </Button>
+            </>
+            :
             <RegisterButton
               register={this.register}
-              isRegistering={this.state.isRegistering} />
-          }
-          {this.props.contributor.is_candidate &&
-            <>
-            <UpdateDescriptionButton
-              disabled={this.state.description.length === 0}
-              isUpdatingDescription={this.state.isUpdatingDescription}
-              updateDescription={this.updateDescription} />
-            <Button disabled={this.state.isUpdatingDescription} className="ml-2" onClick={this.unregister}>Unregister</Button>
-            </>
+              isUpdating={this.props.isUpdating} />
           }
         </Form>
       </div>
@@ -197,4 +191,4 @@ class Registration extends React.Component {
   }
 }
 
-export default Registration;
+export default RegistrationPage;

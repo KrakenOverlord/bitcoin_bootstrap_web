@@ -38,7 +38,7 @@ function LearnMorePage(props) {
 
     <p />
 
-    <h3>Registration</h3>
+    <h3>RegistrationPage</h3>
     <span>
       Any contributor to the Bitcoin GitHub repository can register to be listed. Just sign in, enter a brief description on why you should receive funding, and hit the register button.
       You willl be immediately listed and publicly viewable. It's really that simple.

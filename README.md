@@ -1,7 +1,6 @@
 **TODO**
 - determine best num chars for blurb
 - figure out whitespace in blurb
-- sign out handling
 - bug report and feature request buttons don't spin
 - show contributions on listing
 - #url handling is goofy in url bar

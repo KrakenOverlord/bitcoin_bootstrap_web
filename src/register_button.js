@@ -5,8 +5,12 @@ import Spinner from 'react-bootstrap/Spinner'
 function RegisterButton(props) {
   return (
     <>
-    {props.isRegistering ?
-      <Button disabled={true} variant="primary">
+    {!props.isUpdating && <Button onClick={props.register}>Register</Button>}
+
+    {props.isUpdating && props.isUpdating.action !== 'registering' && <Button disabled={true}>Register</Button>}
+
+    {props.isUpdating && props.isUpdating.action === 'registering' &&
+      <Button disabled={true}>
         <Spinner
           as="span"
           animation="border"
@@ -16,8 +20,6 @@ function RegisterButton(props) {
         />
         {' '}Registering...
       </Button>
-      :
-      <Button variant="primary" onClick={props.register}>Register</Button>
     }
     </>
   );

@@ -22,7 +22,7 @@ function Header(props) {
         <Nav.Link onClick={props.home} href="#home">Home</Nav.Link>
         {props.contributor &&
           <>
-          <Nav.Link onClick={props.showRegistrationPage} href="#registration">Registration</Nav.Link>
+          <Nav.Link onClick={props.showRegistrationPagePage} href="#registration">Registration</Nav.Link>
           <Nav.Link onClick={props.showVotingPage} href="#voting">Voting</Nav.Link>
           </>
         }

@@ -5,7 +5,7 @@ import Header from './header.js';
 import Introduction from './introduction.js';
 import CandidatesList from './candidates_list.js';
 import AlertMessage from './alert_message.js';
-import Registration from './registration.js';
+import RegistrationPage from './registration_page.js';
 import Voting from './voting.js';
 import LearnMorePage from './learn_more_page.js';
 import BugReportPage from './bug_report_page.js';
@@ -28,7 +28,7 @@ class App extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
-    this.showRegistrationPage = this.showRegistrationPage.bind(this);
+    this.showRegistrationPagePage = this.showRegistrationPagePage.bind(this);
     this.showVotingPage = this.showVotingPage.bind(this);
     this.showLearnMorePage = this.showLearnMorePage.bind(this);
     this.showBugReportPage = this.showBugReportPage.bind(this);
@@ -158,7 +158,7 @@ class App extends React.Component {
     this.setState({ appState: 'landingPage' });
   }
 
-  showRegistrationPage() {
+  showRegistrationPagePage() {
     this.setState({ appState: 'registrationPage' });
   }
 
@@ -206,7 +206,7 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
-            showRegistrationPage={this.showRegistrationPage}
+            showRegistrationPagePage={this.showRegistrationPagePage}
             showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
@@ -230,7 +230,7 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
-            showRegistrationPage={this.showRegistrationPage}
+            showRegistrationPagePage={this.showRegistrationPagePage}
             showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
@@ -240,11 +240,13 @@ class App extends React.Component {
               alert={this.state.alert}
               deleteAlert={this.deleteAlert} />
           }
-          <Registration
+          <RegistrationPage
             contributor={this.state.contributor}
             updateState={this.updateState}
             signOut={this.signOut}
-            showAlert={this.showAlert} />
+            showAlert={this.showAlert}
+            isUpdating={this.state.isUpdating}
+            isUpdatingCallback={this.isUpdatingCallback} />
         </Container>
       );
     } else if (this.state.appState === 'votingPage') {
@@ -253,7 +255,7 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
-            showRegistrationPage={this.showRegistrationPage}
+            showRegistrationPagePage={this.showRegistrationPagePage}
             showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
@@ -279,7 +281,7 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
-            showRegistrationPage={this.showRegistrationPage}
+            showRegistrationPagePage={this.showRegistrationPagePage}
             showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
@@ -298,7 +300,7 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
-            showRegistrationPage={this.showRegistrationPage}
+            showRegistrationPagePage={this.showRegistrationPagePage}
             showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}
@@ -321,7 +323,7 @@ class App extends React.Component {
           <Header
             contributor={this.state.contributor}
             home={this.home}
-            showRegistrationPage={this.showRegistrationPage}
+            showRegistrationPagePage={this.showRegistrationPagePage}
             showVotingPage={this.showVotingPage}
             showLearnMorePage={this.showLearnMorePage}
             showBugReportPage={this.showBugReportPage}

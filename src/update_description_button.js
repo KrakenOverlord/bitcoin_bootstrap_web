@@ -5,19 +5,20 @@ import Spinner from 'react-bootstrap/Spinner'
 function UpdateDescriptionButton(props) {
   return (
     <>
-    {props.isUpdatingDescription ?
-      <Button disabled={true} variant="primary">
+    {!props.isUpdating && <Button disabled={props.disabled} onClick={props.updateDescription}>Update Description</Button>}
+
+    {props.isUpdating && props.isUpdating.action !== 'updatingDescription' && <Button disabled={true}>Update Description</Button>}
+
+    {props.isUpdating && props.isUpdating.action === 'updatingDescription' &&
+      <Button disabled={true}>
         <Spinner
           as="span"
           animation="border"
           size="sm"
           role="status"
-          aria-hidden="true"
-        />
+          aria-hidden="true" />
         {' '}Updating Description...
       </Button>
-      :
-      <Button disabled={props.disabled} onClick={props.updateDescription}>Update Description</Button>
     }
     </>
   );
