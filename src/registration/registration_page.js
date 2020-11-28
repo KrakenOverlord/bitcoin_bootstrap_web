@@ -4,8 +4,7 @@ import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import ConfirmationModal from './confirmation_modal.js';
 import RegistrationCard from './registration_card.js';
-import RegisterButton from './register_button.js';
-import UpdateDescriptionButton from './update_description_button.js';
+import SpinningButton from '../utils/spinning_button.js';
 
 class RegistrationPage extends React.Component {
   constructor(props) {
@@ -168,21 +167,27 @@ class RegistrationPage extends React.Component {
 
           {is_candidate ?
             <>
-              <UpdateDescriptionButton
-                disabled={this.state.description.length === 0}
-                isUpdating={this.props.isUpdating}
-                updateDescription={this.updateDescription} />
-              <Button
-                disabled={this.state.isUpdating}
-                className="ml-2"
-                onClick={this.unregister}>
-                Unregister
-              </Button>
+            <SpinningButton
+              buttonText='Update Description'
+              actionButtonText='Updating Description...'
+              action='updatingDescription'
+              isUpdating={this.props.isUpdating}
+              disabled={this.state.description.length === 0}
+              onClick={this.updateDescription} />
+            <Button
+              disabled={this.state.isUpdating}
+              className="ml-2"
+              onClick={this.unregister}>
+              Unregister
+            </Button>
             </>
             :
-            <RegisterButton
-              register={this.register}
-              isUpdating={this.props.isUpdating} />
+            <SpinningButton
+              buttonText='Register'
+              actionButtonText='Registering...'
+              action='registering'
+              isUpdating={this.props.isUpdating}
+              onClick={this.register} />
           }
         </Form>
       </div>
