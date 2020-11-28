@@ -19,17 +19,17 @@ function Header(props) {
         className="d-inline-block align-top"/>
       </Navbar.Brand>
       <Nav className="mr-auto">
-        <Nav.Link onClick={props.home} href="#home">Home</Nav.Link>
+        <Nav.Link onClick={() => props.showPage('landingPage')} href="#home">Home</Nav.Link>
         {props.contributor &&
           <>
-          <Nav.Link onClick={props.showRegistrationPage} href="#registration">Registration</Nav.Link>
-          <Nav.Link onClick={props.showVotingPage} href="#voting">Voting</Nav.Link>
+          <Nav.Link onClick={() => props.showPage('registrationPage')} href="#registration">Registration</Nav.Link>
+          <Nav.Link onClick={() => props.showPage('votingPage')} href="#voting">Voting</Nav.Link>
           </>
         }
-        <Nav.Link onClick={props.showLearnMorePage} href="#learn-more">Learn more</Nav.Link>
+        <Nav.Link onClick={() => props.showPage('learnMorePage')} href="#learn-more">Learn more</Nav.Link>
         <NavDropdown title="Contact" id="basic-nav-dropdown">
-        <NavDropdown.Item href="#bug-report" onClick={props.showBugReportPage}>Bug Report</NavDropdown.Item>
-        <NavDropdown.Item href="#feature-request" onClick={props.showFeatureRequestPage}>Feature Request</NavDropdown.Item>
+        <NavDropdown.Item href="#bug-report" onClick={() => props.showPage('bugReportPage')}>Bug Report</NavDropdown.Item>
+        <NavDropdown.Item href="#feature-request" onClick={() => props.showPage('featureRequestPage')}>Feature Request</NavDropdown.Item>
       </NavDropdown>
       </Nav>
       <Form inline>

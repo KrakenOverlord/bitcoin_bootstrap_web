@@ -38,7 +38,7 @@ function LearnMorePage(props) {
 
     <p />
 
-    <h3>Registration</h3>
+    <h3>RegistrationPage</h3>
     <span>
       Any contributor to the Bitcoin GitHub repository can register to be listed. Just sign in, enter a brief description on why you should receive funding, and hit the register button.
       You willl be immediately listed and publicly viewable. It's really that simple.
@@ -63,7 +63,13 @@ function LearnMorePage(props) {
       <b><i>Note on Anonymous Contributors</i></b>
 
       <p>
-      In order for an anonymous contributor to be verified as a contributor, the email address associated with your anonymous contribution must match a public email address in your GitHub profile. Otherwise, there is no way to verify that you made a contribution.
+      In order for an anonymous contributor to be verified, the email address associated with your anonymous contribution must match a public email address in your GitHub profile. Otherwise, there is no way to verify that you made a contribution.
+      </p>
+
+      <p>
+      The GitHub API only returns usernames for the first 500 contributors, ordered by most contributions in descending order.
+      The remainders are returned as anonymous contributors. So if you only have one contribution, you may be returned as an anonymous contributor.
+      This means you will have to have a public email in your GutHub profile that matches the email in the contribution. Othwerwise we have no way to verify that you made a contribution. 
       </p>
 
       </span>

@@ -1,19 +1,17 @@
 **TODO**
-- bug report and feature request buttons don't spin
+- determine best num chars for blurb
+- figure out whitespace in blurb
 - show contributions on listing
 - #url handling is goofy in url bar
-- setting api url correct?
 - make sure mobile friendly
 - must not be able to vote while registration action taking place
 - add google analytics
 - test on multiple browsers
 - get back button working for main screens
-- determine best num chars for blurb
-- figure out whitespace in blurb
-- icon for browser title image
-- get better bitcoin and github images
 - disable login link after pressed
 - success stories list after fully funded
+- turn off basic auth before go live
+- Manifest: Line: 1, column: 1, Syntax error. goes away after disabling access control
 
 **Access Control**
 Username: KrakenOverlord
