@@ -1,6 +1,9 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import axios from 'axios';
+import { SwatchesPicker } from 'react-color';
 import Header from './header.js';
 import Introduction from './introduction.js';
 import CandidatesList from './candidates/candidates_list.js';
@@ -11,12 +14,15 @@ import BugReportPage from './bug_report_page.js';
 import FeatureRequestPage from './feature_request_page.js';
 import LoadingSpinner from './utils/loading_spinner.js';
 import AlertMessage from './utils/alert_message.js';
+import './app.css';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      headerColor: '#388e3c',
+      cardColor: '#c8e6c9',
       isUpdating: null,
       alert: null,
       appState: 'landingPage', // ['loadingPage', 'landingPage', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
@@ -29,6 +35,9 @@ class App extends React.Component {
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
     this.showPage = this.showPage.bind(this);
+
+    this.handleHeaderColorChange = this.handleHeaderColorChange.bind(this);
+    this.handleCardColorChange = this.handleCardColorChange.bind(this);
 
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
@@ -171,16 +180,25 @@ class App extends React.Component {
 
   // END CALLBACKS
 
+  handleHeaderColorChange(color, event) {
+    this.setState({ headerColor: color.hex });
+  }
+
+  handleCardColorChange(color, event) {
+    this.setState({ cardColor: color.hex });
+  }
+
   render() {
     console.log("---App");
 
     let appState = this.state.appState;
     return (
+      <>
+      <Header
+        color={this.state.headerColor}
+        contributor={this.state.contributor}
+        showPage={this.showPage} />
       <Container>
-        <Header
-          contributor={this.state.contributor}
-          showPage={this.showPage} />
-
         {this.state.alert &&
           <AlertMessage
             alert={this.state.alert}
@@ -189,11 +207,15 @@ class App extends React.Component {
 
         {appState === 'landingPage' &&
         <>
-          <Introduction numCandidates={this.state.candidates.length} showLearnMorePage={this.showPage} />
+          <Introduction color={this.state.cardColor} numCandidates={this.state.candidates.length} showPage={this.showPage} />
+          <Row>
+              <Col><SwatchesPicker onChange={this.handleHeaderColorChange} /></Col>
+              <Col><SwatchesPicker onChange={this.handleCardColorChange} /></Col>
+          </Row>
+
           <CandidatesList
             contributor={null}
             candidates={this.state.candidates} />
-          }
         </>
         }
 
@@ -242,6 +264,7 @@ class App extends React.Component {
           <LoadingSpinner />
         }
       </Container>
+      </>
     );
   }
 }

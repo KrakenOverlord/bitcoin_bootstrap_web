@@ -65,7 +65,7 @@ class FeatureRequestPage extends React.Component {
     return(
       <>
       <div className='mt-3'>
-        <Card bg='light'>
+        <Card style={{backgroundColor:'#f2dabd'}}>
           <Card.Body>
             <>
             <p>When requesting a feature, please include a detailed description of how it should work.</p>

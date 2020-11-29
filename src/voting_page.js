@@ -7,7 +7,7 @@ function VotingPage(props) {
 
   return(
     <>
-      <Card bg='light' className='mt-3'>
+      <Card className='mt-3' style={{backgroundColor:'#f2dabd'}}>
         <Card.Body>
           <div className="mt-3">
             { /* if they haven't voted yet */}

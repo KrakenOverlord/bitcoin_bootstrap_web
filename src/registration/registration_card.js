@@ -3,10 +3,10 @@ import Card from 'react-bootstrap/Card';
 
 function RegistrationCard(props) {
   return (
-    <Card bg='light'>
+    <Card style={{backgroundColor:'#f2dabd'}}>
       <Card.Body>
         {props.is_candidate ?
-          <span>You are registered as a candidate.</span>
+          <span>You are registered as a candidate. </span>
           :
           <>
             Please describe the contributions you have made and what you are currently working on.

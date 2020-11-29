@@ -4,12 +4,13 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Authentication from './authentication.js';
+import './app.css';
 
 function Header(props) {
   console.log("---Header");
-
+  console.log(props.color);
   return (
-    <Navbar bg="light" variant="light">
+    <Navbar style={{backgroundColor: props.color}} variant="dark">
       <Navbar.Brand href="#home">
        <img src="/bitcoin-bootstrap-logo.png"
         alt=""

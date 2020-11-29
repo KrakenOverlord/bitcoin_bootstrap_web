@@ -16,7 +16,7 @@ class Authentication extends React.Component {
       return (
         <>
           <img className='mr-2' src={this.props.contributor.avatar_url} alt="" height="25" width="25" />
-          {this.props.contributor.username}
+          <span style={{color:'white'}}>{this.props.contributor.username}</span>
         </>
       )
     }

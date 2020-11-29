@@ -5,9 +5,9 @@ function LearnMorePage(props) {
     <>
     <h3 className='mt-3'>Introduction</h3>
 
-    <b>The History</b>
-    <p />Starting with Satoshi Nakamoto, Bitcoin was built by unpaid volunteers who envisioned a better world with Bitcoin.
-    Most worked on it on the side while working a normal job to support themselves. Some even worked on it while living off their personal savings.
+    <b>Bitcoin was built by Volunteers</b>
+    <p />Starting with Satoshi Nakamoto, Bitcoin was built by volunteers who envisioned a better world with self sovereign banking.
+    Many of these volunteers worked on Bitcoin in their free time while holding a full or part-time job. Some even worked on it while living off their savings.
     Eventually, some found jobs that pay them to work on Bitcoin, but most continue unpaid.
 
     <p /><b>The Problem</b>
@@ -69,7 +69,7 @@ function LearnMorePage(props) {
       <p>
       The GitHub API only returns usernames for the first 500 contributors, ordered by most contributions in descending order.
       The remainders are returned as anonymous contributors. So if you only have one contribution, you may be returned as an anonymous contributor.
-      This means you will have to have a public email in your GutHub profile that matches the email in the contribution. Othwerwise we have no way to verify that you made a contribution. 
+      This means you will have to have a public email in your GutHub profile that matches the email in the contribution. Othwerwise we have no way to match you to a contribution.
       </p>
 
       </span>
