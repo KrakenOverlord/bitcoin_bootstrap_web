@@ -19,7 +19,7 @@ function Header(props) {
         onClick={props.home}
         className="d-inline-block align-top"/>
       </Navbar.Brand>
-      <Nav className="mr-auto">
+      <Nav activeKey="#home" className="mr-auto">
         <Nav.Link onClick={() => props.showPage('landingPage')} href="#home">Home</Nav.Link>
         {props.contributor &&
           <>

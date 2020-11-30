@@ -1,10 +1,8 @@
 **TODO**
 - determine best num chars for blurb
-- figure out whitespace in blurb
 - show contributions on listing
 - #url handling is goofy in url bar
 - make sure mobile friendly
-- must not be able to vote while registration action taking place
 - add google analytics
 - test on multiple browsers
 - get back button working for main screens

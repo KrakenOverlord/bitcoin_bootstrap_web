@@ -17,7 +17,7 @@ function CandidatesListRow(props) {
         </a>
         :
         <img
-          src='bitcoin-anon.png'
+          src='anon-contributor.png'
           alt=""
           height="64"
           width="64" />

@@ -65,24 +65,14 @@ class BugReportPage extends React.Component {
     return(
       <>
       <div className='mt-3'>
-        <Card style={{backgroundColor:'#f2dabd'}}>
-          <Card.Body>
-            <>
-            <p>When reporting a bug, please include:</p>
-            <ul>
-              <li>The steps to reproduce the bug.</li>
-              <li>The browser you are using.</li>
-              <li>The operating system you are using.</li>
-              <li>Optionally include your email address if it's ok to contact you for additional information.</li>
-            </ul>
-            </>
-          </Card.Body>
-        </Card>
-
         <Form className='mt-3'>
+          <b>Bug Report</b>
           <Form.Group controlId="description">
-            <Form.Label>What is the problem? (500 characters max)</Form.Label>
+            <Form.Label>Please include steps to reproduce the bug and the browser you are using.</Form.Label>
             <Form.Control name="description" as="textarea" rows={3} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
+            <Form.Text className="text-muted">
+              500 characters max.
+            </Form.Text>
           </Form.Group>
 
           <SpinningButton

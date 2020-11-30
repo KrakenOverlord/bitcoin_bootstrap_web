@@ -1,9 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import ConfirmationModal from './confirmation_modal.js';
-import RegistrationCard from './registration_card.js';
 import SpinningButton from '../utils/spinning_button.js';
 
 class RegistrationPage extends React.Component {
@@ -12,13 +10,12 @@ class RegistrationPage extends React.Component {
 
     this.state = {
       showUnregisterModal: false,
-      isCandidate: true,
+      isCandidate: props.contributor.is_candidate,
       originalDescription: props.contributor.description,
       description: props.contributor.description
     };
 
     this.register = this.register.bind(this);
-    this.update = this.update.bind(this);
     this.unregisterConfirmed = this.unregisterConfirmed.bind(this);
     this.closeUnregisterModal = this.closeUnregisterModal.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
@@ -28,33 +25,11 @@ class RegistrationPage extends React.Component {
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
-  // static getDerivedStateFromProps(props, state) {
-  //   return ({
-  //     switchOn: props.contributor.isCandidate,
-  //     original_description: props.contributor.description,
-  //     description: props.contributor.description
-  //   });
-  // }
-
-  // componentDidMount() {
-  //   this.setState({
-  //     switchOn: this.props.contributor.isCandidate,
-  //     original_description: this.props.contributor.description,
-  //     description: this.props.contributor.description
-  //   });
-  // }
-  //
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.isCandidate !== this.state.isCandidate) {
-  //     this.setState({
-  //       switchOn: this.props.contributor.isCandidate,
-  //       original_description: this.props.contributor.description,
-  //       description: this.props.contributor.description
-  //     });
-  //   }
-  // }
-
   handleDescriptionChange(event) {
+    if (event.target.value.indexOf('\n') > -1 || event.target.value.indexOf('  ') > -1) {
+      return;
+    }
+
     this.setState({
       description: event.target.value
     });
@@ -78,7 +53,7 @@ class RegistrationPage extends React.Component {
       } else {
         let message = {
           variant: 'success',
-          message: 'Success! You have been added to the candidates list.'
+          message: 'Registration was successful! You have been added to the candidates list.'
         };
         this.setState({isCandidate: true});
         this.props.updateState(response.contributor, response.candidates, message);
@@ -110,6 +85,7 @@ class RegistrationPage extends React.Component {
           variant: 'success',
           message: 'You successfully unregistered and removed from the candidates list.'
         };
+        this.setState({isCandidate: false});
         this.props.updateState(response.contributor, response.candidates, message);
       }
     })
@@ -133,7 +109,7 @@ class RegistrationPage extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("update_description response: " + JSON.stringify(response));
+      console.log("UpdateDescription response: " + JSON.stringify(response));
 
       if (response.error) {
         this.handleError(response.error_code, "Could not update description. Please try again later.");
@@ -159,27 +135,18 @@ class RegistrationPage extends React.Component {
     }
   }
 
-  update() {
-    if (!this.state.isCandidate) {
-      this.setState({ showUnregisterModal: true });
-    } else {
-      if (this.state.description !== this.state.original_description) {
-        this.updateDescription();
-      }
-    }
-  }
-
   closeUnregisterModal() {
     this.setState({ showUnregisterModal: false });
   }
 
   onSwitchAction() {
-    let value = this.state.isCandidate ? false : true;
-    this.setState({isCandidate: value});
+    if (this.state.isCandidate) {
+      this.setState({ showUnregisterModal: true });
+    }
   }
 
   render() {
-    const isCandidate = this.props.contributor.is_candidate;
+    const isCandidate = this.state.isCandidate;
     console.log("---RegistrationPage");
     return(
       <>
@@ -192,6 +159,7 @@ class RegistrationPage extends React.Component {
 
       <div className='mt-3'>
         <Form className='mt-3'>
+
           { /* description */ }
           <b>Description</b>
           <Form.Group controlId="description">
@@ -204,34 +172,35 @@ class RegistrationPage extends React.Component {
               onChange={this.handleDescriptionChange}
               value={this.state.description} />
               <Form.Text className="text-muted">
-                500 characters max. Descriptions are collapsed down to a single continuous paragraph when displayed in the candidates list.
+                500 characters max. Extra whitespace and newlines are stripped out. Descriptions are collapsed down to a single continuous paragraph when displayed in the candidates list.
               </Form.Text>
+              {isCandidate &&
+                <SpinningButton
+                  disabled={this.state.isUpdating || this.state.description === this.state.originalDescriptions}
+                  buttonText='Update Description'
+                  actionButtonText='Updating Description...'
+                  action='updatingDescription'
+                  isUpdating={this.props.isUpdating}
+                  onClick={this.updateDescription} />
+              }
           </Form.Group>
-          <span style={{ fontSize: '12px', color: 'gray'}}></span>
 
           {isCandidate ?
-            <>
+            <div className='mt-5'>
             <b>Registration</b>
             <br />
-            <span style={{ fontSize: '12px'}}>Slide the switch left and then press the Update button to unregister.
-            You will be removed from the candidates list.
-            You can re-register at any time and your votes and description are restored. You will lose any votes that are changed while you are away.</span>
+            <span style={{ fontSize: '12px'}}>If you unregister your will be removed from the candidates list.
+            You can re-register at any time and your votes and description are restored.
+            You will lose any votes that are changed while you are unregistered.
+            </span>
             <Form.Check
-              className='mb-4'
               type="switch"
               id="custom-switch"
               label='Registered'
               checked={this.state.isCandidate}
               onChange={this.onSwitchAction}
             />
-            <SpinningButton
-              disabled={this.state.isUpdating || (this.state.isCandidate && this.state.description === this.state.originalDescription)}
-              buttonText='Update'
-              actionButtonText='Updating...'
-              action='updatingDescription'
-              isUpdating={this.props.isUpdating}
-              onClick={this.update} />
-            </>
+            </div>
             :
             <Form.Group controlId="description" className="mt-3">
               <Form.Label></Form.Label>
