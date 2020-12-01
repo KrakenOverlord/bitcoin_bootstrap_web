@@ -8,20 +8,32 @@ function Introduction(props) {
   return (
     <Card className="mt-3" style={{backgroundColor: '#d9d9d9'}}>
       <Card.Body>
-        <p><span style={{ fontSize: '20px'}}>Bitcoin Bootstrap</span> helps answer the question, <i>which bitcoin developers deserve funding?</i></p>
-        It does this using a system of voting by the people most knowledgeable about Bitcoin... the developers.
-        <p className='mt-3'>
+        So you want to give back to the Bitcoin community by helping to fund a Bitcoin developer?
+        That's very generous and many are looking for help.
+
+        <p />But which one? There are 1000
+        <span>
           <a href='https://github.com/bitcoin/bitcoin/graphs/contributors'
             target="_blank"
-            rel="noopener noreferrer">Contributors</a>
+            rel="noopener noreferrer"> contributors</a>
           {' '}to the
           {' '}<a href='https://github.com/bitcoin/bitcoin'
             target="_blank"
-            rel="noopener noreferrer">Bitcoin repository</a>
-           {' '}can register to be listed here, and then other contributors can vote for them.
-           And since contributors are usually the ones with the most knowledge and are in the trenches working on Bitcoin, they know which contributors are doing good work and deserve to be funded.
-           Each vote represents the sum knowledge of a contributor. Through this system of voting, the best candidates will rise to the top.
-        </p>
+            rel="noopener noreferrer">Bitcoin repository</a>!
+        </span>
+
+        <p />Who is looking for help?
+
+        <p />Who is doing good work?
+
+        <p />Unless you’re already familiar with the technology and working in the trenches, it can be difficult to answer those questions.
+
+        <p />But bitcoin developers <i>are</i> familiar with the technology.
+        Bitcoin developers <i>are</i> working in the trenches.
+        Bitcoin Bootstrap leverages their knowledge through a system of voting to bring visibility to the best contributors as rated by other contributors.
+        Only contributors can register to be listed, and only contributors can vote.
+
+        <p />See the list of candidates below.
 
         {props.numCandidates === 0 &&
           <p>
@@ -31,7 +43,7 @@ function Introduction(props) {
         }
 
         <p>
-          <Button href="#learn-more" variant="primary" onClick={() => props.showPage('learnMorePage')}>Learn more</Button>
+          <Button className="mt-3" href="#learn-more" variant="primary" onClick={() => props.showPage('learnMorePage')}>Learn more</Button>
         </p>
       </Card.Body>
     </Card>
