@@ -34,9 +34,6 @@ class App extends React.Component {
     this.deleteAlert = this.deleteAlert.bind(this);
     this.showPage = this.showPage.bind(this);
 
-    this.handleHeaderColorChange = this.handleHeaderColorChange.bind(this);
-    this.handleCardColorChange = this.handleCardColorChange.bind(this);
-
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
@@ -73,7 +70,7 @@ class App extends React.Component {
 
       if (response.error) {
         if (response.error_code === 1) {
-          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in." });
+          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in. If you are a contributor and still can't sign in, please see the Help section of the Learn More page." });
         } else {
           this.signOut();
         }
@@ -177,14 +174,6 @@ class App extends React.Component {
   }
 
   // END CALLBACKS
-
-  handleHeaderColorChange(color, event) {
-    this.setState({ headerColor: color.hex });
-  }
-
-  handleCardColorChange(color, event) {
-    this.setState({ cardColor: color.hex });
-  }
 
   render() {
     console.log("---App");
