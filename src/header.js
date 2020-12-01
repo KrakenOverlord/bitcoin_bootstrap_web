@@ -4,21 +4,25 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Authentication from './authentication.js';
+import './app.css';
+
+// onClick={() => props.showPage('landingPage')}
 
 function Header(props) {
   console.log("---Header");
-
+  console.log(props.color);
   return (
-    <Navbar bg="light" variant="light">
-      <Navbar.Brand href="#home">
-       <img src="/bitcoin-bootstrap-logo.png"
+    <Navbar style={{backgroundColor: "#5e5e5e"}} variant="dark">
+      <Navbar.Brand>
+       <img
+        src="/bb-logo-white.png"
         alt=""
-        width="69"
-        height="40"
-        onClick={props.home}
-        className="d-inline-block align-top"/>
+        width="50"
+        height="50"
+        className="ml-4 d-inline-block align-top"/>
       </Navbar.Brand>
-      <Nav className="mr-auto">
+      <span className="mr-5" style={{color:'white', fontSize: '20px'}}>Bitcoin Bootstrap</span>
+      <Nav className="ml-3 mr-auto">
         <Nav.Link onClick={() => props.showPage('landingPage')} href="#home">Home</Nav.Link>
         {props.contributor &&
           <>

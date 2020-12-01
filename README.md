@@ -1,16 +1,14 @@
 **TODO**
-- determine best num chars for blurb
-- figure out whitespace in blurb
-- show contributions on listing
-- #url handling is goofy in url bar
-- make sure mobile friendly
-- must not be able to vote while registration action taking place
-- add google analytics
+- reword everything
+- add welcome alert on login saying they can now vote and register
 - test on multiple browsers
+- make sure mobile friendly
+- turn off basic auth before go live
+- #url handling is goofy in url bar
+- add google analytics
 - get back button working for main screens
 - disable login link after pressed
 - success stories list after fully funded
-- turn off basic auth before go live
 - Manifest: Line: 1, column: 1, Syntax error. goes away after disabling access control
 
 **Access Control**

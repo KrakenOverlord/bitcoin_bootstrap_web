@@ -11,12 +11,16 @@ import BugReportPage from './bug_report_page.js';
 import FeatureRequestPage from './feature_request_page.js';
 import LoadingSpinner from './utils/loading_spinner.js';
 import AlertMessage from './utils/alert_message.js';
+import './app.css';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      editColors: false,
+      headerColor: '#5e5e5e', //'#797979', //'#424242',
+      cardColor: '#d9d9d9',
       isUpdating: null,
       alert: null,
       appState: 'landingPage', // ['loadingPage', 'landingPage', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
@@ -29,6 +33,9 @@ class App extends React.Component {
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
     this.showPage = this.showPage.bind(this);
+
+    this.handleHeaderColorChange = this.handleHeaderColorChange.bind(this);
+    this.handleCardColorChange = this.handleCardColorChange.bind(this);
 
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
@@ -171,16 +178,24 @@ class App extends React.Component {
 
   // END CALLBACKS
 
+  handleHeaderColorChange(color, event) {
+    this.setState({ headerColor: color.hex });
+  }
+
+  handleCardColorChange(color, event) {
+    this.setState({ cardColor: color.hex });
+  }
+
   render() {
     console.log("---App");
 
     let appState = this.state.appState;
     return (
+      <>
+      <Header
+        contributor={this.state.contributor}
+        showPage={this.showPage} />
       <Container>
-        <Header
-          contributor={this.state.contributor}
-          showPage={this.showPage} />
-
         {this.state.alert &&
           <AlertMessage
             alert={this.state.alert}
@@ -189,11 +204,11 @@ class App extends React.Component {
 
         {appState === 'landingPage' &&
         <>
-          <Introduction numCandidates={this.state.candidates.length} showLearnMorePage={this.showPage} />
+          <Introduction numCandidates={this.state.candidates.length} showPage={this.showPage} />
+
           <CandidatesList
             contributor={null}
             candidates={this.state.candidates} />
-          }
         </>
         }
 
@@ -242,6 +257,7 @@ class App extends React.Component {
           <LoadingSpinner />
         }
       </Container>
+      </>
     );
   }
 }

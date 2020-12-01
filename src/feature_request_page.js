@@ -1,8 +1,8 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import SpinningButton from './utils/spinning_button.js';
+import './app.css';
 
 class FeatureRequestPage extends React.Component {
   constructor(props) {
@@ -65,18 +65,14 @@ class FeatureRequestPage extends React.Component {
     return(
       <>
       <div className='mt-3'>
-        <Card bg='light'>
-          <Card.Body>
-            <>
-            <p>When requesting a feature, please include a detailed description of how it should work.</p>
-            </>
-          </Card.Body>
-        </Card>
-
         <Form className='mt-3'>
+          <b>Feature Request</b>
           <Form.Group controlId="description">
-            <Form.Label>What is your idea? (500 characters max)</Form.Label>
+            <Form.Label>Please include a detailed description of how the feature should work.</Form.Label>
             <Form.Control name="description" as="textarea" rows={3} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
+            <Form.Text className="text-muted">
+              500 characters max.
+            </Form.Text>
           </Form.Group>
 
           <SpinningButton

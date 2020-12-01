@@ -74,7 +74,7 @@ class UsernameButton extends React.Component {
         { /* signed in and not voting state and didn't vote for this candidate */ }
         {signedIn && !isUpdating && this.props.contributor.voted_for !== candidateUsername &&
           <Button
-            variant="success"
+            variant="primary"
             size="sm"
             onClick={() => this.vote(candidateUsername)}>Vote for {candidateUsername}
           </Button>
@@ -93,7 +93,7 @@ class UsernameButton extends React.Component {
         {signedIn && isUpdating && isUpdating !== candidateUsername &&
           <Button
             disabled={true}
-            variant="success"
+            variant="primary"
             size="sm"
             onClick={() => this.vote(candidateUsername)}>Vote for {candidateUsername}
           </Button>
@@ -103,7 +103,7 @@ class UsernameButton extends React.Component {
         {signedIn && isUpdating && isUpdating === candidateUsername &&
           <Button
           disabled={true}
-          variant="success"
+          variant="primary"
           size="sm">
             <Spinner
               as="span"
