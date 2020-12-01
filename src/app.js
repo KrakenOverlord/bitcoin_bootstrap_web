@@ -1,9 +1,6 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import axios from 'axios';
-import { SwatchesPicker } from 'react-color';
 import Header from './header.js';
 import Introduction from './introduction.js';
 import CandidatesList from './candidates/candidates_list.js';
@@ -21,8 +18,9 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      headerColor: '#388e3c',
-      cardColor: '#c8e6c9',
+      editColors: false,
+      headerColor: '#5e5e5e', //'#797979', //'#424242',
+      cardColor: '#d9d9d9',
       isUpdating: null,
       alert: null,
       appState: 'landingPage', // ['loadingPage', 'landingPage', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
@@ -195,7 +193,6 @@ class App extends React.Component {
     return (
       <>
       <Header
-        color={this.state.headerColor}
         contributor={this.state.contributor}
         showPage={this.showPage} />
       <Container>
@@ -207,11 +204,7 @@ class App extends React.Component {
 
         {appState === 'landingPage' &&
         <>
-          <Introduction color={this.state.cardColor} numCandidates={this.state.candidates.length} showPage={this.showPage} />
-          <Row>
-              <Col><SwatchesPicker onChange={this.handleHeaderColorChange} /></Col>
-              <Col><SwatchesPicker onChange={this.handleCardColorChange} /></Col>
-          </Row>
+          <Introduction numCandidates={this.state.candidates.length} showPage={this.showPage} />
 
           <CandidatesList
             contributor={null}

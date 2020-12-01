@@ -25,7 +25,7 @@ class ConfirmationModal extends React.Component {
     return (
       <Modal show={true} onHide={this.props.cancel}>
           <Modal.Header closeButton>
-            <Modal.Title>RegistrationPage</Modal.Title>
+            <Modal.Title>Registration</Modal.Title>
           </Modal.Header>
           <Modal.Body>Are you sure you want to unregister?</Modal.Body>
           <Modal.Footer>

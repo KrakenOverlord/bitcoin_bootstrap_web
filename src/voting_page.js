@@ -1,5 +1,4 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
 import CandidatesList from './candidates/candidates_list.js';
 
 function VotingPage(props) {

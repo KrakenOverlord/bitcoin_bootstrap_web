@@ -38,6 +38,13 @@ function LearnMorePage(props) {
 
     <p />
 
+    Why Can't I sign in?
+    If you are a contributor and can't sign in, it's due to a limitiation in the GitHub API. But don't worry, there is a fix. there is , only the first 500 contributors to a repository, sorts them by the number of commits per contributor in descending order, is returned.
+    The remaining contributors are treated like the anonymous contributors above, and only the email address associated with the contribution is returned.
+    If you have made more than 1 contribution, you'll be in the first 500 returned with a username. But if you've only made one contribution, you may have been returned as an anonymous contributor.
+    In this case, it is necessary that the public email address in your GitHub profile match the email address in the contribution.
+    Then we can find your profile and obtain your username to match against your username when you sign in. Othwerwise we have no way to match you to a contribution.
+
     <h3>RegistrationPage</h3>
     <span>
       Any contributor to the Bitcoin GitHub repository can register to be listed. Just sign in, enter a brief description on why you should receive funding, and hit the register button.
@@ -56,23 +63,20 @@ function LearnMorePage(props) {
       <p />
 
       <img
-        src='anonymous.png'
+        src='anon-contributor.png'
         alt=""
         height="64"
         width="64" />
       <b><i>Note on Anonymous Contributors</i></b>
+      There are two kinds of anonymous contributors:
 
-      <p>
-      In order for an anonymous contributor to be verified, the email address associated with your anonymous contribution must match a public email address in your GitHub profile. Otherwise, there is no way to verify that you made a contribution.
-      </p>
-
-      <p>
-      The GitHub API only returns usernames for the first 500 contributors, ordered by most contributions in descending order.
-      The remainders are returned as anonymous contributors. So if you only have one contribution, you may be returned as an anonymous contributor.
-      This means you will have to have a public email in your GutHub profile that matches the email in the contribution. Othwerwise we have no way to match you to a contribution.
-      </p>
-
+      1. Contributors that didn't associate their GitHub profile with the contribution. They only provided an email.
+      In this case, for the contributor to be verified, the email address associated with your anonymous contribution must match a public email address in your GitHub profile.
+      Otherwise, there is no way to verify that you made a contribution.
       </span>
+
+      <p />
+      If you make your email public, it can take up to 24 hours before the changes make their way to the Bitcoin Bootstrap database. So wait a day before trying to sign in.
     </>
   );
 }

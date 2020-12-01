@@ -55,7 +55,10 @@ class RegistrationPage extends React.Component {
           variant: 'success',
           message: 'Registration was successful! You have been added to the candidates list.'
         };
-        this.setState({isCandidate: true});
+        this.setState({
+          isCandidate: true,
+          originalDescription: response.contributor.description
+        });
         this.props.updateState(response.contributor, response.candidates, message);
       }
     })
@@ -176,7 +179,7 @@ class RegistrationPage extends React.Component {
               </Form.Text>
               {isCandidate &&
                 <SpinningButton
-                  disabled={this.state.isUpdating || this.state.description === this.state.originalDescriptions}
+                  disabled={this.state.isUpdating || (this.state.description === this.state.originalDescription)}
                   buttonText='Update Description'
                   actionButtonText='Updating Description...'
                   action='updatingDescription'
@@ -189,7 +192,7 @@ class RegistrationPage extends React.Component {
             <div className='mt-5'>
             <b>Registration</b>
             <br />
-            <span style={{ fontSize: '12px'}}>If you unregister your will be removed from the candidates list.
+            <span style={{ fontSize: '12px'}}>Unregister to be removed from the candidates list.
             You can re-register at any time and your votes and description are restored.
             You will lose any votes that are changed while you are unregistered.
             </span>

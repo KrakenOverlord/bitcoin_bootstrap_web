@@ -5,12 +5,12 @@ import Spinner from 'react-bootstrap/Spinner'
 function SpinningButton(props) {
   return (
     <>
-    {!props.isUpdating && <Button disabled={props.disabled} onClick={props.onClick}>{props.buttonText}</Button>}
+    {!props.isUpdating && <Button variant='primary' disabled={props.disabled} onClick={props.onClick}>{props.buttonText}</Button>}
 
-    {props.isUpdating && props.isUpdating.action !== props.action && <Button disabled={true}>{props.buttonText}</Button>}
+    {props.isUpdating && props.isUpdating.action !== props.action && <Button variant='primary' disabled={true}>{props.buttonText}</Button>}
 
     {props.isUpdating && props.isUpdating.action === props.action &&
-      <Button disabled={true}>
+      <Button variant='primary' disabled={true}>
         <Spinner
           as="span"
           animation="border"
