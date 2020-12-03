@@ -1,7 +1,4 @@
 **TODO**
-- test on multiple browsers
-- make sure mobile friendly
-- turn off basic auth before go live
 - add welcome alert on login saying they can now vote and register
 - #url handling is goofy in url bar
 - add google analytics

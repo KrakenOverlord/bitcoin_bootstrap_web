@@ -13,8 +13,12 @@ function Introduction(props) {
   return (
     <Card className="mt-3" style={{backgroundColor: '#d9d9d9'}}>
       <Card.Body>
-        So you want to give back to the Bitcoin community by helping to fund a Bitcoin developer?
-        That's very generous and many are looking for help.
+      <p className="mt-2" style={{ textAlign: "center", fontWeight: 'bold', color: 'black', fontSize: '20px' }}>
+      A curated list of Bitcoin developers seeking financial help.
+      </p>
+      <b></b>
+        <p />Do you want to give back to the Bitcoin community by helping to fund a Bitcoin developer?
+        It's a very generous thing to do and and many are looking for help.
 
         <p />But which one? There are 1000
         <span>
