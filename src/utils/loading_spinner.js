@@ -1,8 +1,14 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 
+function print(message) {
+  if (process.env.REACT_APP_DEVELOPMENT) {
+    console.log(message);
+  }
+}
+
 function LoadingSpinner(props) {
-  console.log("---LoadingSpinner");
+  print("---LoadingSpinner");
 
   const style = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
   return (

@@ -4,8 +4,14 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import UsernameButton from './username_button.js'
 
+function print(message) {
+  if (process.env.REACT_APP_DEVELOPMENT) {
+    console.log(message);
+  }
+}
+
 function CandidatesListRow(props) {
-  console.log("---CandidatesListRow");
+  print("---CandidatesListRow");
 
   return (
     <Media as="li">

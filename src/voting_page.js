@@ -1,8 +1,14 @@
 import React from 'react';
 import CandidatesList from './candidates/candidates_list.js';
 
+function print(message) {
+  if (process.env.REACT_APP_DEVELOPMENT) {
+    console.log(message);
+  }
+}
+
 function VotingPage(props) {
-  console.log("---Voting");
+  print("---Voting");
 
   return(
     <CandidatesList

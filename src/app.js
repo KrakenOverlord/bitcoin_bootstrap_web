@@ -59,18 +59,18 @@ class App extends React.Component {
   signInWithCode(code) {
     window.history.pushState({}, null, 'home');
 
-    console.log("Calling SigninWithCode");
+    this.print("Calling SigninWithCode");
     axios.post(this.api_url, {
       command: 'SigninWithCode',
       code: code
     })
     .then((res) => {
       var response = res.data;
-      console.log("SigninWithCode response: " + JSON.stringify(response));
+      this.print("SigninWithCode response: " + JSON.stringify(response));
 
       if (response.error) {
         if (response.error_code === 1) {
-          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in. If you are a contributor and still can't sign in, please see the Help section of the Learn More page." });
+          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in. If you are a contributor and still can't sign in, please see the Help section of the Learn more page." });
         } else {
           this.signOut();
         }
@@ -82,19 +82,19 @@ class App extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
     });
   }
 
   signInWithAccessToken(access_token) {
-    console.log("Calling SigninWithAccessToken");
+    this.print("Calling SigninWithAccessToken");
     axios.post(this.api_url, {
       command: 'SigninWithAccessToken',
       access_token: access_token
     })
     .then((res) => {
       var response = res.data;
-      console.log("SigninWithAccessToken response: " + JSON.stringify(response));
+      this.print("SigninWithAccessToken response: " + JSON.stringify(response));
 
       if (response.error) {
         if (response.error_code === 0 || response.error_code === 1) {
@@ -107,18 +107,18 @@ class App extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
     });
   }
 
   getCandidates() {
-    console.log("Calling GetCandidates");
+    this.print("Calling GetCandidates");
     axios.post(this.api_url, {
       command: 'GetCandidates'
     })
     .then((res) => {
       var response = res.data;
-      console.log("GetCandidates response: " + JSON.stringify(response));
+      this.print("GetCandidates response: " + JSON.stringify(response));
 
       if (response.error) {
       } else {
@@ -130,8 +130,14 @@ class App extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
     });
+  }
+
+  print(message) {
+    if (process.env.REACT_APP_DEVELOPMENT) {
+      console.log(message);
+    }
   }
 
   // CALLBACKS
@@ -176,7 +182,7 @@ class App extends React.Component {
   // END CALLBACKS
 
   render() {
-    console.log("---App");
+    this.print("---App");
 
     let appState = this.state.appState;
     return (

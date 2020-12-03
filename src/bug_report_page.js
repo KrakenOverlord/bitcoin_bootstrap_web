@@ -32,7 +32,7 @@ class BugReportPage extends React.Component {
       username = this.props.contributor.username;
     }
 
-    console.log("Calling CreateBugReport");
+    this.print("Calling CreateBugReport");
     axios.post(this.api_url, {
       command: 'CreateBugReport',
       username: username,
@@ -40,7 +40,7 @@ class BugReportPage extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("CreateBugReport response: " + JSON.stringify(response));
+      this.print("CreateBugReport response: " + JSON.stringify(response));
 
       if (response.error) {
         this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
@@ -50,7 +50,7 @@ class BugReportPage extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
       this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
     })
     .then(() => {
@@ -58,8 +58,14 @@ class BugReportPage extends React.Component {
     });
   }
 
+  print(message) {
+    if (process.env.REACT_APP_DEVELOPMENT) {
+      console.log(message);
+    }
+  }
+
   render() {
-    console.log("---BugReportPage");
+    this.print("---BugReportPage");
 
     return(
       <>

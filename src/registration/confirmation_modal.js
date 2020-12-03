@@ -19,8 +19,14 @@ class ConfirmationModal extends React.Component {
     this.props.confirm();
   }
 
+  print(message) {
+    if (process.env.REACT_APP_DEVELOPMENT) {
+      console.log(message);
+    }
+  }
+
   render() {
-    console.log("---ConfirmationModal");
+    this.print("---ConfirmationModal");
 
     return (
       <Modal show={true} onHide={this.props.cancel}>
