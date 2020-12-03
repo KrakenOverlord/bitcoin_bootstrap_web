@@ -17,8 +17,8 @@ function Introduction(props) {
       A curated list of Bitcoin developers seeking financial help.
       </p>
       <b></b>
-        <p />Do you want to give back to the Bitcoin community by helping to fund a Bitcoin developer?
-        It's a very generous thing to do and and many are looking for help.
+        <p />Many people want to give back to the Bitcoin community by helping to fund a Bitcoin developer.
+        It's a very generous thing to do and many developers are looking for help.
 
         <p />But which one? There are 1000
         <span>
