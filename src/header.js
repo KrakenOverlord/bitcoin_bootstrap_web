@@ -15,7 +15,7 @@ function print(message) {
 function Header(props) {
   print("---Header");
   return (
-    <Navbar style={{backgroundColor: "#5e5e5e"}} variant="dark">
+    <Navbar style={{backgroundColor: "#5e5e5e"}} variant="dark" expand="lg">
       <Navbar.Brand>
        <img
         src="/bb-logo-white.png"
