@@ -6,7 +6,8 @@ function LearnMorePage(props) {
       <h4>Bitcoin was Built by Volunteers</h4>
       <p />Starting with Satoshi Nakamoto, Bitcoin was built by volunteers who envisioned a better world.
       Many of these volunteers worked on it in their free time while holding a full or part-time job. Some even work on it while living exclusively off their personal savings.
-      Eventually, some found jobs that paid them to work on Bitcoin, but most continue unpaid. Bitcoin Bootstrap helps bring visibility to the best of these unpaid developers seeking help.
+      Eventually, some found jobs that paid them to work on Bitcoin, but most continue unpaid.
+      Bitcoin Bootstrap brings visibility to the best of these unpaid developers seeking help.
 
       <h4 className="mt-4">Registration</h4>
       Any contributor to the Bitcoin GitHub repository can register to be listed. Just sign in, enter a brief description about your work, and hit the Register button.
@@ -34,16 +35,16 @@ function LearnMorePage(props) {
       <p /><h4>Help</h4>
 
       <p /><b>Why can't I sign in?</b>
-      <p />Only contributors to the Bitcoin repository are allowed to sign in to register and vote.
+      <p />Only contributors to the Bitcoin GitHub repository are allowed to sign in to register and vote.
 
       <p /><b>I'm a contributor, why can't I sign in?</b>
 
-      <p />Reason 1 - You're an anonymous contributor.
+      <p />Are you an anonymous contributor?
       <p />Anonymous contributors didn't associate their GitHub profile with their contribution. Instead, they only provided an email address.
       In order to be verified, you must make the email address in your contribution the public email address in your GitHub profile.
       Then the next time Bitcoin Bootstrap synchronizes with GitHub we will be able to verify your contribution and you will be able to sign in.
 
-      <p />Reason 2 - You only had one contribution.
+      <p />Do you have only had one contribution?
       <p />GitHub's API only returns usernames for the first 500 contributors with the highest number of contributions to a repository.
       If you've made more than one contribution, you'll be included in the first 500 contributors.
       But if you've only made one contribution, you may not be included in the first 500 and the API only returns the email address you used when making your contribution.

@@ -70,7 +70,7 @@ class App extends React.Component {
 
       if (response.error) {
         if (response.error_code === 1) {
-          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in. If you are a contributor and still can't sign in, please see the Help section of the Learn More page." });
+          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in. If you are a contributor and still can't sign in, please see the Help section of the Learn more page." });
         } else {
           this.signOut();
         }
