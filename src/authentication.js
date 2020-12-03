@@ -2,8 +2,14 @@ import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 
 class Authentication extends React.Component {
+  print(message) {
+    if (process.env.REACT_APP_DEVELOPMENT) {
+      console.log(message);
+    }
+  }
+  
   render() {
-    console.log("---Authentication");
+    this.print("---Authentication");
 
     if (this.props.contributor === null) {
       return (

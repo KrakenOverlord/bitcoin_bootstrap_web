@@ -1,8 +1,14 @@
 import React from 'react';
 import CandidatesListRow from './candidates_list_row.js'
 
+function print(message) {
+  if (process.env.REACT_APP_DEVELOPMENT) {
+    console.log(message);
+  }
+}
+
 function CandidatesList(props) {
-  console.log("---CandidatesList");
+  print("---CandidatesList");
 
   return (
     <ul className="list-unstyled mt-5">

@@ -2,9 +2,14 @@ import React from 'react';
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 
+function print(message) {
+  if (process.env.REACT_APP_DEVELOPMENT) {
+    console.log(message);
+  }
+}
+
 function Introduction(props) {
-  console.log("---Introduction");
-  console.log(props.color);
+  print("---Introduction");
   return (
     <Card className="mt-3" style={{backgroundColor: '#d9d9d9'}}>
       <Card.Body>

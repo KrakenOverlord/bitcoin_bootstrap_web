@@ -38,7 +38,7 @@ class RegistrationPage extends React.Component {
   register() {
     this.props.isUpdatingCallback({ 'action' : 'registering'});
 
-    console.log("Calling Register");
+    this.print("Calling Register");
     axios.post(this.api_url, {
       command: "Register",
       access_token: this.props.contributor.access_token,
@@ -46,7 +46,7 @@ class RegistrationPage extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("register response: " + JSON.stringify(response));
+      this.print("register response: " + JSON.stringify(response));
 
       if (response.error === true) {
         this.handleError(response.error_code, "Could not register. Please try again later.");
@@ -63,7 +63,7 @@ class RegistrationPage extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
       this.handleError(100, "Could not register. Please try again later.");
     })
     .then(() => {
@@ -72,14 +72,14 @@ class RegistrationPage extends React.Component {
   }
 
   unregisterConfirmed() {
-    console.log("Calling Unregister");
+    this.print("Calling Unregister");
     axios.post(this.api_url, {
       command: "Unregister",
       access_token: this.props.contributor.access_token
     })
     .then((res) => {
       var response = res.data;
-      console.log("Unregister response: " + JSON.stringify(response));
+      this.print("Unregister response: " + JSON.stringify(response));
 
       if (response.error) {
         this.handleError(response.error_code, "Could not unregister. Please try again later.");
@@ -93,7 +93,7 @@ class RegistrationPage extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
       this.handleError(100, "Could not unregister. Please try again later.");
     })
     .then(() => {
@@ -104,7 +104,7 @@ class RegistrationPage extends React.Component {
   updateDescription() {
     this.props.isUpdatingCallback({ 'action' : 'updatingDescription' });
 
-    console.log("Calling UpdateDescription");
+    this.print("Calling UpdateDescription");
     axios.post(this.api_url, {
       command: "UpdateDescription",
       access_token: this.props.contributor.access_token,
@@ -112,7 +112,7 @@ class RegistrationPage extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("UpdateDescription response: " + JSON.stringify(response));
+      this.print("UpdateDescription response: " + JSON.stringify(response));
 
       if (response.error) {
         this.handleError(response.error_code, "Could not update description. Please try again later.");
@@ -122,7 +122,7 @@ class RegistrationPage extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
       this.handleError(100, "Could not update description. Please try again later.");
     })
     .then(() => {
@@ -148,9 +148,15 @@ class RegistrationPage extends React.Component {
     }
   }
 
+  print(message) {
+    if (process.env.REACT_APP_DEVELOPMENT) {
+      console.log(message);
+    }
+  }
+
   render() {
     const isCandidate = this.state.isCandidate;
-    console.log("---RegistrationPage");
+    this.print("---RegistrationPage");
     return(
       <>
       { /* show unregister modal? */ }

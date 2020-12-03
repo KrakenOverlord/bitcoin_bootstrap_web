@@ -33,7 +33,7 @@ class FeatureRequestPage extends React.Component {
       username = this.props.contributor.username;
     }
 
-    console.log("Calling CreateFeatureRequest");
+    this.print("Calling CreateFeatureRequest");
     axios.post(this.api_url, {
       command: 'CreateFeatureRequest',
       username: username,
@@ -41,7 +41,7 @@ class FeatureRequestPage extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("CreateFeatureRequest response: " + JSON.stringify(response));
+      this.print("CreateFeatureRequest response: " + JSON.stringify(response));
 
       if (response.error) {
         this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
@@ -51,7 +51,7 @@ class FeatureRequestPage extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
       this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
     })
     .then(() => {
@@ -59,8 +59,14 @@ class FeatureRequestPage extends React.Component {
     });
   }
 
+  print(message) {
+    if (process.env.REACT_APP_DEVELOPMENT) {
+      console.log(message);
+    }
+  }
+
   render() {
-    console.log("---FeatureRequestPage");
+    this.print("---FeatureRequestPage");
 
     return(
       <>

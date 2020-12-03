@@ -13,7 +13,7 @@ class UsernameButton extends React.Component {
   vote(new_candidate_username) {
     this.props.isUpdatingCallback(new_candidate_username);
 
-    console.log("Calling Vote");
+    this.print("Calling Vote");
     axios.post(this.api_url, {
       command: 'Vote',
       access_token: this.props.contributor.access_token,
@@ -21,7 +21,7 @@ class UsernameButton extends React.Component {
     })
     .then((res) => {
       var response = res.data;
-      console.log("vote response: " + JSON.stringify(response));
+      this.print("vote response: " + JSON.stringify(response));
 
       if (response.error) {
         this.handleError(response.error_code, "Could not record the vote. Please try again later.");
@@ -30,7 +30,7 @@ class UsernameButton extends React.Component {
       }
     })
     .catch((error) => {
-      console.log(error);
+      this.print(error);
       this.handleError(100, "Could not record the vote. Please try again later.");
     })
     .then(() => {
@@ -46,8 +46,14 @@ class UsernameButton extends React.Component {
     }
   }
 
+  print(message) {
+    if (process.env.REACT_APP_DEVELOPMENT) {
+      console.log(message);
+    }
+  }
+  
   render() {
-    console.log("---UsernameButton");
+    this.print("---UsernameButton");
 
     const signedIn = this.props.contributor !== null;
     const candidateUsername = this.props.candidate.username;

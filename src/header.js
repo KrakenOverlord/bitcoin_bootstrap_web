@@ -6,11 +6,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Authentication from './authentication.js';
 import './app.css';
 
-// onClick={() => props.showPage('landingPage')}
+function print(message) {
+  if (process.env.REACT_APP_DEVELOPMENT) {
+    console.log(message);
+  }
+}
 
 function Header(props) {
-  console.log("---Header");
-  console.log(props.color);
+  print("---Header");
   return (
     <Navbar style={{backgroundColor: "#5e5e5e"}} variant="dark">
       <Navbar.Brand>
