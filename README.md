@@ -1,4 +1,5 @@
 **TODO**
+- cursor moves to end if backspace creates two consecutive spaces
 - add welcome alert on login saying they can now vote and register
 - #url handling is goofy in url bar
 - add google analytics

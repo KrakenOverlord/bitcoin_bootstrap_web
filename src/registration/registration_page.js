@@ -26,13 +26,24 @@ class RegistrationPage extends React.Component {
   }
 
   handleDescriptionChange(event) {
-    if (event.target.value.indexOf('\n') > -1 || event.target.value.indexOf('  ') > -1) {
+    let value = event.target.value;
+
+    if (value.indexOf('\n') > -1) {
       return;
     }
 
-    this.setState({
-      description: event.target.value
-    });
+    // let position = document.getElementById('description').selectionStart; // Capture initial position
+
+    // if (value.indexOf('  ') > -1) {
+    //   value = value.replace(/\s\s+/g, ' ');
+    //   // event.preventDefault();
+    // }
+
+    // if (value.indexOf('\n') > -1 || value.indexOf('   ') > -1) {
+    //   return;
+    // }
+
+    this.setState({description: value});
   }
 
   register() {
@@ -177,31 +188,33 @@ class RegistrationPage extends React.Component {
               name="description"
               as="textarea"
               rows={4}
-              maxLength="500"
+              maxLength="750"
               onChange={this.handleDescriptionChange}
               value={this.state.description} />
-              <Form.Text className="text-muted">
-                500 characters max. Extra whitespace and newlines are stripped out. Descriptions are collapsed down to a single continuous paragraph when displayed in the candidates list.
-              </Form.Text>
-              {isCandidate &&
-                <SpinningButton
-                  disabled={this.state.isUpdating || (this.state.description === this.state.originalDescription)}
-                  buttonText='Update Description'
-                  actionButtonText='Updating Description...'
-                  action='updatingDescription'
-                  isUpdating={this.props.isUpdating}
-                  onClick={this.updateDescription} />
-              }
+            <Form.Text className="text-muted">
+              750 characters max. Newlines are stripped out and descriptions are collapsed down to a single continuous paragraph when displayed in the candidates list.
+            </Form.Text>
+            {isCandidate &&
+              <Form.Group controlId="description" className="mt-2">
+              <SpinningButton
+                disabled={this.state.isUpdating || (this.state.description === this.state.originalDescription)}
+                buttonText='Update Description'
+                actionButtonText='Updating Description...'
+                action='updatingDescription'
+                isUpdating={this.props.isUpdating}
+                onClick={this.updateDescription} />
+              </Form.Group>
+            }
           </Form.Group>
 
           {isCandidate ?
-            <div className='mt-5'>
+            <div className='mt-4'>
             <b>Registration</b>
             <br />
-            <span style={{ fontSize: '12px'}}>Unregister to be removed from the candidates list.
+            <Form.Text className="text-muted">Unregister to be removed from the candidates list.
             You can re-register at any time and your votes and description are restored.
-            You will lose any votes that are changed while you are unregistered.
-            </span>
+            You will lose a vote if a contributor votes for someone else while you are unregistered.
+            </Form.Text>
             <Form.Check
               type="switch"
               id="custom-switch"
@@ -211,8 +224,7 @@ class RegistrationPage extends React.Component {
             />
             </div>
             :
-            <Form.Group controlId="description" className="mt-3">
-              <Form.Label></Form.Label>
+            <Form.Group controlId="description" className="mt-2">
               <SpinningButton
                 buttonText='Register'
                 actionButtonText='Registering...'

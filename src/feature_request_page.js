@@ -75,9 +75,9 @@ class FeatureRequestPage extends React.Component {
           <b>Feature Request</b>
           <Form.Group controlId="description">
             <Form.Label>Please include a detailed description of how the feature should work.</Form.Label>
-            <Form.Control name="description" as="textarea" rows={3} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
+            <Form.Control name="description" as="textarea" rows={3} maxLength="1000" onChange={this.handleDescriptionChange} value={this.state.description} />
             <Form.Text className="text-muted">
-              500 characters max.
+              1000 characters max.
             </Form.Text>
           </Form.Group>
 
