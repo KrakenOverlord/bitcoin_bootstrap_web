@@ -20,7 +20,7 @@ function Introduction(props) {
         <p />Many people want to give back to the Bitcoin community by helping fund a Bitcoin developer.
         It's a very generous thing to do and many developers are looking for help.
 
-        <p />But which developer? There are 1000
+        <p />But which developer? There are nearly 1000
         <span>
           <a href='https://github.com/bitcoin/bitcoin/graphs/contributors'
             target="_blank"
@@ -39,17 +39,10 @@ function Introduction(props) {
 
         <p />But bitcoin developers <i>are</i> familiar with the technology.
         Bitcoin developers <i>are</i> working in the trenches.
-        Bitcoin Bootstrap leverages their knowledge through a voting system to bring visibility to the best contributors as ranked by other contributors.
-        Only contributors can register to be listed, and only contributors can vote.
+        Bitcoin Bootstrap leverages their knowledge through a voting system to bring visibility to the best developers as ranked by other developers.
+        Only developers can register to be listed, and only developers can vote.
 
         <p />See the list of candidates below.
-
-        {props.numCandidates === 0 &&
-          <p>
-            No contributor has registered yet. Be the first!
-            Just sign in, enter a brief description about the work you are doing and why you should receive funding and hit the register button and you will be listed.
-          </p>
-        }
 
         <p>
           <Button className="mt-3" href="#learn-more" variant="primary" onClick={() => props.showPage('learnMorePage')}>Learn more</Button>
