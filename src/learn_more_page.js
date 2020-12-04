@@ -3,11 +3,12 @@ import React from 'react'
 function LearnMorePage(props) {
   return(
     <div className="mt-5">
-      <h4>Bitcoin was Built by Volunteers</h4>
-      <p />Starting with Satoshi Nakamoto, Bitcoin was built by volunteers who envisioned a better world.
-      Many of these volunteers work on it in their free time while holding a full or part-time job. Some work on it while living exclusively off their personal savings.
-      Eventually, some found jobs that paid them to work on Bitcoin, but most continue unpaid.
-      Bitcoin Bootstrap brings visibility to the best of these unpaid developers seeking help.
+      <h4>How it Works</h4>
+      The fundamental idea is very simple while at the same time very powerful - allow any contributor (and only contributors) to the Bitcoin Github repository to sign in and register to be placed on a list of developers looking for financial help.
+      Then allow other contributors to sign in and vote for their favorite candidate.
+      <p />Since Bitcoin developers are generally the most knowledgeable about the technology and where it should be headed, each vote represents the sum of a developers knowledge of who is best working towards the desired goals and thus most deserving of financial help to continue working towards those goals.
+      In this way, the best developer candidates will rise to the top of the list, granting them visibility in a public and easily accessible way.
+      The whole process is opt-in. No contributor will be listed unless they sign in and register.
 
       <h4 className="mt-4">Registration</h4>
       Any contributor to the Bitcoin GitHub repository can register to be listed. Just sign in, enter a brief description about your work, and hit the Register button.
