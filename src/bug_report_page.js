@@ -74,9 +74,9 @@ class BugReportPage extends React.Component {
           <b>Bug Report</b>
           <Form.Group controlId="description">
             <Form.Label>Please include steps to reproduce the bug and the browser you are using.</Form.Label>
-            <Form.Control name="description" as="textarea" rows={3} maxLength="500" onChange={this.handleDescriptionChange} value={this.state.description} />
+            <Form.Control name="description" as="textarea" rows={3} maxLength="1000" onChange={this.handleDescriptionChange} value={this.state.description} />
             <Form.Text className="text-muted">
-              500 characters max.
+              1000 characters max.
             </Form.Text>
           </Form.Group>
 

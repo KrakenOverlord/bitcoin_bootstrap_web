@@ -11,7 +11,7 @@ function CandidatesList(props) {
   print("---CandidatesList");
 
   return (
-    <ul className="list-unstyled mt-5">
+    <ul className="list-unstyled mt-4">
       {props.candidates.map(candidate => (<CandidatesListRow
                                             key={candidate.username}
                                             contributor={props.contributor}

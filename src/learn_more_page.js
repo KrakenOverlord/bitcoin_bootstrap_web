@@ -5,7 +5,7 @@ function LearnMorePage(props) {
     <div className="mt-5">
       <h4>Bitcoin was Built by Volunteers</h4>
       <p />Starting with Satoshi Nakamoto, Bitcoin was built by volunteers who envisioned a better world.
-      Many of these volunteers worked on it in their free time while holding a full or part-time job. Some even work on it while living exclusively off their personal savings.
+      Many of these volunteers work on it in their free time while holding a full or part-time job. Some work on it while living exclusively off their personal savings.
       Eventually, some found jobs that paid them to work on Bitcoin, but most continue unpaid.
       Bitcoin Bootstrap brings visibility to the best of these unpaid developers seeking help.
 
@@ -28,7 +28,7 @@ function LearnMorePage(props) {
       <ul>
         <li>Every contributor gets one vote.</li>
         <li>You can vote for any candidate, including yourself.</li>
-        <li>Your vote is private. No one will ever know who you voted for.</li>
+        <li>Your vote is kept confidential. No one will ever know who you voted for.</li>
         <li>You can change your vote at any time, and as many times as you wish.</li>
       </ul>
 
