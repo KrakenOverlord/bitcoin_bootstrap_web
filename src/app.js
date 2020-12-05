@@ -185,6 +185,20 @@ class App extends React.Component {
     this.print("---App");
 
     let appState = this.state.appState;
+    let candidates = this.state.candidates.slice();
+
+    // Add a dummy candidate for display purposes if none exist yet.
+    if (appState === "landingPage" && candidates.length === 0) {
+      candidates.push({
+        username: 'BitcoinBootstrap',
+        avatar_url: 'https://avatars1.githubusercontent.com/u/74471859?v=4',
+        contributions: 7,
+        html_url: 'https://github.com/BitcoinBootstrap',
+        votes: 23,
+        description: "This is an example of what a listing will look like. It will be automatically deleted after the first contributor signs up. Your GitHub profile picture and username are automatically displayed and link to your account. You’ll want to describe your previous contributions to Bitcoin, and what you're currently working on. Explain why it is important. Don't forget to tell people how they can fund you. You can put more information on your GitHub profile page, or link to your GitHub sponsor page, or some other information page like https://myinfopage.com, or just paste a bitcoin address here. It's up to you. Once you are receiving enough funding to survive, please unregister so that others can receive the help they need."
+      });
+    }
+
     return (
       <>
       <Header
@@ -199,11 +213,11 @@ class App extends React.Component {
 
         {appState === 'landingPage' &&
         <>
-          <Introduction numCandidates={this.state.candidates.length} showPage={this.showPage} />
+          <Introduction numCandidates={candidates.length} showPage={this.showPage} />
 
           <CandidatesList
             contributor={null}
-            candidates={this.state.candidates} />
+            candidates={candidates} />
         </>
         }
 
@@ -220,7 +234,7 @@ class App extends React.Component {
         {appState === 'votingPage' &&
           <VotingPage
             contributor={this.state.contributor}
-            candidates={this.state.candidates}
+            candidates={candidates}
             updateState={this.updateState}
             signOut={this.signOut}
             showAlert={this.showAlert}
