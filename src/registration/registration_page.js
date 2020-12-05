@@ -1,5 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
 import axios from 'axios';
 import ConfirmationModal from './confirmation_modal.js';
 import SpinningButton from '../utils/spinning_button.js';
@@ -12,7 +14,9 @@ class RegistrationPage extends React.Component {
       showUnregisterModal: false,
       isCandidate: props.contributor.is_candidate,
       originalDescription: props.contributor.description,
-      description: props.contributor.description
+      description: props.contributor.description,
+      originalDonationUrl: props.contributor.donationUrl,
+      donationUrl: props.contributor.donationUrl
     };
 
     this.register = this.register.bind(this);
@@ -20,6 +24,8 @@ class RegistrationPage extends React.Component {
     this.closeUnregisterModal = this.closeUnregisterModal.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.updateDonationUrl = this.updateDonationUrl.bind(this);
+    this.handleDonationUrlChange = this.handleDonationUrlChange.bind(this);
     this.onSwitchAction = this.onSwitchAction.bind(this);
 
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
@@ -32,28 +38,33 @@ class RegistrationPage extends React.Component {
       return;
     }
 
-    // let position = document.getElementById('description').selectionStart; // Capture initial position
-
-    // if (value.indexOf('  ') > -1) {
-    //   value = value.replace(/\s\s+/g, ' ');
-    //   // event.preventDefault();
-    // }
-
-    // if (value.indexOf('\n') > -1 || value.indexOf('   ') > -1) {
-    //   return;
-    // }
-
     this.setState({description: value});
   }
 
+  handleDonationUrlChange(event) {
+    let value = event.target.value;
+
+    if (value.indexOf('\n') > -1) {
+      return;
+    }
+
+    this.setState({donationUrl: value});
+  }
+
   register() {
+    if (this.isValidDonationUrl() !== true) {
+      alert("The donation URL must be a valid.");
+      return;
+    }
+
     this.props.isUpdatingCallback({ 'action' : 'registering'});
 
     this.print("Calling Register");
     axios.post(this.api_url, {
       command: "Register",
       access_token: this.props.contributor.access_token,
-      description: this.state.description
+      description: this.state.description,
+      donation_url: this.state.donationUrl
     })
     .then((res) => {
       var response = res.data;
@@ -141,6 +152,40 @@ class RegistrationPage extends React.Component {
     });
   }
 
+  updateDonationUrl() {
+    if (this.isValidDonationUrl() !== true) {
+      alert("The donation URL must be a valid.");
+      return;
+    }
+
+    this.props.isUpdatingCallback({ 'action' : 'updatingDonationUrl' });
+
+    this.print("Calling UpdateDonationUrl");
+    axios.post(this.api_url, {
+      command: "UpdateDonationUrl",
+      access_token: this.props.contributor.access_token,
+      donation_url: this.state.donationUrl
+    })
+    .then((res) => {
+      var response = res.data;
+      this.print("UpdateDonationUrl response: " + JSON.stringify(response));
+
+      if (response.error) {
+        this.handleError(response.error_code, "Could not update donation URL. Please try again later.");
+      } else {
+        this.setState({originalDonationUrl: response.contributor.donation_url});
+        this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully updated your donation URL.' });
+      }
+    })
+    .catch((error) => {
+      this.print(error);
+      this.handleError(100, "Could not update donation URL. Please try again later.");
+    })
+    .then(() => {
+      this.props.isUpdatingCallback(null);
+    });
+  }
+
   handleError(code, message) {
     if (code === 0 || code === 1) {
       this.props.signOut();
@@ -165,6 +210,18 @@ class RegistrationPage extends React.Component {
     }
   }
 
+  isValidDonationUrl() {
+    let url;
+
+    try {
+      url = new URL(this.state.donationUrl);
+    } catch (_) {
+      return false;
+    }
+
+    return url.protocol === "http:" || url.protocol === "https:";
+  }
+
   render() {
     const isCandidate = this.state.isCandidate;
     this.print("---RegistrationPage");
@@ -183,7 +240,7 @@ class RegistrationPage extends React.Component {
           { /* description */ }
           <b>Description</b>
           <Form.Group controlId="description">
-            <Form.Label>Please describe the contributions you have made, what you are currently working on, and how people can fund you.</Form.Label>
+            <Form.Text className="text-muted">Please describe the contributions you have made, what you are currently working on, and how people can fund you.</Form.Text>
             <Form.Control
               name="description"
               as="textarea"
@@ -194,6 +251,7 @@ class RegistrationPage extends React.Component {
             <Form.Text className="text-muted">
               750 characters max. Newlines are stripped out and descriptions are collapsed down to a single continuous paragraph when displayed in the candidates list.
             </Form.Text>
+
             {isCandidate &&
               <Form.Group controlId="description" className="mt-2">
               <SpinningButton
@@ -207,13 +265,43 @@ class RegistrationPage extends React.Component {
             }
           </Form.Group>
 
+          { /* donation button */ }
+          <b>Donation Button</b>
+          <Form.Group controlId="donation">
+            <Form.Text className="text-muted">
+              Specify a valid URL to display a donation button linked to the URL. For example https://github.com/sponsors/{this.props.contributor.username}
+            </Form.Text>
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="URL to page with information on how to donate"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+                maxLength="100"
+                onChange={this.handleDonationUrlChange}
+                value={this.state.donationUrl}
+              />
+            </InputGroup>
+
+            {isCandidate &&
+              <Form.Group controlId="donation" className="mt-2">
+              <SpinningButton
+                disabled={this.state.isUpdating || (this.state.donationUrl === this.state.originalDonationUrl)}
+                buttonText='Update Donation Button'
+                actionButtonText='Updating Donation Button...'
+                action='updatingDonationUrl'
+                isUpdating={this.props.isUpdating}
+                onClick={this.updateDonationUrl} />
+              </Form.Group>
+            }
+          </Form.Group>
+
           {isCandidate ?
             <div className='mt-4'>
             <b>Registration</b>
             <br />
             <Form.Text className="text-muted">Unregister to be removed from the candidates list.
             You can re-register at any time and your votes and description are restored.
-            You will lose a vote if a contributor votes for someone else while you are unregistered.
+            You will only lose votes if contributors vote for someone else while you are unregistered.
             </Form.Text>
             <Form.Check
               type="switch"
@@ -224,7 +312,7 @@ class RegistrationPage extends React.Component {
             />
             </div>
             :
-            <Form.Group controlId="description" className="mt-2">
+            <Form.Group controlId="description" className="mt-4">
               <SpinningButton
                 buttonText='Register'
                 actionButtonText='Registering...'

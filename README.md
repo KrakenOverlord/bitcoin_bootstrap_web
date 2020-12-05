@@ -1,4 +1,5 @@
 **TODO**
+- verify valid donation URL
 - get working with IE
 - link to their twitter
 - cursor moves to end if backspace creates two consecutive spaces

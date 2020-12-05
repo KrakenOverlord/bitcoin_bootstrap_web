@@ -51,75 +51,67 @@ class UsernameButton extends React.Component {
       console.log(message);
     }
   }
-  
+
   render() {
     this.print("---UsernameButton");
 
     const signedIn = this.props.contributor !== null;
     const candidateUsername = this.props.candidate.username;
     const isUpdating = this.props.isUpdating;
-    let anonymous = false;
-    if (this.props.candidate.contributor_type === "Anonymous") {
-      anonymous = true;
-    }
 
     return (
       <>
-        { /* not signed in */ }
-        {!signedIn && !anonymous &&
+        { /* NOT SIGNED IN **************************************************/ }
+        { /* no donation URL */ }
+        {!signedIn && this.props.candidate.donation_url === undefined &&
           <a style={{ fontWeight: 'bold' }} href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
         }
 
-        { /* not signed in */ }
-        {!signedIn && anonymous &&
+        { /* has donation URL */ }
+        {!signedIn && this.props.candidate.donation_url !== undefined &&
           <>
-            <span style={{ fontWeight: 'bold' }}>{candidateUsername}</span>
+          <a style={{ fontWeight: 'bold' }} href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
+          <span> - </span>
+          <Button target="_blank" rel="noopener noreferrer" size="sm" href={this.props.candidate.donation_url} variant="success">Donate</Button>
+          </>
+        }
+        { /*******************************************************************/}
+
+
+        { /* SIGNED IN ******************************************************/ }
+        { /* not updating and didn't vote for this candidate */ }
+        {signedIn && !isUpdating && this.props.contributor.voted_for !== candidateUsername &&
+          <>
+          <a style={{ fontWeight: 'bold' }} href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
+          <span> - </span>
+          <Button variant="primary" size="sm" onClick={() => this.vote(candidateUsername)}>Vote</Button>
           </>
         }
 
-        { /* signed in and not voting state and didn't vote for this candidate */ }
-        {signedIn && !isUpdating && this.props.contributor.voted_for !== candidateUsername &&
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => this.vote(candidateUsername)}>Vote for {candidateUsername}
-          </Button>
-        }
 
-
-        { /* signed in and not voting state and voted for this candidate */ }
+        { /* not updating and voted for this candidate */ }
         {signedIn && !isUpdating && this.props.contributor.voted_for === candidateUsername &&
           <>
-          <b><span style={{ color: 'DodgerBlue' }}>Voted for {candidateUsername}</span></b>
+          <a style={{ fontWeight: 'bold' }} href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
           <img className="ml-2" src={'vote.png'} alt="" height="30" width="30" />
           </>
         }
 
-        { /* signed in and voting state but didn't vote for this candidate */ }
+        { /* updating but didn't vote for this candidate */ }
         {signedIn && isUpdating && isUpdating !== candidateUsername &&
-          <Button
-            disabled={true}
-            variant="primary"
-            size="sm"
-            onClick={() => this.vote(candidateUsername)}>Vote for {candidateUsername}
-          </Button>
+          <>
+          <a style={{ fontWeight: 'bold' }} href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
+          <span> - </span>
+          <Button disabled={true} variant="primary" size="sm">Vote</Button>
+          </>
         }
 
-        { /* signed in and voting state and voting for this candidate */ }
+        { /* updating and voting for this candidate */ }
         {signedIn && isUpdating && isUpdating === candidateUsername &&
-          <Button
-          disabled={true}
-          variant="primary"
-          size="sm">
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-            {' Voting for ' + candidateUsername}
-          </Button>
+          <>
+          <a style={{ fontWeight: 'bold' }} href={this.props.candidate.html_url} target="_blank" rel="noopener noreferrer">{candidateUsername}</a>
+          <img className="ml-2" src={'vote.png'} alt="" height="30" width="30" />
+          </>
         }
       </>
     );

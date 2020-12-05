@@ -2,6 +2,7 @@ import React from 'react';
 import Media from 'react-bootstrap/Media'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 import UsernameButton from './username_button.js'
 
 function print(message) {
@@ -15,29 +16,23 @@ function CandidatesListRow(props) {
 
   return (
     <Media as="li">
+
+      { /* avatar and votes */ }
       <div className="img-with-text">
-        {props.candidate.avatar_url !== '' ?
-          <a href={props.candidate.html_url} target="_blank" rel="noopener noreferrer">
-            <img
-              src={props.candidate.avatar_url}
-              alt=""
-              height="64"
-              width="64" />
-          </a>
-          :
+        <a href={props.candidate.html_url} target="_blank" rel="noopener noreferrer">
           <img
-            src='anon-contributor.png'
+            src={props.candidate.avatar_url}
             alt=""
             height="64"
             width="64" />
-        }
-
+        </a>
         <p className="mt-2" style={{ textAlign: "center", fontWeight: 'bold', color: 'gray', fontSize: '12px' }}>{props.candidate.votes}{' votes'}</p>
       </div>
 
       <Media.Body className="ml-3">
         <Row>
           <Col>
+            { /* username */ }
             <UsernameButton
               contributor={props.contributor}
               candidate={props.candidate}
@@ -47,12 +42,15 @@ function CandidatesListRow(props) {
               isUpdating={props.isUpdating}
               isUpdatingCallback={props.isUpdatingCallback} />
           </Col>
+
+          { /* contributions */ }
           <Col className="mr-4" style={{ textAlign: "right", fontWeight: 'bold', color: 'gray', fontSize: '12px'}}>
             {props.candidate.contributions}{' contributions'}
           </Col>
         </Row>
 
-          <p>{props.candidate.description}</p>
+        { /* description */ }
+        <p>{props.candidate.description}</p>
       </Media.Body>
     </Media>
   );

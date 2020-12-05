@@ -195,6 +195,7 @@ class App extends React.Component {
         contributions: 7,
         html_url: 'https://github.com/BitcoinBootstrap',
         votes: 23,
+        donation_url: 'https://github.com/sponsors/BitcoinBootstrap',
         description: "This is an example of what a candidate listing will look like when you register. This example will be automatically deleted when the first contributor signs up. Your GitHub profile picture and username are automatically displayed and linked to your GitHub account. You’ll want to describe your previous contributions to Bitcoin, and what you're currently working on. Don't forget to describe how people can fund you. You can put more information on your GitHub profile page, or link to your GitHub sponsor page, or some other information page like https://myinfopage.com, or just paste a bitcoin address here. It's up to you. Once you are receiving enough funding to survive, please unregister so that others can receive the help they need."
       });
     }

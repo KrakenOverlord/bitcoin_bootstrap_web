@@ -10,7 +10,7 @@ function SpinningButton(props) {
     {props.isUpdating && props.isUpdating.action !== props.action && <Button variant='primary' disabled={true}>{props.buttonText}</Button>}
 
     {props.isUpdating && props.isUpdating.action === props.action &&
-      <Button variant='primary' disabled={true}>
+      <Button size="sm" variant='primary' disabled={true}>
         <Spinner
           as="span"
           animation="border"
