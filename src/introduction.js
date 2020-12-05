@@ -17,8 +17,8 @@ function Introduction(props) {
       A curated list of Bitcoin developers seeking financial help.
       </p>
       <b></b>
-        <p />Many people want to give back to the Bitcoin community by helping fund a Bitcoin developer.
-        It's a very generous thing to do and many developers are looking for help.
+        <p />Many people want to give back to the Bitcoin community by helping to fund a Bitcoin developer.
+        It's a very generous thing to do, and many developers are looking for help.
 
         <p />But which developer? There are over 750
         <span>
@@ -39,8 +39,8 @@ function Introduction(props) {
 
         <p />But bitcoin developers <i>are</i> familiar with the technology.
         Bitcoin developers <i>are</i> working in the trenches.
-        Bitcoin Bootstrap leverages this knowledge through a voting system to bring visibility to the best developers as ranked by other developers.
-        Only developers can register to be listed as a candidate looking for help, and only developers can vote on those candidates.
+        Bitcoin Bootstrap leverages their knowledge using a voting system to bring visibility to the best developers as ranked by other developers.
+        <p />To ensure a high-quality candidate list, only developers who have made contributions to the Bitcoin repository can register to be listed as candidates looking for help, and only developers who have made contributions to the Bitcoin repository can vote on those candidates.
 
         <p />See the list of candidates below.
 
