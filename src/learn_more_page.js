@@ -28,7 +28,7 @@ function LearnMorePage(props) {
       <p />
       <ul>
         <li>Every contributor gets one vote.</li>
-        <li>You can vote for any candidate, including yourself.</li>
+        <li>You can vote for any candidate, including yourself if you registered.</li>
         <li>Your vote is kept confidential. No one will ever know who you voted for.</li>
         <li>You can change your vote at any time, and as many times as you wish.</li>
       </ul>
