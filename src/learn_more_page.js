@@ -4,8 +4,8 @@ function LearnMorePage(props) {
   return(
     <div className="mt-5">
       <h4>How it Works</h4>
-      The fundamental idea is very simple while at the same time very powerful - allow any contributor (and only contributors) to the Bitcoin Github repository to sign in and register to be placed on a list of developers looking for financial help.
-      Then allow other contributors to sign in and vote for their favorite candidate.
+      The fundamental idea is very simple while at the same time very powerful - allow any contributor (and only contributors) to the Bitcoin Github repository to be placed on a list of developers looking for financial help.
+      Then allow other contributors to vote for their favorite candidate.
       <p />Since Bitcoin developers are generally the most knowledgeable about the technology and where it should be headed, each vote represents the sum of a developers knowledge of who is best working towards the desired goals and thus most deserving of financial help to continue working towards those goals.
       In this way, the best developer candidates will rise to the top of the list, granting them visibility in a public and easily accessible way.
       The whole process is opt-in. No contributor will be listed unless they sign in and register.
