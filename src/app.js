@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from './header.js';
 import Introduction from './introduction.js';
 import CandidatesList from './candidates/candidates_list.js';
+import RegisterPage from './registration/register_page.js';
 import RegistrationPage from './registration/registration_page.js';
 import VotingPage from './voting_page.js';
 import LearnMorePage from './learn_more_page.js';
@@ -19,16 +20,20 @@ class App extends React.Component {
 
     this.state = {
       editColors: false,
-      headerColor: '#5e5e5e', //'#797979', //'#424242',
+      headerColor: '#5e5e5e',
       cardColor: '#d9d9d9',
       isUpdating: null,
       alert: null,
-      appState: 'landingPage', // ['loadingPage', 'landingPage', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
+      activePage: 'homePage', // ['homePage', 'registerPage', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
       contributor: null,
-      candidates: []
+      candidates: [],
+      description: '',
+      donationUrl: ''
     };
 
     this.isUpdatingCallback = this.isUpdatingCallback.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleDonationUrlChange = this.handleDonationUrlChange.bind(this);
     this.updateState = this.updateState.bind(this);
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
@@ -142,6 +147,26 @@ class App extends React.Component {
 
   // CALLBACKS
 
+  handleDescriptionChange(event) {
+    let value = event.target.value;
+
+    if (value.indexOf('\n') > -1) {
+      return;
+    }
+
+    this.setState({description: value});
+  }
+
+  handleDonationUrlChange(event) {
+    let value = event.target.value;
+
+    if (value.indexOf('\n') > -1) {
+      return;
+    }
+
+    this.setState({donationUrl: value});
+  }
+
   isUpdatingCallback(isUpdating) {
     this.setState({
       isUpdating: isUpdating
@@ -159,14 +184,22 @@ class App extends React.Component {
   }
 
   showPage(page) {
-    this.setState({ appState: page });
+    if (page === 'registerPage' || page === 'registrationPage') {
+      this.setState({
+        description: this.state.contributor.description,
+        donationUrl: this.state.contributor.donation_url,
+        activePage: page
+      })
+    } else {
+      this.setState({ activePage: page });
+    }
   }
 
   signOut() {
     localStorage.removeItem('access_token');
     this.setState({
       contributor: null
-    }, this.landingPage);
+    }, this.homePage);
   }
 
   updateState(contributor, candidates, alert) {
@@ -184,11 +217,11 @@ class App extends React.Component {
   render() {
     this.print("---App");
 
-    let appState = this.state.appState;
+    let activePage = this.state.activePage;
     let candidates = this.state.candidates.slice();
 
     // Add a dummy candidate for display purposes if none exist yet.
-    if (appState === "landingPage" && candidates.length === 0) {
+    if (activePage === "homePage" && candidates.length === 0) {
       candidates.push({
         username: 'BitcoinBootstrap',
         avatar_url: 'https://avatars1.githubusercontent.com/u/74471859?v=4',
@@ -203,6 +236,7 @@ class App extends React.Component {
     return (
       <>
       <Header
+        activePage={activePage}
         contributor={this.state.contributor}
         showPage={this.showPage} />
       <Container>
@@ -212,7 +246,7 @@ class App extends React.Component {
             deleteAlert={this.deleteAlert} />
         }
 
-        {appState === 'landingPage' &&
+        {activePage === 'homePage' &&
         <>
           <Introduction numCandidates={candidates.length} showPage={this.showPage} />
 
@@ -222,17 +256,37 @@ class App extends React.Component {
         </>
         }
 
-        {appState === 'registrationPage' &&
+        {activePage === 'registerPage' &&
+          <RegisterPage
+            contributor={this.state.contributor}
+            updateState={this.updateState}
+            signOut={this.signOut}
+            showAlert={this.showAlert}
+            isUpdating={this.state.isUpdating}
+            isUpdatingCallback={this.isUpdatingCallback}
+            showPage={this.showPage}
+            description={this.state.description}
+            donationUrl={this.state.donationUrl}
+            handleDescriptionChange={this.handleDescriptionChange}
+            handleDonationUrlChange={this.handleDonationUrlChange} />
+        }
+
+        {activePage === 'registrationPage' &&
           <RegistrationPage
             contributor={this.state.contributor}
             updateState={this.updateState}
             signOut={this.signOut}
             showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
-            isUpdatingCallback={this.isUpdatingCallback} />
+            isUpdatingCallback={this.isUpdatingCallback}
+            showPage={this.showPage}
+            description={this.state.description}
+            donationUrl={this.state.donationUrl}
+            handleDescriptionChange={this.handleDescriptionChange}
+            handleDonationUrlChange={this.handleDonationUrlChange} />
         }
 
-        {appState === 'votingPage' &&
+        {activePage === 'votingPage' &&
           <VotingPage
             contributor={this.state.contributor}
             candidates={candidates}
@@ -243,11 +297,11 @@ class App extends React.Component {
             isUpdatingCallback={this.isUpdatingCallback} />
         }
 
-        {appState === 'learnMorePage' &&
+        {activePage === 'learnMorePage' &&
           <LearnMorePage contributor={this.state.contributor} />
         }
 
-        {appState === 'bugReportPage' &&
+        {activePage === 'bugReportPage' &&
           <BugReportPage
             contributor={this.state.contributor}
             showAlert={this.showAlert}
@@ -255,7 +309,7 @@ class App extends React.Component {
             isUpdatingCallback={this.isUpdatingCallback} />
         }
 
-        {appState === 'featureRequestPage' &&
+        {activePage === 'featureRequestPage' &&
           <FeatureRequestPage
             contributor={this.state.contributor}
             showAlert={this.showAlert}
@@ -263,7 +317,7 @@ class App extends React.Component {
             isUpdatingCallback={this.isUpdatingCallback} />
         }
 
-        {appState === 'loadingPage' &&
+        {activePage === 'loadingPage' &&
           <LoadingSpinner />
         }
       </Container>

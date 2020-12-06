@@ -1,5 +1,6 @@
 **TODO**
-- verify valid donation URL
+- disable update buttons until entry changed
+- handle menu switching display
 - get working with IE
 - link to their twitter
 - cursor moves to end if backspace creates two consecutive spaces

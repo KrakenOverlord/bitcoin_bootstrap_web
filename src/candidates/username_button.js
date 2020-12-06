@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button'
-import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 
 class UsernameButton extends React.Component {

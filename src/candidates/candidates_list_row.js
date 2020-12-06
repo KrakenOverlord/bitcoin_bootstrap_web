@@ -2,7 +2,6 @@ import React from 'react';
 import Media from 'react-bootstrap/Media'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
 import UsernameButton from './username_button.js'
 
 function print(message) {
