@@ -11,8 +11,7 @@ class RegistrationPage extends React.Component {
     super(props);
 
     this.state = {
-      showUnregisterModal: false,
-      isCandidate: props.contributor.is_candidate
+      showUnregisterModal: false
     };
 
     this.updateDescription = this.updateDescription.bind(this);
@@ -41,7 +40,6 @@ class RegistrationPage extends React.Component {
           variant: 'success',
           message: 'You successfully unregistered and removed from the candidates list.'
         };
-        this.setState({isCandidate: false});
         this.props.updateState(response.contributor, response.candidates, message);
         this.props.showPage("homePage");
       }
@@ -130,9 +128,7 @@ class RegistrationPage extends React.Component {
   }
 
   onSwitchAction() {
-    if (this.state.isCandidate) {
-      this.setState({ showUnregisterModal: true });
-    }
+    this.setState({ showUnregisterModal: true });
   }
 
   print(message) {
@@ -158,8 +154,8 @@ class RegistrationPage extends React.Component {
   }
 
   render() {
-    const isCandidate = this.state.isCandidate;
     this.print("---RegistrationPage");
+
     return(
       <>
       { /* show unregister modal? */ }
@@ -236,7 +232,7 @@ class RegistrationPage extends React.Component {
             type="switch"
             id="custom-switch"
             label='Registered'
-            checked={this.state.isCandidate}
+            checked={true}
             onChange={this.onSwitchAction}
           />
           </div>

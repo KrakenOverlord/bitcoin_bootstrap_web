@@ -14,6 +14,7 @@ function VotingPage(props) {
     <CandidatesList
       contributor={props.contributor}
       candidates={props.candidates}
+      vote={props.vote}
       updateState={props.updateState}
       signOut={props.signOut}
       showAlert={props.showAlert}

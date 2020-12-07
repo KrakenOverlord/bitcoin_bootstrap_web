@@ -2,7 +2,7 @@ import React from 'react';
 import Media from 'react-bootstrap/Media'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import UsernameButton from './username_button.js'
+import Button from 'react-bootstrap/Button'
 
 function print(message) {
   if (process.env.REACT_APP_DEVELOPMENT) {
@@ -13,10 +13,11 @@ function print(message) {
 function CandidatesListRow(props) {
   print("---CandidatesListRow");
 
+  const signedIn = props.contributor !== null;
+
   return (
     <Media as="li">
-
-      { /* avatar and votes */ }
+      { /* avatar and button */ }
       <div className="img-with-text">
         <a href={props.candidate.html_url} target="_blank" rel="noopener noreferrer">
           <img
@@ -25,21 +26,24 @@ function CandidatesListRow(props) {
             height="64"
             width="64" />
         </a>
-        <p className="mt-2" style={{ textAlign: "center", fontWeight: 'bold', color: 'gray', fontSize: '12px' }}>{props.candidate.votes}{' votes'}</p>
+
+        <br />
+        {!signedIn && props.candidate.donation_url !== undefined &&
+          <Button className="mt-1" variant="outline-primary" size="sm" target="_blank" rel="noopener noreferrer" href={props.candidate.donation_url}>Donate</Button>
+        }
+        {signedIn &&
+          <div style={{ textAlign: "center" }}>
+            <Button disabled={props.isUpdating} className="mt-1" variant="outline-primary" size="sm" onClick={() => props.vote(props.candidate.username)}>Vote</Button>
+          </div>
+        }
       </div>
 
       <Media.Body className="ml-3">
         <Row>
           <Col>
             { /* username */ }
-            <UsernameButton
-              contributor={props.contributor}
-              candidate={props.candidate}
-              updateState={props.updateState}
-              signOut={props.signOut}
-              showAlert={props.showAlert}
-              isUpdating={props.isUpdating}
-              isUpdatingCallback={props.isUpdatingCallback} />
+            <a style={{ fontWeight: 'bold' }} href={props.candidate.html_url} target="_blank" rel="noopener noreferrer">{props.candidate.username}</a>
+            <span style={{ textAlign: "center", fontWeight: 'bold', color: 'gray', fontSize: '12px' }}> - {props.candidate.votes} votes</span>
           </Col>
 
           { /* contributions */ }

@@ -20,6 +20,7 @@ function CandidatesList(props) {
                                             signOut={props.signOut}
                                             showAlert={props.showAlert}
                                             isUpdating={props.isUpdating}
+                                            vote={props.vote}
                                             isUpdatingCallback={props.isUpdatingCallback} />))}
     </ul>
   );

@@ -38,6 +38,7 @@ class App extends React.Component {
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
     this.showPage = this.showPage.bind(this);
+    this.vote = this.vote.bind(this);
 
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
@@ -137,6 +138,47 @@ class App extends React.Component {
     .catch((error) => {
       this.print(error);
     });
+  }
+
+  vote(new_candidate_username) {
+    this.isUpdatingCallback(new_candidate_username);
+
+    this.print("Calling Vote");
+    axios.post(this.api_url, {
+      command: 'Vote',
+      access_token: this.state.contributor.access_token,
+      vote: new_candidate_username
+    })
+    .then((res) => {
+      var response = res.data;
+      this.print("vote response: " + JSON.stringify(response));
+
+      if (response.error) {
+        this.handleError(response.error_code, "Could not record the vote. Please try again later.");
+      } else {
+        let candidates = response.candidates.sort(function(a, b) { return b.votes - a.votes });
+        this.setState({
+          contributor: response.contributor,
+          candidates: candidates,
+          alert: { variant: 'success', message: 'You have successfully voted for ' + new_candidate_username }
+        });
+      }
+    })
+    .catch((error) => {
+      this.print(error);
+      this.handleError(100, "Could not record the vote. Please try again later.");
+    })
+    .then(() => {
+      this.isUpdatingCallback('');
+    });
+  }
+
+  handleError(code, message) {
+    if (code === 0 || code === 1) {
+      this.signOut();
+    } else {
+      this.showAlert({ variant: 'danger', message: message });
+    }
   }
 
   print(message) {
@@ -290,11 +332,8 @@ class App extends React.Component {
           <VotingPage
             contributor={this.state.contributor}
             candidates={candidates}
-            updateState={this.updateState}
-            signOut={this.signOut}
-            showAlert={this.showAlert}
-            isUpdating={this.state.isUpdating}
-            isUpdatingCallback={this.isUpdatingCallback} />
+            vote={this.vote}
+            isUpdating={this.state.isUpdating} />
         }
 
         {activePage === 'learnMorePage' &&
