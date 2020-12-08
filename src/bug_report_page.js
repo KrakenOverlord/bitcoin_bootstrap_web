@@ -1,6 +1,5 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios';
 import SpinningButton from './utils/spinning_button.js';
 
 class BugReportPage extends React.Component {
@@ -13,8 +12,6 @@ class BugReportPage extends React.Component {
 
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.submit = this.submit.bind(this);
-
-    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   handleDescriptionChange(event) {
@@ -24,38 +21,8 @@ class BugReportPage extends React.Component {
   }
 
   submit() {
-    this.props.isUpdatingCallback({ 'action' : 'reportingBug'});
-
-    // Get username if a contributor exists
-    let username = null;
-    if (this.props.contributor) {
-      username = this.props.contributor.username;
-    }
-
-    this.print("Calling CreateBugReport");
-    axios.post(this.api_url, {
-      command: 'CreateBugReport',
-      username: username,
-      description: this.state.description
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("CreateBugReport response: " + JSON.stringify(response));
-
-      if (response.error) {
-        this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
-      } else {
-        this.props.showAlert({ variant: 'success', message: "Thanks for the bug report!" });
-        this.setState({ description: '' });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-      this.props.showAlert({ variant: 'danger', message: "Could not record the bug report. Please try again later." });
-    })
-    .then(() => {
-      this.props.isUpdatingCallback(null);
-    });
+    this.setState({ description: '' });
+    this.props.bugReport(this.props.contributor, this.state.description);
   }
 
   print(message) {

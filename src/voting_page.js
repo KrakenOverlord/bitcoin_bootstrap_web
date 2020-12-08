@@ -14,11 +14,10 @@ function VotingPage(props) {
     <CandidatesList
       contributor={props.contributor}
       candidates={props.candidates}
-      updateState={props.updateState}
+      vote={props.vote}
       signOut={props.signOut}
       showAlert={props.showAlert}
-      isUpdating={props.isUpdating}
-      isUpdatingCallback={props.isUpdatingCallback} />
+      isUpdating={props.isUpdating} />
   );
 }
 

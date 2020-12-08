@@ -16,11 +16,10 @@ function CandidatesList(props) {
                                             key={candidate.username}
                                             contributor={props.contributor}
                                             candidate={candidate}
-                                            updateState={props.updateState}
                                             signOut={props.signOut}
                                             showAlert={props.showAlert}
                                             isUpdating={props.isUpdating}
-                                            isUpdatingCallback={props.isUpdatingCallback} />))}
+                                            vote={props.vote} />))}
     </ul>
   );
 }

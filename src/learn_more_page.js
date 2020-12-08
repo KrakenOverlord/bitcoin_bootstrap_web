@@ -4,10 +4,7 @@ function LearnMorePage(props) {
   return(
     <div className="mt-5">
       <h4>How it Works</h4>
-      The fundamental idea is very simple while at the same time very powerful - allow any contributor (and only contributors) to the Bitcoin Github repository to be placed on a list of developers looking for financial help.
-      Then allow other contributors to vote for the candidate that they believe will make the best contributions to Bitcoin.
-      <p />Since Bitcoin developers are generally the most knowledgeable about the technology and where it should be headed, each vote represents the sum of a developers knowledge on who is best working towards the desired goals, and thus most deserving of financial help to continue working towards those goals.
-      The best developer candidates will rise to the top of the list, granting them visibility in a public and easily accessible way.
+      Bitcoin Bootstrap is based on a very simple but powerful idea - let the Bitcoin developers tell you who should receive funding through a system of voting.      
       The whole process is opt-in. No contributor will be listed unless they sign in and register.
 
       <h4 className="mt-4">Registration</h4>

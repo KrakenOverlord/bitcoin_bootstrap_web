@@ -1,4 +1,6 @@
 **TODO**
+- stop bitcoin bootstrap candidate briefly being displayed
+- handle menu switching display
 - get working with IE
 - link to their twitter
 - cursor moves to end if backspace creates two consecutive spaces
