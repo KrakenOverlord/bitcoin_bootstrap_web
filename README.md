@@ -1,5 +1,5 @@
 **TODO**
-- disable update buttons until entry changed
+- stop bitcoin bootstrap candidate briefly being displayed
 - handle menu switching display
 - get working with IE
 - link to their twitter

@@ -14,13 +14,11 @@ function Introduction(props) {
     <Card className="mt-3" style={{backgroundColor: '#d9d9d9'}}>
       <Card.Body>
       <p className="mt-2" style={{ textAlign: "center", fontWeight: 'bold', fontSize: '20px', color: "#5e5e5e" }}>
-      A curated list of Bitcoin developers seeking financial help.
+      A curated list of Bitcoin developers seeking funding.
       </p>
       <b></b>
         <p />Many people want to give back to the Bitcoin community by helping to fund a Bitcoin developer.
-        It's a very generous thing to do, and many developers are looking for help.
-
-        <p />But which developer? There are over 750
+        But there are over 750
         <span>
           <a href='https://github.com/bitcoin/bitcoin/graphs/contributors'
             target="_blank"
@@ -28,21 +26,21 @@ function Introduction(props) {
           {' '}to the
           {' '}<a href='https://github.com/bitcoin/bitcoin'
             target="_blank"
-            rel="noopener noreferrer">Bitcoin repository</a>!
+            rel="noopener noreferrer">Bitcoin repository</a>
         </span>
+        . Which one should you help?
 
-        <p />Who is looking for help?
 
-        <p />Who is doing good work?
+        <p />There are online lists of developers looking for help. But they don't give you any indication of who deserves funding.
+        Unless you’re already familiar with the technology and working in the Bitcoin trenches, it can be difficult and time-consuming to figure out who is doing good work.
 
-        <p />Unless you’re already familiar with the technology and working in the trenches, it can be difficult to answer those questions.
+        <p />But bitcoin developers <i>are</i> familiar with the technology. They <i>are</i> working in the trenches. Why not leverage their knowledge to help you pick someone?
 
-        <p />But bitcoin developers <i>are</i> familiar with the technology.
-        Bitcoin developers <i>are</i> working in the trenches.
-        Bitcoin Bootstrap leverages their knowledge using a voting system to bring visibility to the best developers as ranked by other developers.
-        <p />To ensure a high-quality candidate list, only developers who have made contributions to the Bitcoin repository can register to be listed as candidates looking for help, and only developers who have made contributions to the Bitcoin repository can vote on those candidates.
+        <p />Bitcoin Bootstrap does exactly this by allowing developers to vote on the other developers they think deserves funding. Each vote represents a developers cumulative knowledge on who is best working towards the desired goals and most deserving of financial help.
 
-        <p />See the list of candidates below.
+        <p />Only contributors to the Bitcoin repository are allowed on the candidate list, and only contributors to the repository are allowed to vote on them.
+
+        <p />See the list below.
 
         <p>
           <Button className="mt-3" href="#learn-more" variant="primary" onClick={() => props.showPage('learnMorePage')}>Learn more</Button>

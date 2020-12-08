@@ -22,7 +22,8 @@ function Header(props) {
   return (
     <Navbar style={{backgroundColor: "#5e5e5e"}} variant="dark" expand="lg">
       <Navbar.Brand>
-       <img
+      <img
+        style={{cursor: 'pointer' }}
         onClick={() => props.showPage('homePage')}
         src="/bb-logo-white.png"
         alt=""
@@ -30,7 +31,7 @@ function Header(props) {
         height="50"
         className="ml-4 d-inline-block align-top"/>
       </Navbar.Brand>
-      <span onClick={() => props.showPage('homePage')} className="mr-5" style={{color:'white', fontSize: '20px'}}>Bitcoin Bootstrap</span>
+      <span onClick={() => props.showPage('homePage')} className="mr-5" style={{color:'white', fontSize: '20px', cursor: 'pointer'}}>Bitcoin Bootstrap</span>
       <Nav activeKey={eventKey} className="ml-3 mr-auto">
         <Nav.Link eventKey='homePage' onClick={() => props.showPage('homePage')} href="#home">Home</Nav.Link>
         {props.contributor && props.contributor.is_candidate &&

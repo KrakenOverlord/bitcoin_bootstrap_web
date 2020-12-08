@@ -2,7 +2,6 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
-import axios from 'axios';
 import ConfirmationModal from './confirmation_modal.js';
 import SpinningButton from '../utils/spinning_button.js';
 
@@ -14,121 +13,18 @@ class RegistrationPage extends React.Component {
       showUnregisterModal: false
     };
 
-    this.updateDescription = this.updateDescription.bind(this);
     this.updateDonationUrl = this.updateDonationUrl.bind(this);
-    this.unregisterConfirmed = this.unregisterConfirmed.bind(this);
+    this.unregister = this.unregister.bind(this);
     this.closeUnregisterModal = this.closeUnregisterModal.bind(this);
     this.onSwitchAction = this.onSwitchAction.bind(this);
-
-    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
-  }
-
-  unregisterConfirmed() {
-    this.print("Calling Unregister");
-    axios.post(this.api_url, {
-      command: "Unregister",
-      access_token: this.props.contributor.access_token
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("Unregister response: " + JSON.stringify(response));
-
-      if (response.error) {
-        this.handleError(response.error_code, "Could not unregister. Please try again later.");
-      } else {
-        let message = {
-          variant: 'success',
-          message: 'You successfully unregistered and removed from the candidates list.'
-        };
-        this.props.updateState(response.contributor, response.candidates, message);
-        this.props.showPage("homePage");
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-      this.handleError(100, "Could not unregister. Please try again later.");
-    })
-    .then(() => {
-      this.closeUnregisterModal();
-    });
-  }
-
-  updateDescription() {
-    this.props.isUpdatingCallback({ 'action' : 'updatingDescription' });
-
-    this.print("Calling UpdateDescription");
-    axios.post(this.api_url, {
-      command: "UpdateDescription",
-      access_token: this.props.contributor.access_token,
-      description: this.props.description
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("UpdateDescription response: " + JSON.stringify(response));
-
-      if (response.error) {
-        this.handleError(response.error_code, "Could not update description. Please try again later.");
-      } else {
-        this.setState({originalDescription: response.contributor.description});
-        this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully updated your description.' });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-      this.handleError(100, "Could not update description. Please try again later.");
-    })
-    .then(() => {
-      this.props.isUpdatingCallback(null);
-    });
-  }
-
-  updateDonationUrl() {
-    if (this.isValidDonationUrl() !== true) {
-      alert("The donation URL must be a valid.");
-      return;
-    }
-
-    this.props.isUpdatingCallback({ 'action' : 'updatingDonationUrl' });
-
-    this.print("Calling UpdateDonationUrl");
-    axios.post(this.api_url, {
-      command: "UpdateDonationUrl",
-      access_token: this.props.contributor.access_token,
-      donation_url: this.props.donationUrl
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("UpdateDonationUrl response: " + JSON.stringify(response));
-
-      if (response.error) {
-        this.handleError(response.error_code, "Could not update donation URL. Please try again later.");
-      } else {
-        this.props.updateState(response.contributor, response.candidates, { variant: 'success', message: 'You have successfully updated your donation URL.' });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-      this.handleError(100, "Could not update donation URL. Please try again later.");
-    })
-    .then(() => {
-      this.props.isUpdatingCallback(null);
-    });
-  }
-
-  handleError(code, message) {
-    if (code === 0 || code === 1) {
-      this.props.signOut();
-    } else {
-      this.props.showAlert({ variant: 'danger', message: message });
-    }
-  }
-
-  closeUnregisterModal() {
-    this.setState({ showUnregisterModal: false });
   }
 
   onSwitchAction() {
     this.setState({ showUnregisterModal: true });
+  }
+
+  closeUnregisterModal() {
+    this.setState({ showUnregisterModal: false });
   }
 
   print(message) {
@@ -137,20 +33,44 @@ class RegistrationPage extends React.Component {
     }
   }
 
-  isValidDonationUrl() {
-    if (this.props.donationUrl === '') {
-      return true;
+  updateDonationUrl() {
+    if (this.props.donationUrl !== '') {
+      let url;
+
+      try {
+        url = new URL(this.props.donationUrl);
+      } catch (_) {
+        alert("Please enter a valid donation URL.");
+        return;
+      }
+
+      if (url.protocol !== "http:" && url.protocol !== "https:") {
+        alert("Please enter a valid donation URL.");
+        return;
+      }
     }
 
-    let url;
+    this.props.updateDonationUrl();
+  }
 
-    try {
-      url = new URL(this.props.donationUrl);
-    } catch (_) {
-      return false;
+  unregister() {
+    if (this.props.donationUrl !== '') {
+      let url;
+
+      try {
+        url = new URL(this.props.donationUrl);
+      } catch (_) {
+        alert("Please enter a valid donation URL.");
+        return;
+      }
+
+      if (url.protocol !== "http:" && url.protocol !== "https:") {
+        alert("Please enter a valid donation URL.");
+        return;
+      }
     }
 
-    return url.protocol === "http:" || url.protocol === "https:";
+    this.props.unregister();
   }
 
   render() {
@@ -161,7 +81,7 @@ class RegistrationPage extends React.Component {
       { /* show unregister modal? */ }
       {this.state.showUnregisterModal &&
         <ConfirmationModal
-          confirm={this.unregisterConfirmed}
+          confirm={this.unregister}
           cancel={this.closeUnregisterModal} />
       }
 
@@ -190,7 +110,7 @@ class RegistrationPage extends React.Component {
               actionButtonText='Updating Description...'
               action='updatingDescription'
               isUpdating={this.props.isUpdating}
-              onClick={this.updateDescription} />
+              onClick={this.props.updateDescription} />
             </Form.Group>
           </Form.Group>
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios';
 import SpinningButton from './utils/spinning_button.js';
-import './app.css';
 
 class FeatureRequestPage extends React.Component {
   constructor(props) {
@@ -14,8 +12,6 @@ class FeatureRequestPage extends React.Component {
 
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.submit = this.submit.bind(this);
-
-    this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   handleDescriptionChange(event) {
@@ -25,38 +21,8 @@ class FeatureRequestPage extends React.Component {
   }
 
   submit() {
-    this.props.isUpdatingCallback({ 'action' : 'requestingFeature'});
-
-    // Get username if a contributor exists
-    let username = null;
-    if (this.props.contributor) {
-      username = this.props.contributor.username;
-    }
-
-    this.print("Calling CreateFeatureRequest");
-    axios.post(this.api_url, {
-      command: 'CreateFeatureRequest',
-      username: username,
-      description: this.state.description
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("CreateFeatureRequest response: " + JSON.stringify(response));
-
-      if (response.error) {
-        this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
-      } else {
-        this.props.showAlert({ variant: 'success', message: "Thanks for the feature request!" });
-        this.setState({ description: '' });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-      this.props.showAlert({ variant: 'danger', message: "Could not record the feature request. Please try again later." });
-    })
-    .then(() => {
-      this.props.isUpdatingCallback(false);
-    });
+    this.setState({ description: '' });
+    this.props.featureRequest(this.props.contributor, this.state.description);
   }
 
   print(message) {

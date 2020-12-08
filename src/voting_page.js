@@ -15,11 +15,9 @@ function VotingPage(props) {
       contributor={props.contributor}
       candidates={props.candidates}
       vote={props.vote}
-      updateState={props.updateState}
       signOut={props.signOut}
       showAlert={props.showAlert}
-      isUpdating={props.isUpdating}
-      isUpdatingCallback={props.isUpdatingCallback} />
+      isUpdating={props.isUpdating} />
   );
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
 import Header from './header.js';
 import Introduction from './introduction.js';
 import CandidatesList from './candidates/candidates_list.js';
@@ -10,42 +9,48 @@ import VotingPage from './voting_page.js';
 import LearnMorePage from './learn_more_page.js';
 import BugReportPage from './bug_report_page.js';
 import FeatureRequestPage from './feature_request_page.js';
-import LoadingSpinner from './utils/loading_spinner.js';
 import AlertMessage from './utils/alert_message.js';
-import './app.css';
+import { signInWithCode, signInWithAccessToken, getCandidates, register, updateDescription, updateDonationUrl, unregister, vote, bugReport, featureRequest } from './api.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      editColors: false,
-      headerColor: '#5e5e5e',
-      cardColor: '#d9d9d9',
       isUpdating: null,
       alert: null,
       activePage: 'homePage', // ['homePage', 'registerPage', 'registrationPage', 'votingPage', 'learnMorePage', 'bugReportPage', 'featureRequestPage']
       contributor: null,
       candidates: [],
       description: '',
-      donationUrl: ''
+      originalDescription: '',
+      donationUrl: '',
+      originalDonationUrl: ''
     };
 
-    this.isUpdatingCallback = this.isUpdatingCallback.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleDonationUrlChange = this.handleDonationUrlChange.bind(this);
-    this.updateState = this.updateState.bind(this);
     this.showAlert = this.showAlert.bind(this);
     this.deleteAlert = this.deleteAlert.bind(this);
     this.showPage = this.showPage.bind(this);
-    this.vote = this.vote.bind(this);
+    this.signInWithCode = signInWithCode.bind(this);
+    this.signInWithAccessToken = signInWithAccessToken.bind(this);
+    this.getCandidates = getCandidates.bind(this);
+    this.register = register.bind(this);
+    this.updateDescription = updateDescription.bind(this);
+    this.updateDonationUrl = updateDonationUrl.bind(this);
+    this.unregister = unregister.bind(this);
+    this.vote = vote.bind(this);
+    this.bugReport = bugReport.bind(this);
+    this.featureRequest = featureRequest.bind(this);
 
     this.api_url = process.env.REACT_APP_API_GATEWAY + "/api";
   }
 
   componentDidMount() {
-    if (this.getCode() !== null) {
-      this.signInWithCode(this.getCode());
+    const code = this.getCode();
+    if (code !== null) {
+      this.signInWithCode(code);
     } else if (this.getAccessToken() !== null) {
       this.signInWithAccessToken(this.getAccessToken());
     }
@@ -55,122 +60,13 @@ class App extends React.Component {
 
   getCode() {
     const url = new URL(window.location.href);
-    return url.searchParams.get("code");
+    const code = url.searchParams.get("code");
+    window.history.pushState({}, null, 'home');
+    return code;
   }
 
   getAccessToken() {
     return localStorage.getItem('access_token');
-  }
-
-  signInWithCode(code) {
-    window.history.pushState({}, null, 'home');
-
-    this.print("Calling SigninWithCode");
-    axios.post(this.api_url, {
-      command: 'SigninWithCode',
-      code: code
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("SigninWithCode response: " + JSON.stringify(response));
-
-      if (response.error) {
-        if (response.error_code === 1) {
-          this.showAlert({ variant: 'info', message: "Only contributors to the Bitcoin GitHub repository are allowed to sign in. If you are a contributor and still can't sign in, please see the Help section of the Learn more page." });
-        } else {
-          this.signOut();
-        }
-      } else {
-        localStorage.setItem('access_token', response.contributor.access_token);
-        this.setState({
-          contributor:  response.contributor
-        });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-    });
-  }
-
-  signInWithAccessToken(access_token) {
-    this.print("Calling SigninWithAccessToken");
-    axios.post(this.api_url, {
-      command: 'SigninWithAccessToken',
-      access_token: access_token
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("SigninWithAccessToken response: " + JSON.stringify(response));
-
-      if (response.error) {
-        if (response.error_code === 0 || response.error_code === 1) {
-          this.signOut();
-        }
-      } else {
-        this.setState({
-          contributor:  response.contributor
-        });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-    });
-  }
-
-  getCandidates() {
-    this.print("Calling GetCandidates");
-    axios.post(this.api_url, {
-      command: 'GetCandidates'
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("GetCandidates response: " + JSON.stringify(response));
-
-      if (response.error) {
-      } else {
-        let candidates = response.candidates;
-        candidates.sort(function(a, b) { return b.votes - a.votes });
-        this.setState({
-          candidates: candidates
-        });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-    });
-  }
-
-  vote(new_candidate_username) {
-    this.isUpdatingCallback(new_candidate_username);
-
-    this.print("Calling Vote");
-    axios.post(this.api_url, {
-      command: 'Vote',
-      access_token: this.state.contributor.access_token,
-      vote: new_candidate_username
-    })
-    .then((res) => {
-      var response = res.data;
-      this.print("vote response: " + JSON.stringify(response));
-
-      if (response.error) {
-        this.handleError(response.error_code, "Could not record the vote. Please try again later.");
-      } else {
-        let candidates = response.candidates.sort(function(a, b) { return b.votes - a.votes });
-        this.setState({
-          contributor: response.contributor,
-          candidates: candidates,
-          alert: { variant: 'success', message: 'You have successfully voted for ' + new_candidate_username }
-        });
-      }
-    })
-    .catch((error) => {
-      this.print(error);
-      this.handleError(100, "Could not record the vote. Please try again later.");
-    })
-    .then(() => {
-      this.isUpdatingCallback('');
-    });
   }
 
   handleError(code, message) {
@@ -209,12 +105,6 @@ class App extends React.Component {
     this.setState({donationUrl: value});
   }
 
-  isUpdatingCallback(isUpdating) {
-    this.setState({
-      isUpdating: isUpdating
-    });
-  }
-
   showAlert(message) {
     this.setState({
       alert: message
@@ -242,16 +132,6 @@ class App extends React.Component {
     this.setState({
       contributor: null
     }, this.homePage);
-  }
-
-  updateState(contributor, candidates, alert) {
-    candidates.sort(function(a, b) { return b.votes - a.votes });
-
-    this.setState({
-      alert: alert,
-      contributor: contributor,
-      candidates: candidates
-    });
   }
 
   // END CALLBACKS
@@ -301,12 +181,8 @@ class App extends React.Component {
         {activePage === 'registerPage' &&
           <RegisterPage
             contributor={this.state.contributor}
-            updateState={this.updateState}
-            signOut={this.signOut}
-            showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
-            isUpdatingCallback={this.isUpdatingCallback}
-            showPage={this.showPage}
+            register={this.register}
             description={this.state.description}
             donationUrl={this.state.donationUrl}
             handleDescriptionChange={this.handleDescriptionChange}
@@ -316,14 +192,14 @@ class App extends React.Component {
         {activePage === 'registrationPage' &&
           <RegistrationPage
             contributor={this.state.contributor}
-            updateState={this.updateState}
-            signOut={this.signOut}
-            showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
-            isUpdatingCallback={this.isUpdatingCallback}
-            showPage={this.showPage}
+            unregister={this.unregister}
+            updateDescription={this.updateDescription}
+            updateDonationUrl={this.updateDonationUrl}
             description={this.state.description}
+            originalDescription={this.state.originalDescription}
             donationUrl={this.state.donationUrl}
+            originalDonationUrl={this.state.originalDonationUrl}
             handleDescriptionChange={this.handleDescriptionChange}
             handleDonationUrlChange={this.handleDonationUrlChange} />
         }
@@ -343,21 +219,15 @@ class App extends React.Component {
         {activePage === 'bugReportPage' &&
           <BugReportPage
             contributor={this.state.contributor}
-            showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
-            isUpdatingCallback={this.isUpdatingCallback} />
+            bugReport={this.bugReport} />
         }
 
         {activePage === 'featureRequestPage' &&
           <FeatureRequestPage
             contributor={this.state.contributor}
-            showAlert={this.showAlert}
             isUpdating={this.state.isUpdating}
-            isUpdatingCallback={this.isUpdatingCallback} />
-        }
-
-        {activePage === 'loadingPage' &&
-          <LoadingSpinner />
+            featureRequest={this.featureRequest} />
         }
       </Container>
       </>
