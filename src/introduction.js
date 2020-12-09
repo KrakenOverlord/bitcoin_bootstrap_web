@@ -30,12 +30,11 @@ function Introduction(props) {
         </span>
         . How do you figure out which one to help?
 
-
-        <p />There are lists of developers online that are looking for help. But it is left up to the developers to describe themselves.
-        Ideally we could access independent expert opinion about the developers from people deeply involved in Bitcoin's development.
+        <p />You can find compiled lists of developers looking for help online. But they are just collections of developers describing themselves.
+        What's really needed is access to a large group of Bitcoin experts that could help us decide on which developers to fund.
         This is where Bitcoin Bootstrap steps in.
 
-        <p />Bitcoin Bootstrap uses a voting system to leverage the knowledge of Bitcoin developers as a whole to provide guidance.
+        <p />Bitcoin Bootstrap uses a voting system to leverage the knowledge of Bitcoin developers <i>as a whole</i> to provide guidance.
         Contributors to the Bitcoin repository can register as candidates for funding, and contributors can vote for their favorite candidate.
         Each vote represents a developers cumulative knowledge on who is best working towards the desired goals, and thus most deserving of funding.
         The best candidates will rise to the top of the list.
