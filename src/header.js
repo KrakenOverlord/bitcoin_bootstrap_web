@@ -44,7 +44,7 @@ function Header(props) {
           <Nav.Link eventKey='votingPage' onClick={() => props.showPage('votingPage')} href="#voting">Voting</Nav.Link>
         }
         <Nav.Link eventKey='learnMorePage' onClick={() => props.showPage('learnMorePage')} href="#learn-more">Learn more</Nav.Link>
-        <NavDropdown eventKey='contactPage' title="Contact" id="basic-nav-dropdown">
+        <NavDropdown title="Contact" id="basic-nav-dropdown">
         <NavDropdown.Item href="#bug-report" onClick={() => props.showPage('bugReportPage')}>Bug Report</NavDropdown.Item>
         <NavDropdown.Item href="#feature-request" onClick={() => props.showPage('featureRequestPage')}>Feature Request</NavDropdown.Item>
       </NavDropdown>

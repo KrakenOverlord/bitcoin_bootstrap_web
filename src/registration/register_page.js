@@ -48,7 +48,7 @@ class RegisterPage extends React.Component {
           { /* description */ }
           <b>Description</b>
           <Form.Group controlId="description">
-            <Form.Text className="text-muted">Please describe the contributions you have made, what you are currently working on, and how people can fund you.</Form.Text>
+            <Form.Text className="text-muted">Please describe the contributions you have made and what you are currently working on.</Form.Text>
             <Form.Control
               name="description"
               as="textarea"
