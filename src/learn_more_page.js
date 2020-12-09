@@ -12,7 +12,7 @@ function LearnMorePage(props) {
         <li>Other contributors will be able to vote for you.</li>
         <li>You can update your description at any time.</li>
         <li>You can register and unregister as many times as you wish.</li>
-        <li>Once you are receiving enough funding to survive, unregister so that others can get the financial assistance they need.</li>
+        <li>Once you are receiving enough funding, unregister so that others can get the financial assistance they need.</li>
       </ul>
       <p />
 
@@ -37,6 +37,9 @@ function LearnMorePage(props) {
       </ul>
       <p />Feel free to use the Feature Request capability to share your ideas!
 
+      <p /><h4>Contact</h4>
+      <p />Twitter @BtcBootstrap or reddit /user/BitcoinBootstrap.
+      
       <p /><h4>Help</h4>
 
       <p /><b>Why can't I sign in?</b>
