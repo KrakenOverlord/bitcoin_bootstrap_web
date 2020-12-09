@@ -2,7 +2,7 @@ import React from 'react'
 
 function LearnMorePage(props) {
   return(
-    <div className="mt-5">
+    <div className="mt-4">
       <h4 className="mt-4">Registration</h4>
       Any contributor to the Bitcoin repository can register to be listed. Just sign in, enter a brief description about your work, and hit the Register button.
       You will be immediately listed and publicly viewable. It's really that simple.
@@ -45,6 +45,7 @@ function LearnMorePage(props) {
       In this case, it is necessary that you follow the same steps as an anonymous contributor and make the email address in your contribution the public email address in you GitHub profile.
       Then the next time Bitcoin Bootstrap synchronizes with GitHub we will be able to verify your contribution and you will be able to sign in.
       <p /><i>Note - It can take up to 24 hours to get verified after making an email in your GitHub profile public.</i>
+      <p className="mb-4" />
     </div>
   );
 }
