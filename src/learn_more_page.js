@@ -27,7 +27,7 @@ function LearnMorePage(props) {
       </ul>
 
       <p /><h4>Looking Forward</h4>
-      <p />This is an MVP release that keeps things as simple as possible. But maybe there are modifications that can be made to make it more useful.
+      <p />This is an MVP release that keeps things as simple as possible. But maybe there are additional features that could be added to make it more useful.
       For example:
       <p />
       <ul>
@@ -49,11 +49,11 @@ function LearnMorePage(props) {
       In order to be verified, you must make the email address in your contribution the public email address in your GitHub profile.
       Then the next time Bitcoin Bootstrap synchronizes with GitHub we will be able to verify your contribution and you will be able to sign in.
 
-      <p />Do you have only had one contribution?
-      <p />GitHub's API only returns usernames for the top 500 contributors (highest number of contributions) to a repository.
-      If you've made more than one contribution, you'll be included in the top 500 contributors.
-      But if you've only made one contribution, you may not be included in the top 500 and the API only returns the email address you used when you made your contribution.
-      In this case, it is necessary that you follow the same steps as an anonymous contributor and make the email address in your contribution the public email address in you GitHub profile.
+      <p />Have you made just one contribution?
+      <p />GitHub's API only returns usernames for the top 500 contributors to a repository.
+      If you've made more than one contribution, you'll be included in the top 500.
+      But if you've made just one contribution, you may not be included in the top 500 and the API only returns the email address you used when you made your contribution.
+      In this case, it is necessary that you follow the same steps as an anonymous contributor and make the email address in your contribution the public email address in your GitHub profile.
       Then the next time Bitcoin Bootstrap synchronizes with GitHub we will be able to verify your contribution and you will be able to sign in.
       <p /><i>Note - It can take up to 24 hours to get verified after making an email in your GitHub profile public.</i>
       <p className="mb-4" />
