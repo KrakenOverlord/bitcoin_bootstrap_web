@@ -31,8 +31,8 @@ function Introduction(props) {
         . How do you figure out which one to help?
 
 
-        <p />You can find lists online of developers that are looking for help. But they mostly contain self-descriptions by the developers themselves.
-        Although these lists are useful, ideally we could obtain independent expert opinion about a developer from multiple people deeply involved in Bitcoin's development.
+        <p />You can find lists online of developers looking for help. These lists are useful, but they mostly contain self-descriptions by the developers themselves.
+        Ideally we could obtain independent expert opinion about a developer from multiple people deeply involved in Bitcoin's development.
         That's where Bitcoin Bootstrap steps in.
 
         <p />Bitcoin Bootstrap uses a voting system to leverage the knowledge of Bitcoin developers as a whole to provide guidance.
