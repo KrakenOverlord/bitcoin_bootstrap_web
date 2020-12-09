@@ -65,6 +65,7 @@ export function signInWithAccessToken(access_token) {
 
 export function getCandidates() {
   this.print("Calling GetCandidates");
+
   axios.post(this.api_url, {
     command: 'GetCandidates'
   })

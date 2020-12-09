@@ -170,8 +170,7 @@ class App extends React.Component {
 
         {activePage === 'homePage' &&
         <>
-          <Introduction numCandidates={candidates.length} showPage={this.showPage} />
-
+          <Introduction showPage={this.showPage} />
           <CandidatesList
             contributor={null}
             candidates={candidates} />

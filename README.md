@@ -10,7 +10,6 @@
 - get back button working for main screens
 - disable login link after pressed
 - success stories list after fully funded
-- Manifest: Line: 1, column: 1, Syntax error. goes away after disabling access control
 
 **Access Control**
 Username: KrakenOverlord

@@ -17,7 +17,7 @@ function Introduction(props) {
       A curated list of Bitcoin developers seeking funding.
       </p>
       <b></b>
-        <p />Many people want to give back to the Bitcoin community by helping to fund a Bitcoin developer.
+        <p />Many people want to give back to the Bitcoin community by helping support a Bitcoin developer.
         But there are over 750
         <span>
           <a href='https://github.com/bitcoin/bitcoin/graphs/contributors'
@@ -28,16 +28,17 @@ function Introduction(props) {
             target="_blank"
             rel="noopener noreferrer">Bitcoin repository</a>
         </span>
-        . How do you know which one to help?
+        . How do you figure out which one to help?
 
 
-        <p />Some people have compiled lists of developers that are looking for help, but they sometimes contain people working on their own projects, and they all just contain self-descriptions by the developers themselves.
-        What is needed is expert guidance by people deeply involved in Bitcoins development.
+        <p />You can find lists online of developers that are looking for help. But they mostly contain self-descriptions by the developers themselves.
+        Although these lists are useful, ideally we could obtain independent expert opinion about a developer from multiple people deeply involved in Bitcoin's development.
+        That's where Bitcoin Bootstrap steps in.
 
-        <p />That's where Bitcoin Bootstrap steps in. Bitcoin Bootstrap leverages the knowledge of the Bitcoin developers, the biggest experts of all, to provide guidance on funding.
-        It's all done through a voting system which allows developers to vote for their favorite candidate. Each vote represents that developers cumulative knowledge on who is best working towards the desired goals, and thus most deserving of funding. The best candidates will rise to the top of the list.
-
-        <p />Only contributors to the Bitcoin repository are allowed on the candidate list, and only contributors to the repository are allowed to vote on them.
+        <p />Bitcoin Bootstrap uses a voting system to leverage the knowledge of Bitcoin developers as a whole to provide guidance.
+        Contributors to the Bitcoin repository can register as candidates for funding, and contributors vote for their favorite candidate.
+        Each vote represents a developers cumulative knowledge on who is best working towards the desired goals, and thus most deserving of funding.
+        The best candidates will rise to the top of the list.
 
         <p />See the list below.
 
