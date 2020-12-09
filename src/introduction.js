@@ -31,7 +31,7 @@ function Introduction(props) {
         . How do you figure out which one to help?
 
 
-        <p />You can find lists online of developers looking for help. These lists are useful, but they mostly contain self-descriptions by the developers themselves.
+        <p />There are lists of developers online that are looking for help. But they mostly contain self-descriptions by the developers themselves.
         Ideally we could obtain independent expert opinion about a developer from multiple people deeply involved in Bitcoin's development.
         That's where Bitcoin Bootstrap steps in.
 
