@@ -134,7 +134,7 @@ export function register() {
 
 export function updateDescription() {
   this.setState({
-    isUpdating: { 'action' : 'updatingDescription' }
+    isUpdating: { action: 'updatingDescription' }
   });
 
   this.print("Calling UpdateDescription");
@@ -171,7 +171,7 @@ export function updateDescription() {
 
 export function updateDonationUrl() {
   this.setState({
-    isUpdating: { 'action' : 'updatingDonationUrl' }
+    isUpdating: { action: 'updatingDonationUrl' }
   });
 
   this.print("Calling UpdateDonationUrl");
@@ -208,7 +208,7 @@ export function updateDonationUrl() {
 
 export function unregister() {
   this.setState({
-    isUpdating: { 'action' : 'unregistering' }
+    isUpdating: { action: 'unregistering' }
   });
 
   this.print("Calling Unregister");
@@ -249,8 +249,7 @@ export function unregister() {
 
 export function vote(new_candidate_username) {
   this.setState({
-    action: 'voting',
-    candidateUsername: new_candidate_username
+    isUpdating: { action: 'voting', candidateUsername: new_candidate_username }
   });
 
   this.print("Calling Vote");
@@ -287,7 +286,7 @@ export function vote(new_candidate_username) {
 
 export function bugReport(contributor, description) {
   this.setState({
-    isUpdating: { 'action' : 'reportingBug' }
+    isUpdating: { action: 'reportingBug' }
   });
 
   // Get username if a contributor exists
@@ -325,7 +324,7 @@ export function bugReport(contributor, description) {
 
 export function featureRequest(contributor, description) {
   this.setState({
-    isUpdating: { 'action' : 'requestingFeature' }
+    isUpdating: { action: 'requestingFeature' }
   });
 
   // Get username if a contributor exists
