@@ -30,8 +30,8 @@ function Introduction(props) {
         </span>
         . How do you figure out which one to help?
 
-        <p />You can find compiled lists of developers looking for help online. But they are just collections of developers describing themselves.
-        In addition, the average person does not have the specialized knowledge necessary to evaluate the developers work. 
+        <p />You can find compiled lists of developers looking for help online. But these primarily consist of the individual developers describing their own work.
+        The average person doesn't have the specialized knowledge necessary to evaluate these listings.
         What's really needed is access to a large group of Bitcoin experts who can provide guidance on who to fund.
         This is where Bitcoin Bootstrap steps in.
 
