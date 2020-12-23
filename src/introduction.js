@@ -17,7 +17,7 @@ function Introduction(props) {
       A curated list of Bitcoin developers seeking funding.
       </p>
       <b></b>
-        <p />Many people want to give back to the Bitcoin community by helping support a Bitcoin developer.
+        <p />Many people want to give back to the Bitcoin community by helping to support a Bitcoin developer.
         But there are over 750
         <span>
           <a href='https://github.com/bitcoin/bitcoin/graphs/contributors'
@@ -30,15 +30,15 @@ function Introduction(props) {
         </span>
         . How do you figure out which one to help?
 
-        <p />You can find compiled lists of developers looking for help online. But these primarily consist of the individual developers describing their own work.
-        The average person doesn't have the specialized knowledge necessary to evaluate these listings.
-        What's really needed is access to a large group of Bitcoin experts who can provide guidance on who to fund.
+        <p />You can find compiled lists of developers online that are looking for help.
+        But these listings consist mostly of developers describing themselves and the technical projects they are working on.
+        The average person doesn't have the technical knowledge necessary to evaluate these listings.
+        Ideally we could get the opinions of people deeply involved in Bitcoin development on who we should help.
         This is where Bitcoin Bootstrap steps in.
 
         <p />Bitcoin Bootstrap uses a voting system to leverage the knowledge of Bitcoin developers <i>as a whole</i> to provide guidance.
-        Contributors to the Bitcoin repository can register as candidates for funding, and contributors can vote for their favorite candidate.
-        Each vote represents a developers cumulative knowledge on who is best working towards the desired goals, and thus most deserving of funding.
-        The best candidates will rise to the top of the list.
+        Contributors to the Bitcoin repository can register as candidates for funding, and contributors can vote for them.
+        Each vote represents a developers cumulative knowledge on who is best working towards the desired goals.
 
         <p />See the list below.
 
